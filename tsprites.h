@@ -22,7 +22,7 @@ public:
     // main attributes w/o getters for fastest access
     int w = 0;
     int h = 0;
-    char *s = 0; // for fastest access to printf() it 
+    char *s = 0; // for fast access to printf() it 
 
     int x = 0;
     int y = 0;
@@ -30,7 +30,8 @@ public:
 
     char *shadow_map; // w * h
     char *color_map;  // w * h: r, g, b
-    char *lines[128]; // more than enough
+    char *lines[128]; // for fast access to y-stretch effects,
+                      // more than enough. maybe remove at all
 
 private:
     int malloc_maps();

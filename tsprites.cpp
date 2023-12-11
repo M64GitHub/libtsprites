@@ -70,36 +70,28 @@ int TSprite::malloc_maps()
     if(!shadow_map) return 1;
 
     color_map = (char *) calloc(w * h * 3, 1); // r, g, b
-    if(!color_map) return 1;
+    if(!color_map) { free_maps(); return 1; }
 
     shadow_map_source = (char *) calloc(w * h, 1);
-    if(!shadow_map_source) return 1;
+    if(!shadow_map_source) { free_maps(); return 1; }
 
     color_map_source = (char *) calloc(w * h * 3, 1); // r, g, b
-    if(!color_map_source) return 1;
+    if(!color_map_source) { free_maps(); return 1; }
 
-    maps_initialized = 1;
+    maps_initialized = 1; // all or none
 
     return 0;
 }
 
 int TSprite::free_maps()
 {
-    maps_initialized = 0;
-
     if(s_source) free(s_source);
+    if(shadow_map) free(shadow_map);
+    if(color_map) free(color_map);
+    if(shadow_map_source) free(shadow_map);
+    if(color_map_source) free(color_map_source);
 
-    if(!shadow_map) return 1;
-    free(shadow_map);
-
-    if(!color_map) return 1;
-    free(color_map);
-
-    if(!shadow_map_source) return 1;
-    free(shadow_map);
-
-    if(!color_map_source) return 1;
-    free(color_map_source);
+    maps_initialized = 0;
 
     return 0;
 }
