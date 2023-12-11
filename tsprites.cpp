@@ -25,7 +25,7 @@ TSprite::TSprite(int ww, int hh)
     color_map_source = 0;
     maps_initialized = 0;
 
-    for(int l=0; l<h; l++) lines[l] = 0;
+    for(int l=0; l<hh; l++) lines[l] = 0;
 
     if(!malloc_maps()) return; 
 
