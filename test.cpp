@@ -4,6 +4,7 @@
 
 void usage() 
 {
+    printf("\nUsage:\n\n");
     printf("test <inputfile>\n");
 
     exit(1);

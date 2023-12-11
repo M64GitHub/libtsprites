@@ -1,5 +1,6 @@
 // tsprites.cpp, 2023 M64
 
+#include <stdio.h>
 #include <stdlib.h>
 #include "tsprites.h"
 
@@ -48,8 +49,24 @@ int TSprite::ImportFromImgStr(char *s)
     return 0;
 }
 
+// I: filename
 int TSprite::ImportFromFile(char *fn)
 {
+    FILE *f;
+    unsigned long f_size;
+
+    if(!(f = fopen(fn, "rb"))) {
+        printf("ERROR: can not open file.\n");
+        return 1;
+    }
+
+    // -- get size
+    fseek(f, 0, SEEK_END);
+    f_size = ftell(f);
+
+
+
+
     return 0;
 }
 
