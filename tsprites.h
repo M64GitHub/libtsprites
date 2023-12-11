@@ -1,6 +1,14 @@
 #ifndef TSPRITES_H
 #define TSPRITES_H
 
+#define DEBUG
+
+#ifdef DEBUG
+#define DBG(...) fprintf (stderr, __VA_ARGS__)
+#else 
+#define DBG(...) 
+#endif
+
 class TSprite
 {
 public:

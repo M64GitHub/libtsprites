@@ -12,19 +12,23 @@ TSprite::TSprite()
     shadow_map_source = 0;
     color_map_source = 0;
     maps_initialized = 0;
+    s_source = 0;
 
     // initialize lines array
     for(int l=0; l<128; l++) lines[l] = 0;
+    DBG ("[TS] TSprite\n");
 }
 
 TSprite::TSprite(int ww, int hh)
 {
+    DBG ("[TS] TSprite(%d, %d)\n", ww, hh);
     x = y = z = 0;
     shadow_map = 0;
     color_map = 0;
     shadow_map_source = 0;
     color_map_source = 0;
     maps_initialized = 0;
+    s_source = 0;
 
     for(int l=0; l<hh; l++) lines[l] = 0;
 
@@ -33,10 +37,23 @@ TSprite::TSprite(int ww, int hh)
     // only on success
     w = ww;
     h = hh;
+    DBG ("[TS] TSprite(%d, %d) initialized\n", w, h);
 }
 
 TSprite::TSprite(char *imgstr)
 {
+    w = h = x = y = z = 0;
+    shadow_map = 0;
+    color_map = 0;
+    shadow_map_source = 0;
+    color_map_source = 0;
+    maps_initialized = 0;
+    s_source = 0;
+
+    // initialize lines array
+    for(int l=0; l<128; l++) lines[l] = 0;
+    DBG ("[TS] TSprite(imgstr)\n");
+    // ImportFromImgStr(imgstr);
 }
 
 TSprite::~TSprite()
@@ -52,11 +69,12 @@ int TSprite::ImportFromImgStr(char *s)
 // I: filename
 int TSprite::ImportFromFile(char *fn)
 {
+    DBG ("[TS][ImportFromFile]\n");
     FILE *f;
     unsigned long f_size;
 
     if(!(f = fopen(fn, "rb"))) {
-        printf("ERROR: can not open file.\n");
+        printf("[TS][ImportFromFile] ERROR: can not open file.\n");
         return 1;
     }
 
@@ -105,8 +123,9 @@ int TSprite::free_maps()
     if(s_source) free(s_source);
     if(shadow_map) free(shadow_map);
     if(color_map) free(color_map);
-    if(shadow_map_source) free(shadow_map);
+    if(shadow_map_source) free(shadow_map_source);
     if(color_map_source) free(color_map_source);
+    if(s_source) free(s_source);
 
     maps_initialized = 0;
 

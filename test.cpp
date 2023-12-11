@@ -23,7 +23,7 @@ int main(int argc, char **argv)
 
     ifile_name = argv[1];
 
-    printf("working with: '%s' as input file.\n", ifile_name);
+    printf("[MAIN] working with: '%s' as input file.\n", ifile_name);
     S.ImportFromFile(ifile_name);
 
     return 0;
