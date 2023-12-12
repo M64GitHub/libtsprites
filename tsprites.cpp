@@ -72,6 +72,9 @@ int TSprite::ImportFromFile(char *fn)
     DBG ("[TS][ImportFromFile]\n");
     FILE *f;
     unsigned long f_size;
+    char tmpbuf[16];
+    char hdr[] = { 0x1b,0x5b,0x73,0x1b,0x5b,0x3f,0x32,0x35,0x6c };
+    int chk = 0;
 
     if(!(f = fopen(fn, "rb"))) {
         printf("[TS][ImportFromFile] ERROR: can not open file.\n");
@@ -81,9 +84,37 @@ int TSprite::ImportFromFile(char *fn)
     // -- get size
     fseek(f, 0, SEEK_END);
     f_size = ftell(f);
+    if(f_size < 9) {
+        printf("[TS][ImportFromFile] ERROR: invalid file type! 1\n");
+        fclose(f);
+        return 1;
+    }
+    DBG ("[TS][ImportFromFile] file-size: %ld\n", f_size);
 
+    // -- check file "hdr": catimg esc seq 0x1b, 0x5b, 0x73 = "\x1b[s"
+    fseek(f, 0, SEEK_SET);
+    for(int i=0; i<128; i++) tmpbuf[i]=0x0;
+    if(fread(tmpbuf, 1, 9, f) != 9) {
+        printf("[TS][ImportFromFile] ERROR: invalid file type! 2\n");
+        fclose(f);
+        return 1;
+    }
+    chk=1;
+    for(int i=0; i<9; i++) {
+        if(tmpbuf[i] != hdr[i]) {
+            chk = 0; break;
+        }
+    }
+    if(!chk) {
+        printf("[TS][ImportFromFile] ERROR: invalid file type! 3\n");
+        fclose(f);
+        return 1;
+    }
+    DBG ("[TS][ImportFromFile] file-header OK!\n");
 
+    // -- start read / convert
 
+    // ImportFromImgStr...
 
     return 0;
 }
