@@ -33,12 +33,10 @@ public:
     // main attributes w/o getters for fastest access
     int w = 0;
     int h = 0;
-    char *s = 0; // for fast printf(), restored after Reset()
-
-    // get/set easily, directly
     int x = 0;
     int y = 0;
     int z = 0;
+    char *s = 0; // for fast printf(), restored after Reset()
 
     // internal representation - for fast effects processing, ...
     char *shadow_map; // w * h: like alpha channel: 0: no px, 1: px
