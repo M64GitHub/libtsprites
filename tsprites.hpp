@@ -15,7 +15,7 @@ class TSprite
 public:
     TSprite();
     TSprite(int ww, int hh);
-    TSprite(char *imgstr);
+    TSprite(char *imgstr, int strlen);
 
     ~TSprite();
 

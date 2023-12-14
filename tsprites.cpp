@@ -37,7 +37,7 @@ TSprite::TSprite(int ww, int hh)
     DBG ("[TS] TSprite(%d, %d) initialized\n", w, h);
 }
 
-TSprite::TSprite(char *imgstr)
+TSprite::TSprite(char *imgstr, int strlen)
 {
     w = h = x = y = z = 0;
     shadow_map = 0;
@@ -47,8 +47,11 @@ TSprite::TSprite(char *imgstr)
     maps_initialized = 0;
     s_source = 0;
 
-    DBG ("[TS] TSprite(imgstr)\n");
-    // ImportFromImgStr(imgstr);
+    DBG ("[TS] TSprite(imgstr, strlen)\n");
+
+    if(ImportFromImgStr(imgstr, strlen)) {
+        printf("[TS] ERROR: unable to convert imgstr.\n");
+    }
 }
 
 TSprite::~TSprite()
