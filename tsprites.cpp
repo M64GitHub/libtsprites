@@ -14,8 +14,6 @@ TSprite::TSprite()
     maps_initialized = 0;
     s_source = 0;
 
-    // initialize lines array
-    for(int l=0; l<128; l++) lines[l] = 0;
     DBG ("[TS] TSprite\n");
 }
 
@@ -29,8 +27,6 @@ TSprite::TSprite(int ww, int hh)
     color_map_source = 0;
     maps_initialized = 0;
     s_source = 0;
-
-    for(int l=0; l<hh; l++) lines[l] = 0;
 
     if(!malloc_maps()) return; 
 
@@ -50,8 +46,6 @@ TSprite::TSprite(char *imgstr)
     maps_initialized = 0;
     s_source = 0;
 
-    // initialize lines array
-    for(int l=0; l<128; l++) lines[l] = 0;
     DBG ("[TS] TSprite(imgstr)\n");
     // ImportFromImgStr(imgstr);
 }
@@ -93,7 +87,7 @@ int TSprite::ImportFromFile(char *fn)
 
     // -- check file "hdr": catimg esc seq 0x1b, 0x5b, 0x73 = "\x1b[s"
     fseek(f, 0, SEEK_SET);
-    for(int i=0; i<128; i++) tmpbuf[i]=0x0;
+    for(int i=0; i<16; i++) tmpbuf[i]=0x0;
     if(fread(tmpbuf, 1, 9, f) != 9) {
         printf("[TS][ImportFromFile] ERROR: invalid file type! 2\n");
         fclose(f);
@@ -116,6 +110,11 @@ int TSprite::ImportFromFile(char *fn)
 
     // ImportFromImgStr...
 
+    return 0;
+}
+
+int TSprite::ExportImgStr(char *fn, int format)
+{
     return 0;
 }
 

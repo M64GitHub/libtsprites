@@ -22,35 +22,40 @@ public:
     int ImportFromFile(char *fn);
     int ImportFromColorMap(char *cmap);
 
-    void Reset(); // restores original state (after 
-                  // possible applied effects
+    int ExportImgStr(char *fn, int format); // export as .h, txtfile, ...
 
-    void Print();
+    void Reset(); // restores original state (after 
+                  // possible applied effects)
+
+    void Print(); // output s
 
     // main attributes w/o getters for fastest access
     int w = 0;
     int h = 0;
-    char *s = 0; // for fast access to printf() it 
+    char *s = 0; // for fast printf(), restored after Reset()
 
+    // get/set easily, directly
     int x = 0;
     int y = 0;
     int z = 0;
 
-    char *shadow_map; // w * h
+    // internal representation - for fast effects processing, ...
+    char *shadow_map; // w * h: like alpha channel: 0: no px, 1: px
+                      // for collision detection, Print() ...
     char *color_map;  // w * h: r, g, b
-    char *lines[128]; // for fast access to y-stretch effects,
-                      // more than enough. maybe remove at all
 
 private:
     int malloc_maps();
     int free_maps();
 
-    // copies of initial state
-    char *s_source;
-    char *shadow_map_source;
-    char *color_map_source;
     int maps_initialized = 0; // either all or none,
                               // for better readibility          
+
+    // copies of initial state
+    char *s_source;           // internal, converted representation 
+    int   s_source_len;       // for speed, to avoid strlen()
+    char *shadow_map_source;  //
+    char *color_map_source;   //
 };
 
 #endif
