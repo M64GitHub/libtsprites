@@ -64,12 +64,11 @@ int TSprite::ImportFromImgStr(char *s, int l)
     char hdr[] = { CATIMG_HDR };
     int chk = 0;
 
+    // -- check file "hdr": catimg esc seq 0x1b, 0x5b, 0x73 = "\x1b[s"
     if(l < (int)sizeof(CATIMG_HDR)) {
         printf("[TS][ImportFromImgStr] ERROR: invalid file type! 1\n");
         return 1;
     }
-
-    // -- check file "hdr": catimg esc seq 0x1b, 0x5b, 0x73 = "\x1b[s"
     chk = 1;
     for(int i=0; i < (int)sizeof(CATIMG_HDR); i++) {
         if(s[i] != hdr[i]) {
