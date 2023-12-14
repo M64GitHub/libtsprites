@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "tsprites.h"
+#include "tsprites.hpp"
 
 void usage() 
 {

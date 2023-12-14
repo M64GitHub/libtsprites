@@ -2,7 +2,8 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include "tsprites.h"
+#include "tsprites.hpp"
+#include "format_catimg.hpp"
 
 TSprite::TSprite()
 {
@@ -57,18 +58,31 @@ TSprite::~TSprite()
 
 int TSprite::ImportFromImgStr(char *s)
 {
+    char hdr[] = { CATIMG_HDR };
+    int chk = 0;
+
+    // -- check file "hdr": catimg esc seq 0x1b, 0x5b, 0x73 = "\x1b[s"
+    chk = 1;
+    for(int i=0; i<9; i++) {
+        if(s[i] != hdr[i]) {
+            chk = 0; break;
+        }
+    }
+    if(!chk) {
+        printf("[TS][ImportFromImgStr] ERROR: invalid file type! 3\n");
+        return 1;
+    }
+    DBG ("[TS][ImportFromImgStr] file-header OK!\n");
+
     return 0;
 }
 
 // I: filename
 int TSprite::ImportFromFile(char *fn)
 {
-    DBG ("[TS][ImportFromFile]\n");
     FILE *f;
     unsigned long f_size;
-    char tmpbuf[16];
-    char hdr[] = { 0x1b,0x5b,0x73,0x1b,0x5b,0x3f,0x32,0x35,0x6c };
-    int chk = 0;
+    char *file_contents = 0;
 
     if(!(f = fopen(fn, "rb"))) {
         printf("[TS][ImportFromFile] ERROR: can not open file.\n");
@@ -83,32 +97,45 @@ int TSprite::ImportFromFile(char *fn)
         fclose(f);
         return 1;
     }
-    DBG ("[TS][ImportFromFile] file-size: %ld\n", f_size);
-
-    // -- check file "hdr": catimg esc seq 0x1b, 0x5b, 0x73 = "\x1b[s"
     fseek(f, 0, SEEK_SET);
-    for(int i=0; i<16; i++) tmpbuf[i]=0x0;
-    if(fread(tmpbuf, 1, 9, f) != 9) {
-        printf("[TS][ImportFromFile] ERROR: invalid file type! 2\n");
+    DBG ("[TS][ImportFromFile] file-size: %ld bytes\n", f_size);
+
+    // -- max file size chk
+    if(f_size > CATIMG_MAXSIZE) {
+        printf("[TS][ImportFromFile] ERROR: invalid file! (too large)\n");
         fclose(f);
         return 1;
     }
-    chk=1;
-    for(int i=0; i<9; i++) {
-        if(tmpbuf[i] != hdr[i]) {
-            chk = 0; break;
+
+    // -- read file
+    file_contents = (char *) calloc(1, f_size);
+    if(file_contents == NULL) {
+        printf("[TS][ImportFromFile] ERROR: unable to allocate memory for file.\n");
+        fclose(f);
+        return 1;
+    }
+    for(unsigned long i=0;i<f_size;i++) {
+        if(!fread(file_contents+i, 1, 1, f)) {
+            printf("[TS][ImportFromFile] ERROR: unable to read file.\n");
+            free(file_contents);
+            fclose(f);
+            return 1;
         }
     }
-    if(!chk) {
-        printf("[TS][ImportFromFile] ERROR: invalid file type! 3\n");
-        fclose(f);
-        return 1;
-    }
-    DBG ("[TS][ImportFromFile] file-header OK!\n");
-
-    // -- start read / convert
+    DBG ("[TS][ImportFromFile] successfully read file into buffer.\n");
 
     // ImportFromImgStr...
+    if(ImportFromImgStr(file_contents)) {
+            printf("[TS][ImportFromFile] ERROR: unable to convert file.\n");
+            free(file_contents);
+            fclose(f);
+            return 1;
+    }
+
+    free(file_contents);
+    fclose(f);
+
+    DBG ("[TS][ImportFromFile] file successfully imported!\n");
 
     return 0;
 }
