@@ -19,7 +19,7 @@ public:
 
     ~TSprite();
 
-    int ImportFromImgStr(char *s);
+    int ImportFromImgStr(char *s, int l);
     int ImportFromFile(char *fn);
     int ImportFromColorMap(char *cmap);
 
@@ -57,8 +57,6 @@ private:
     int   s_source_len;       // for speed, to avoid strlen()
     char *shadow_map_source;  //
     char *color_map_source;   //
-
-
 };
 
 #endif

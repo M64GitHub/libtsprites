@@ -56,14 +56,14 @@ TSprite::~TSprite()
     free_maps();
 }
 
-int TSprite::ImportFromImgStr(char *s)
+int TSprite::ImportFromImgStr(char *s, int l)
 {
     char hdr[] = { CATIMG_HDR };
     int chk = 0;
 
     // -- check file "hdr": catimg esc seq 0x1b, 0x5b, 0x73 = "\x1b[s"
     chk = 1;
-    for(int i=0; i<9; i++) {
+    for(int i=0; i < (int)sizeof(CATIMG_HDR); i++) {
         if(s[i] != hdr[i]) {
             chk = 0; break;
         }
@@ -92,7 +92,7 @@ int TSprite::ImportFromFile(char *fn)
     // -- get size
     fseek(f, 0, SEEK_END);
     f_size = ftell(f);
-    if(f_size < 9) {
+    if(f_size < sizeof(CATIMG_HDR)) {
         printf("[TS][ImportFromFile] ERROR: invalid file type! 1\n");
         fclose(f);
         return 1;
@@ -125,7 +125,7 @@ int TSprite::ImportFromFile(char *fn)
     DBG ("[TS][ImportFromFile] successfully read file into buffer.\n");
 
     // ImportFromImgStr...
-    if(ImportFromImgStr(file_contents)) {
+    if(ImportFromImgStr(file_contents, f_size)) {
             printf("[TS][ImportFromFile] ERROR: unable to convert file.\n");
             free(file_contents);
             fclose(f);
