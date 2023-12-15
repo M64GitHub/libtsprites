@@ -81,6 +81,44 @@ int TSprite::ImportFromImgStr(char *s, int l)
     }
     DBG ("[TS][ImportFromImgStr] file-header OK!\n");
 
+    // start conversion
+    unsigned int pos = sizeof(CATIMG_HDR); // start of 1st line
+    int lnr = 0;
+    char tmpchar;
+    char *tmpbuf = 0;
+
+    tmpbuf = (char *) calloc(1, l + 4096); // surplus for lineends
+    if(!tmpbuf) {
+        printf("[TS][ImportFromImgStr] ERROR: unable to alloc tmp mem!\n");
+        return 1;
+    }
+
+    // convert line by line
+    int lpos; // pos in line
+    int tpos; // pos in token
+    int pxcount;
+    while( pos < (l - (sizeof(CATIMG_LINE_END)+sizeof(CATIMG_FILE_END))) ) {
+        lpos = 0;    // start of line;
+        pxcount = 0; // pixelcount in this line
+        // search end of line
+        // s[pos] = start of line
+        while(s[pos + lpos + sizeof(CATIMG_LINE_END)] != 0x0a) {
+            lpos++;
+            if(s[pos + lpos + sizeof(CATIMG_LINE_END)] == 0x68) break;
+        }
+
+        if(lpos > (sizeof(CATIMG_LINE_END)+sizeof(CATIMG_FILE_END))) {
+            lnr++;
+            printf("line nr #%d, pos: %d, llen: %d\n", lnr, pos, lpos);
+        }
+
+        pos += lpos + 1;
+    }
+
+    // --
+
+    free(tmpbuf);
+
     return 0;
 }
 

@@ -19,7 +19,7 @@ public:
 
     ~TSprite();
 
-    int ImportFromImgStr(char *s, int l);
+    int ImportFromImgStr(char *s, int l); // str needs not to be 0x00-terminated
     int ImportFromFile(char *fn);
     int ImportFromColorMap(char *cmap);
 
@@ -40,7 +40,7 @@ public:
 
     // internal representation - for fast effects processing, ...
     char *shadow_map; // w * h: like alpha channel: 0: no px, 1: px
-                      // for collision detection, Print() ...
+                      // for collision detection, Print() transparency ...
     char *color_map;  // w * h: r, g, b
 
 private:
