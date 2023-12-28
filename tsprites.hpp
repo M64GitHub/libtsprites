@@ -1,7 +1,7 @@
 #ifndef TSPRITES_H
 #define TSPRITES_H
 
-#define DEBUG
+// #define DEBUG
 
 #ifdef DEBUG
 #define DBG(...) fprintf (stderr, __VA_ARGS__)
@@ -57,10 +57,6 @@ private:
     char *color_map_source;   //
 
 };
-
-// general helpers
-
-int ts_read_token();
 
 #endif
 

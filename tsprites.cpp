@@ -106,24 +106,13 @@ int TSprite::ImportFromImgStr(char *str, int l)
         lpos = 0;    // start of line;
         // search end of line
         // s[pos] = start of line
-        int DBG_i = 0;                          // DBG
         while(str[pos + lpos + CATIMG_LINE_END_LEN-1] != 0x0a) {
             unsigned char c = str[pos + lpos];    
 
-            DBG ("%02x ", c);                   // DBG
-            if(DBG_i) {                         // DBG
-                DBG ("\e[0m");                  // DBG
-                DBG_i = 0;                      // DBG
-            }                                   // DBG
-            //
             if(c == 0x96) {
                 // 0x80 = upper half block, 0x84 = lower half block
                 if(!lnr) { w++; }// count on the 1st line only
                 pxcount++;
-
-                // DBG: colorize next char
-                DBG ("\x1b[0;38;2;%d;%d;%dm", 255, 64, 64);
-                DBG_i = 1;
             }
             lpos++;
         }
@@ -136,8 +125,6 @@ int TSprite::ImportFromImgStr(char *str, int l)
         int i;
         for(i=0; i<lpos; i++) tmpbuf[out_idx++] = str[pos+i]; 
         
-        // tmpbuf[out_idx++] = 0x0a; 
-
         // create new, relative line end (avoiding strncat):
         i=0;
         sprintf(buf8k, "\x1b[%dD", w);  // cursor go left(lpos)
@@ -161,11 +148,13 @@ int TSprite::ImportFromImgStr(char *str, int l)
     }
 
     // --
-    tmpbuf[pos-1] = 0x0;
+    tmpbuf[pos] = 0x0;
     s = tmpbuf;
 
     printf("\nw x h = %d x %d = pxcount = %d, tt size of conversion: %d\n", 
            w, h, pxcount, out_idx);
+
+    malloc_maps();
 
     return 0;
 }
@@ -247,8 +236,6 @@ void TSprite::Print()
 void TSprite::Reset()
 {
     if(!maps_initialized) return;
-
-
 }
 
 // -- 
@@ -283,13 +270,6 @@ int TSprite::free_maps()
 
     maps_initialized = 0;
 
-    return 0;
-}
-
-// --
-
-int ts_read_token() 
-{
     return 0;
 }
 
