@@ -25,6 +25,13 @@ int main(int argc, char **argv)
 
     printf("[MAIN] working with: '%s' as input file.\n", ifile_name);
     S.ImportFromFile(ifile_name);
+    fflush(stdout);
+
+//    printf("\x1b[H"); // clr
+    printf("\x1b[18A"); // up 18 rows
+    printf("test");
+    S.Print();
+    printf("\n\n");
 
     return 0;
 }

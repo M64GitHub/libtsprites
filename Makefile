@@ -9,7 +9,7 @@ BINARY=test
 
 CXX=g++
 
-CFLAGS+=-O3 -Wall
+CFLAGS+=-O3 -Wall --debug 
 CXXFLAGS+=$(CFLAGS)
 
 $(BINARY): test.o tsprites.o

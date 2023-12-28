@@ -59,7 +59,7 @@ TSprite::~TSprite()
     free_maps();
 }
 
-int TSprite::ImportFromImgStr(char *s, int l)
+int TSprite::ImportFromImgStr(char *str, int l)
 {
     char hdr[] = { CATIMG_HDR };
     int chk = 0;
@@ -71,7 +71,7 @@ int TSprite::ImportFromImgStr(char *s, int l)
     }
     chk = 1;
     for(int i=0; i < CATIMG_HDR_LEN; i++) {
-        if(s[i] != hdr[i]) {
+        if(str[i] != hdr[i]) {
             chk = 0; break;
         }
     }
@@ -84,26 +84,32 @@ int TSprite::ImportFromImgStr(char *s, int l)
     // start conversion
     int pos = CATIMG_HDR_LEN; // start of 1st line
     int lnr = 0;
-    char tmpchar;
-    char *tmpbuf = 0; // imported, ready2print char * string
+    char *tmpbuf = 0; // imported, ready2print char * string, with relative
+                      // line ends
+    char buf8k[8192]; // 8k buf 
 
     tmpbuf = (char *) calloc(1, l + 4096); // surplus for new lineend encodings
                                            // 0x0a -> esc: go w left, 1 down 
     if(!tmpbuf) {
         printf("[TS][ImportFromImgStr] ERROR: unable to alloc tmp mem!\n");
         return 1;
+    } else {
+        printf("[TS][ImportFromImgStr] pre-allocated %d bytes for s\n", l+4096);
     }
 
     // convert line by line
-    int lpos; // pos in line
-    int pxcount;
+    int lpos    = 0; // pos in line
+    int pxcount = 0;
+    unsigned int out_idx = 0;
+
     while( pos < (l - (CATIMG_LINE_END_LEN+CATIMG_FILE_END_LEN)) ) {
         lpos = 0;    // start of line;
         // search end of line
         // s[pos] = start of line
         int DBG_i = 0;                          // DBG
-        while(s[pos + lpos + CATIMG_LINE_END_LEN-1] != 0x0a) {
-            unsigned char c = s[pos + lpos];    // DBG
+        while(str[pos + lpos + CATIMG_LINE_END_LEN-1] != 0x0a) {
+            unsigned char c = str[pos + lpos];    
+
             DBG ("%02x ", c);                   // DBG
             if(DBG_i) {                         // DBG
                 DBG ("\e[0m");                  // DBG
@@ -119,26 +125,47 @@ int TSprite::ImportFromImgStr(char *s, int l)
                 DBG ("\x1b[0;38;2;%d;%d;%dm", 255, 64, 64);
                 DBG_i = 1;
             }
-
             lpos++;
+        }
 
-        } 
-        lpos += CATIMG_LINE_END_LEN; 
-
+        // -- here we stand at line end, and have width: 
+        // -> add this line + go left + go down to s
         DBG ("\nline nr #%d, pos: %d, llen: %d\n", lnr, pos, lpos);
+
+        // copy line to s
+        int i;
+        for(i=0; i<lpos; i++) tmpbuf[out_idx++] = str[pos+i]; 
+        
+        // tmpbuf[out_idx++] = 0x0a; 
+
+        // create new, relative line end (avoiding strncat):
+        i=0;
+        sprintf(buf8k, "\x1b[%dD", w);  // cursor go left(lpos)
+        while(buf8k[i]) {
+            tmpbuf[out_idx++] = buf8k[i++];
+        }
+
+        i=0;
+        sprintf(buf8k, "\x1b[%dB",1);  // cursor go down(1)
+        while(buf8k[i]) {
+            tmpbuf[out_idx++] = buf8k[i++];
+        }
+
+        // -- 
+
+        lpos += CATIMG_LINE_END_LEN; 
         
         lnr++; h++;
 
         pos += lpos;
     }
 
-    // 
-    printf("\nw x h = %d x %d = pxcount = %d\n", w, h, pxcount);
-
     // --
+    tmpbuf[pos-1] = 0x0;
+    s = tmpbuf;
 
-    free(tmpbuf);
-
+    printf("\nw x h = %d x %d = pxcount = %d, tt size of conversion: %d\n", 
+           w, h, pxcount, out_idx);
 
     return 0;
 }
@@ -213,6 +240,8 @@ int TSprite::ExportImgStr(char *fn, int format)
 
 void TSprite::Print()
 {
+    if(!s) return;
+    printf("%s", s);
 }
 
 void TSprite::Reset()
