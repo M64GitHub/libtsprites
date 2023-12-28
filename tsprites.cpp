@@ -126,6 +126,13 @@ int TSprite::ImportFromImgStr(char *str, int l)
         for(i=0; i<lpos; i++) tmpbuf[out_idx++] = str[pos+i]; 
         
         // create new, relative line end (avoiding strncat):
+
+        i=0;
+        sprintf(buf8k, "\x1b[0m");  // clear all modes
+        while(buf8k[i]) {
+            tmpbuf[out_idx++] = buf8k[i++];
+        }
+
         i=0;
         sprintf(buf8k, "\x1b[%dD", w);  // cursor go left(lpos)
         while(buf8k[i]) {
@@ -148,7 +155,7 @@ int TSprite::ImportFromImgStr(char *str, int l)
     }
 
     // --
-    tmpbuf[pos] = 0x0;
+    tmpbuf[out_idx] = 0x0;
     s = tmpbuf;
 
     printf("\nw x h = %d x %d = pxcount = %d, tt size of conversion: %d\n", 
@@ -231,6 +238,7 @@ void TSprite::Print()
 {
     if(!s) return;
     printf("%s", s);
+    printf ("\x1b[0m\n"); 
 }
 
 void TSprite::Reset()
