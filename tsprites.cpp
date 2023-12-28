@@ -65,12 +65,12 @@ int TSprite::ImportFromImgStr(char *s, int l)
     int chk = 0;
 
     // -- check file "hdr": catimg esc seq 0x1b, 0x5b, 0x73 = "\x1b[s"
-    if(l < (int)sizeof(CATIMG_HDR)) {
+    if(l < CATIMG_HDR_LEN) {
         printf("[TS][ImportFromImgStr] ERROR: invalid file type! 1\n");
         return 1;
     }
     chk = 1;
-    for(int i=0; i < (int)sizeof(CATIMG_HDR); i++) {
+    for(int i=0; i < CATIMG_HDR_LEN; i++) {
         if(s[i] != hdr[i]) {
             chk = 0; break;
         }
@@ -82,12 +82,13 @@ int TSprite::ImportFromImgStr(char *s, int l)
     DBG ("[TS][ImportFromImgStr] file-header OK!\n");
 
     // start conversion
-    unsigned int pos = sizeof(CATIMG_HDR); // start of 1st line
+    int pos = CATIMG_HDR_LEN; // start of 1st line
     int lnr = 0;
     char tmpchar;
-    char *tmpbuf = 0;
+    char *tmpbuf = 0; // imported, ready2print char * string
 
-    tmpbuf = (char *) calloc(1, l + 4096); // surplus for lineends
+    tmpbuf = (char *) calloc(1, l + 4096); // surplus for new lineend encodings
+                                           // 0x0a -> esc: go w left, 1 down 
     if(!tmpbuf) {
         printf("[TS][ImportFromImgStr] ERROR: unable to alloc tmp mem!\n");
         return 1;
@@ -95,29 +96,49 @@ int TSprite::ImportFromImgStr(char *s, int l)
 
     // convert line by line
     int lpos; // pos in line
-    int tpos; // pos in token
     int pxcount;
-    while( pos < (l - (sizeof(CATIMG_LINE_END)+sizeof(CATIMG_FILE_END))) ) {
+    while( pos < (l - (CATIMG_LINE_END_LEN+CATIMG_FILE_END_LEN)) ) {
         lpos = 0;    // start of line;
-        pxcount = 0; // pixelcount in this line
         // search end of line
         // s[pos] = start of line
-        while(s[pos + lpos + sizeof(CATIMG_LINE_END)] != 0x0a) {
+        int DBG_i = 0;                          // DBG
+        while(s[pos + lpos + CATIMG_LINE_END_LEN-1] != 0x0a) {
+            unsigned char c = s[pos + lpos];    // DBG
+            DBG ("%02x ", c);                   // DBG
+            if(DBG_i) {                         // DBG
+                DBG ("\e[0m");                  // DBG
+                DBG_i = 0;                      // DBG
+            }                                   // DBG
+            //
+            if(c == 0x96) {
+                // 0x80 = upper half block, 0x84 = lower half block
+                if(!lnr) { w++; }// count on the 1st line only
+                pxcount++;
+
+                // DBG: colorize next char
+                DBG ("\x1b[0;38;2;%d;%d;%dm", 255, 64, 64);
+                DBG_i = 1;
+            }
+
             lpos++;
-            if(s[pos + lpos + sizeof(CATIMG_LINE_END)] == 0x68) break;
-        }
 
-        if(lpos > (sizeof(CATIMG_LINE_END)+sizeof(CATIMG_FILE_END))) {
-            lnr++;
-            printf("line nr #%d, pos: %d, llen: %d\n", lnr, pos, lpos);
-        }
+        } 
+        lpos += CATIMG_LINE_END_LEN; 
 
-        pos += lpos + 1;
+        DBG ("\nline nr #%d, pos: %d, llen: %d\n", lnr, pos, lpos);
+        
+        lnr++; h++;
+
+        pos += lpos;
     }
+
+    // 
+    printf("\nw x h = %d x %d = pxcount = %d\n", w, h, pxcount);
 
     // --
 
     free(tmpbuf);
+
 
     return 0;
 }
@@ -137,7 +158,7 @@ int TSprite::ImportFromFile(char *fn)
     // -- get size
     fseek(f, 0, SEEK_END);
     f_size = ftell(f);
-    if(f_size < sizeof(CATIMG_HDR)) {
+    if(f_size < CATIMG_HDR_LEN) {
         printf("[TS][ImportFromFile] ERROR: invalid file type! 1\n");
         fclose(f);
         return 1;
@@ -201,6 +222,8 @@ void TSprite::Reset()
 
 }
 
+// -- 
+
 int TSprite::malloc_maps()
 {
     shadow_map = (char *) calloc(w * h, 1);
@@ -231,6 +254,13 @@ int TSprite::free_maps()
 
     maps_initialized = 0;
 
+    return 0;
+}
+
+// --
+
+int ts_read_token() 
+{
     return 0;
 }
 

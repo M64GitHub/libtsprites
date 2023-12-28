@@ -55,7 +55,12 @@ private:
     int   s_source_len;       // for speed, to avoid strlen()
     char *shadow_map_source;  //
     char *color_map_source;   //
+
 };
+
+// general helpers
+
+int ts_read_token();
 
 #endif
 
