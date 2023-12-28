@@ -13,7 +13,6 @@ CFLAGS+=-O3 -Wall --debug
 CXXFLAGS+=$(CFLAGS)
 
 $(BINARY): test.o tsprites.o
-
 	$(CXX) -o $@ $^ 
 
 clean:
