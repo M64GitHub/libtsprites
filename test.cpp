@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <unistd.h>
 #include <stdlib.h>
 #include "tsprites.hpp"
 
@@ -15,7 +16,7 @@ int main(int argc, char **argv)
     char *ifile_name = 0;
     TSprite S;
 
-    printf("catimg to tsprites conversion/import utility.\n");
+    printf("catimg to tsprites conversion/import test utility.\n");
     printf("M64, 2023.\n");
 
     if (argc != 2) usage();
@@ -24,6 +25,9 @@ int main(int argc, char **argv)
 
     printf("[MAIN] working with: '%s' as input file.\n", ifile_name);
     S.ImportFromFile(ifile_name);
+
+
+    printf ("\x1b[%dA", S.h);     // clr term from cusror on upwards
 
     S.Print();
 
