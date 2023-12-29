@@ -74,7 +74,8 @@ int main(int argc, char **argv)
 ```
 
 
-https://github.com/M64GitHub/libtsprites/assets/84202356/049a5c6c-08c5-45a4-8f41-d462da121f5b
+https://github.com/M64GitHub/libtsprites/assets/84202356/51be2ddf-c30f-4ccd-9e48-b01b8014748a
+
 
 
 
