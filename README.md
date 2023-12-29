@@ -27,7 +27,7 @@ The same concept also can be used to form lines of arbitrary length in virtual p
 
 
 ## EXAMPLE CODE
-How to use the the TSprite object.
+How to use the the `TSprite` object.
 
 ### Basic Usage
 
