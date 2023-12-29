@@ -16,9 +16,9 @@ int main(int argc, char **argv)
     
     S.ImportFromFile(ifile_name); // import catimg redirected output file
 
-    printf ("\x1b[%dA", S.h);     // move cursor upwards height of TSprite
+    cursor_up(S.h);               // cursor movement functions are included
 
-    S.Print(); // print it!
+    S.Print(); // print the sprite!
 
     return 0;
 }
