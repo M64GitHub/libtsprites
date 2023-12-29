@@ -73,6 +73,16 @@ are called `ascii-sprites` or `ASprite`.
 How to use the the `TSprite` object.
 
 ### Basic Usage
+In this example, a `TSprite` is created by importing it from the resource 
+folder from a file. The filename is read as a commandline parameter.
+The method `ImportFromFile()` is used for import, and `Print()` is
+used to print it on screen.
+
+Sprites can be created by using `catimg` utility 
+(https://github.com/posva/catimg). Simply redirect it's output to a file.
+
+When a `TSprite` is imported, it is being rewritten into internal datastructures,
+and prepared for fast movement on screen / for applying various effects to it.
 
 ```C++
 #include <stdio.h>
