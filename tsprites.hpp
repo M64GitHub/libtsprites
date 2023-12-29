@@ -65,5 +65,9 @@ void cursor_down(int n);
 void cursor_left(int n);
 void cursor_right(int n);
 
+void cursor_on();
+void cursor_off();
+void cursor_reset();
+
 #endif
 

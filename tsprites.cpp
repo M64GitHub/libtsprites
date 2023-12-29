@@ -303,4 +303,23 @@ void cursor_right(int n)
     printf ("\x1b[%dC", n);
 }
 
+void cursor_on()
+{
+    printf("\x1b[?25h");
+}
+
+void cursor_off()
+{
+    printf("\x1b[?25l");
+}
+
+void cursor_reset()
+{
+    printf ("\x1b[0m\n");   // reset all modes
+}
+
+
+
+
+
 
