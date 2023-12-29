@@ -1,28 +1,17 @@
 #include <stdio.h>
-#include <unistd.h>
 #include <math.h>
+#include <unistd.h>
 #include "tsprites.hpp"
-
-void usage() 
-{
-    printf("\nUsage:\n\n");
-    printf("test <inputfile>\n");
-}
 
 int main(int argc, char **argv)
 {
-    char *ifile_name = 0;
     TSprite S;
     unsigned int tick = 0;
 
     printf("catimg to tsprites conversion/import test utility.\n");
     printf("M64, 2023.\n");
 
-    if (argc != 2) { usage(); return 1; }
-
-    ifile_name = argv[1]; 
-
-    S.ImportFromFile(ifile_name);
+    S.ImportFromFile((char*)"resources/demo6_180.unicode");
     cursor_down(S.h+5);
     cursor_up(S.h+5);
 

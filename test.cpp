@@ -1,27 +1,30 @@
 #include <stdio.h>
+#include <math.h>
+#include <unistd.h>
 #include "tsprites.hpp"
 
 int main(int argc, char **argv)
 {
-    char *ifile_name = 0;
-
-    // create a TSprite object S
     TSprite S;
+    unsigned int tick = 0;
 
-    // check cmdline for filename
-    if (argc != 2) { printf("Usage: ./test <filename>\n"); return 1; }
+    printf("catimg to tsprites conversion/import test utility.\n");
+    printf("M64, 2023.\n");
 
-    ifile_name = argv[1];         // get filename from cmdline
+    S.ImportFromFile((char*)"resources/demo6_180.unicode");
+    cursor_down(S.h+5);
+    cursor_up(S.h+5);
 
-    printf("hello world!\n");
+    while(1)
+    for(int i=0; i<10; ++i) {
+        printf ("\x1b[0m\n");   // reset all modes
+        tick++;
+        int x = 10 + 10*(sin( ((tick % 100)/100.0) * 6.28  ));
+        cursor_right(x);
+        S.Print();
+        cursor_up(S.h + 2);
+        usleep(5000 * 2);
+    }
     
-    S.ImportFromFile(ifile_name); // import catimg redirected output file
-
-    cursor_right(5);              // cursor movement functions are included
-    cursor_down(S.h);             // move cursor down to make space for the sprite
-    cursor_up(S.h);               // and move cursor back up the height of the sprite
-
-    S.Print(); // print the sprite!
-
     return 0;
 }
