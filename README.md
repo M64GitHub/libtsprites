@@ -95,8 +95,8 @@ int main(int argc, char **argv)
     S.ImportFromFile(ifile_name); // import catimg redirected output file
 
     cursor_right(5);              // cursor movement functions are included
-    cursor_down(S.h / 2);         // move cursor down to make space for the sprite
-    cursor_up(S.h / 2);           // and move cursor back up the height of the sprite
+    cursor_down(S.h/2);           // move cursor down to make space for the sprite
+    cursor_up  (S.h/2);           // and move cursor back up the height of the sprite
 
     S.Print(); // print the sprite!
 
@@ -121,8 +121,8 @@ int main(int argc, char **argv)
     printf("M64, 2023.\n");
 
     S.ImportFromFile((char*)"resources/demo6_180.unicode");
-    cursor_down(S.h/2+5);
-    cursor_up(S.h/2+5);
+    cursor_down(S.h/2);
+    cursor_up  (S.h/2);
 
     cursor_off();
 
@@ -133,7 +133,7 @@ int main(int argc, char **argv)
         int x = 10 + 10*(sin( ((tick % 100)/100.0) * 6.28  ));
         cursor_right(x);
         S.Print();
-        cursor_up(S.h/2 + 2);
+        cursor_up(S.h/2+1);
         usleep(5000 * 2);
     }
 
