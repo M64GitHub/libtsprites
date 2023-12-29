@@ -15,7 +15,7 @@ With a bit of trickery, also completely smooth (almost pixelwise) movements of a
 
 Combining 2 blocks to a soft block and using the same technique - also lines of arbitrary length are possible. Such lines share the movement property of a `soft-block` and are called `soft-lines`. Soft-blocks and soft-lines can be mainly used for a very limited usage-set due to their rather "big" visual blockyness of a full character. But with their interesting possibility to move them "freely" and "smooth", some nice special-effects are possible.  
 
-In this means a special type of sprites is available, too: `line sprites`. Their code representation would be an `LSprite`. Imagine the `M64` logo on this page for example. It can be represented as a `line-sprite` and moved smoothly around the screen.
+In this means a special type of sprites is available, too: `line sprites`. Their code representation would be a `LSprite`. Imagine the `M64` logo on this page for example. It can be represented as a `line-sprite` and moved smoothly around the screen.
 
 ### Summary of Main Principles
 
