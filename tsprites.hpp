@@ -10,6 +10,8 @@
 #endif
 
 
+// True-Color (24bit RGB) unicode based sprite.
+// All y msmts and related values (height h) in "half" characters!)
 class TSprite
 {
 public:
@@ -30,11 +32,13 @@ public:
 
     void Print(); // output s
 
+    virtual void Render(); // reassemble from maps and render on screen
+
     // main attributes w/o getters for fastest access
     int w = 0;
-    int h = 0;
+    int h = 0; // in blocks / "half characters"
     int x = 0;
-    int y = 0;
+    int y = 0; // in blocks / "half characters"
     int z = 0;
     char *s = 0; // for fast printf(), restored after Reset()
 
@@ -46,6 +50,7 @@ public:
 private:
     int malloc_maps();
     int free_maps();
+    int free_strings();
 
     int maps_initialized = 0; // either all or none,
                               // for better readibility          
@@ -55,8 +60,10 @@ private:
     int   s_source_len;       // for speed, to avoid strlen()
     char *shadow_map_source;  //
     char *color_map_source;   //
-
 };
+
+// class LSprite; // Line-Sprite
+// class ASprite; // ASCII sprite
 
 // -- helper function
 

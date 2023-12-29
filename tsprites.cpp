@@ -149,7 +149,7 @@ int TSprite::ImportFromImgStr(char *str, int l)
 
         lpos += CATIMG_LINE_END_LEN; 
         
-        lnr++; h++;
+        lnr++; h+=2; // 1 char = 2 blocks high
 
         pos += lpos;
     }
@@ -244,6 +244,11 @@ void TSprite::Print()
 void TSprite::Reset()
 {
     if(!maps_initialized) return;
+}
+
+void TSprite::Render()
+{
+    
 }
 
 // -- 
