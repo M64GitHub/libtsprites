@@ -106,6 +106,11 @@ int main(int argc, char **argv)
 ![image](https://github.com/M64GitHub/libtsprites/assets/84202356/53995d62-ef77-4bd9-be4d-c3d081ebb1f1)
 
 ### Sine Movement Test
+Here the convenience functions `board_init` and `board_close` are introduced. 
+They will clear the terminal and restore the screen and cursor afterwards.
+A specific concept of a "board" like a "game board" is not present or planned,
+so they do not even take any parameters.
+
 ```C++
 #include <stdio.h>
 #include <math.h>
