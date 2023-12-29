@@ -5,7 +5,7 @@ Work in progress ...
 
 ## Example Code
 
-#### Basic Usage
+### Basic Usage
 
 ```C++
 #include <stdio.h>
@@ -38,7 +38,7 @@ int main(int argc, char **argv)
 ```
 ![image](https://github.com/M64GitHub/libtsprites/assets/84202356/53995d62-ef77-4bd9-be4d-c3d081ebb1f1)
 
-#### Sine Movement Test 
+### Sine Movement Test 
 ```C++
 #include <stdio.h>
 #include <unistd.h>
