@@ -16,7 +16,8 @@ int main(int argc, char **argv)
     
     S.ImportFromFile(ifile_name); // import catimg redirected output file
 
-    cursor_up(S.h);               // cursor movement functions are included
+    cursor_right(5);              // cursor movement functions are included
+    cursor_up(S.h);               // move cursor up the height of the sprite
 
     S.Print(); // print the sprite!
 
@@ -24,5 +25,5 @@ int main(int argc, char **argv)
 }
 ```
 
-![image](https://github.com/M64GitHub/libtsprites/assets/84202356/a9760ec4-bc91-4b44-95d2-0116805145b4)
+![image](https://github.com/M64GitHub/libtsprites/assets/84202356/23279515-e2fc-46a8-a6d3-4a86daaf2b25)
 
