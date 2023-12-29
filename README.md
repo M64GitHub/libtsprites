@@ -147,8 +147,8 @@ int main(int argc, char **argv)
 ```
 
 
+https://github.com/M64GitHub/libtsprites/assets/84202356/78471770-0e8d-402d-b9ea-2695fdf96d75
 
-https://github.com/M64GitHub/libtsprites/assets/84202356/6b8ef0e7-fca5-4902-aedb-773788c21437
 
 
 
