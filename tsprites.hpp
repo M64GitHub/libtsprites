@@ -58,5 +58,12 @@ private:
 
 };
 
+// -- helper function
+
+void cursor_up(int n);
+void cursor_down(int n);
+void cursor_left(int n);
+void cursor_right(int n);
+
 #endif
 

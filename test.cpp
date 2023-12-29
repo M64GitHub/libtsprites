@@ -26,10 +26,11 @@ int main(int argc, char **argv)
     printf("[MAIN] working with: '%s' as input file.\n", ifile_name);
     S.ImportFromFile(ifile_name);
 
-
-    printf ("\x1b[%dA", S.h);     // clr term from cusror on upwards
+    cursor_down(S.h); // make space for the sprite
+    cursor_up(S.h);
+    cursor_right(5);
 
     S.Print();
-
+    
     return 0;
 }

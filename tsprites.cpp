@@ -281,3 +281,26 @@ int TSprite::free_maps()
     return 0;
 }
 
+// -- helper functions
+
+void cursor_up(int n) 
+{
+    printf ("\x1b[%dA", n);
+}
+
+void cursor_down(int n) 
+{
+    printf ("\x1b[%dB", n);
+}
+
+void cursor_left(int n) 
+{
+    printf ("\x1b[%dD", n);
+}
+
+void cursor_right(int n) 
+{
+    printf ("\x1b[%dC", n);
+}
+
+
