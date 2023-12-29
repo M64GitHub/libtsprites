@@ -1,5 +1,7 @@
 # libtsprites
-C++ library for truecolor unicode terminal sprites, effects, and animations. Blazingly fast! Ideal for terminal games, or just more interesting user interfaces.
+C++ library for truecolor unicode terminal sprites, effects, and animations. Blazingly fast! Ideal for terminal games, or just more interesting user interfaces.  
+
+The intention is to create a library for the state of the art, fast terminals. A well setup terminal today allows for very interesting visual experiences and effects. This is an exploration of what can be achieved taking it to the max.
 
 Work in progress ...
 (see tsprites.hpp)
