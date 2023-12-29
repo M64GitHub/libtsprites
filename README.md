@@ -6,12 +6,6 @@
 #include <stdio.h>
 #include "tsprites.hpp"
 
-void usage() 
-{
-    printf("\nUsage:\n\n");
-    printf("test <inputfile>\n");
-}
-
 int main(int argc, char **argv)
 {
     char *ifile_name = 0;
@@ -19,7 +13,7 @@ int main(int argc, char **argv)
     // create a TSprite object S
     TSprite S;
 
-    if (argc != 2) { usage(); return 1; }
+    if (argc != 2) { printf("Usage: ./test <filename>\n"); return 1; }
 
     ifile_name = argv[1];         // get filename from cmdline
 
