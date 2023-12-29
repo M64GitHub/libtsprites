@@ -238,7 +238,7 @@ void TSprite::Print()
 {
     if(!s) return;
     printf("%s", s);
-    printf ("\x1b[0m\n"); 
+    printf ("\x1b[0m"); 
 }
 
 void TSprite::Reset()
