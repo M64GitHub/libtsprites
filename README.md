@@ -13,6 +13,7 @@ int main(int argc, char **argv)
     // create a TSprite object S
     TSprite S;
 
+    // check cmdline for filename
     if (argc != 2) { printf("Usage: ./test <filename>\n"); return 1; }
 
     ifile_name = argv[1];         // get filename from cmdline
