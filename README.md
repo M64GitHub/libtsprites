@@ -1,6 +1,6 @@
 # libtsprites
 
-... work in progress (see tsprites.h)
+... work in progress (see tsprites.hpp)
 
 ```C++
 #include <stdio.h>
