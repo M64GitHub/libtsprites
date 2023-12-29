@@ -27,6 +27,6 @@ int main(int argc, char **argv)
     return 0;
 }
 ```
+![image](https://github.com/M64GitHub/libtsprites/assets/84202356/53995d62-ef77-4bd9-be4d-c3d081ebb1f1)
 
-![image](https://github.com/M64GitHub/libtsprites/assets/84202356/76831a6b-c8c9-4c75-ad3f-135b5c467697)
 
