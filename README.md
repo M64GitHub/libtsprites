@@ -7,18 +7,14 @@ int main(int argc, char **argv)
 {
     char *ifile_name = 0;
 
-    // TSprite object S
+    // create a TSprite object S
     TSprite S;
 
-    printf("catimg to tsprites conversion/import test utility.\n");
-    printf("M64, 2023.\n");
+    if (argc != 2) usage();       // assume a usage function, that exits
 
-    if (argc != 2) usage(); // assume a usage function, that exits
-
-    ifile_name = argv[1];
-
-    // import catimg redirected output file
-    S.ImportFromFile(ifile_name);
+    ifile_name = argv[1];         // get filename from cmdline
+    
+    S.ImportFromFile(ifile_name); // import catimg redirected output file
 
     printf ("\x1b[%dA", S.h);     // move cursor upwards height of TSprite
 
