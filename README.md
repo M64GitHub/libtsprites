@@ -111,6 +111,11 @@ They will clear the terminal and restore the screen and cursor afterwards.
 A specific concept of a "board" like a "game board" is not present or planned,
 so they do not even take any parameters.
 
+As you can see the movement of the sprite is done simply by moving the cursor,
+and printing the sprite like in the above example. This is one way to easily 
+position a sprite. `Print()` just prints the sprite where the cursor currently 
+stands.
+
 ```C++
 #include <stdio.h>
 #include <math.h>
