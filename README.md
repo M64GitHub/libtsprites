@@ -3,6 +3,8 @@ C++ library for truecolor unicode terminal sprites, effects, and animations. Bla
 
 The intention is to create a library for the state of the art, fast terminals. A well setup terminal today allows for very interesting visual experiences and effects. This is an exploration of what can be achieved taking it to the max.
 
+It is assumed, that the terminal supports: UTF-8 unicode, 24 bit colors, and is set-up with a proper monospaced font. Tests so far were done on kitty, the gnome-terminal (Ubuntu default), and iTerm2 on the mac. Those for sure work well. A note about nerd-fonts (https://www.nerdfonts.com/font-downloads) shall be given here as well. 
+
 Work in progress ...
 (see tsprites.hpp)
 
