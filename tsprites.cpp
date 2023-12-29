@@ -94,7 +94,7 @@ int TSprite::ImportFromImgStr(char *str, int l)
         printf("[TS][ImportFromImgStr] ERROR: unable to alloc tmp mem!\n");
         return 1;
     } else {
-        printf("[TS][ImportFromImgStr] pre-allocated %d bytes for s\n", l+4096);
+        DBG ("[TS][ImportFromImgStr] pre-allocated %d bytes for s\n", l+4096);
     }
 
     // convert line by line
@@ -158,7 +158,7 @@ int TSprite::ImportFromImgStr(char *str, int l)
     tmpbuf[out_idx] = 0x0;
     s = tmpbuf;
 
-    printf("\nw x h = %d x %d = pxcount = %d, tt size of conversion: %d\n", 
+    DBG ("\nw x h = %d x %d = pxcount = %d, tt size of conversion: %d\n", 
            w, h, pxcount, out_idx);
 
     malloc_maps();
