@@ -65,7 +65,7 @@ private:
 // class LSprite; // Line-Sprite
 // class ASprite; // ASCII sprite
 
-// -- helper function
+// -- helper functions
 
 void cursor_up(int n);
 void cursor_down(int n);
@@ -75,6 +75,11 @@ void cursor_right(int n);
 void cursor_on();
 void cursor_off();
 void cursor_reset();
+
+void board_init();
+void board_close();
+
+void term_clear();
 
 #endif
 

@@ -323,7 +323,26 @@ void cursor_reset()
     printf ("\x1b[0m\n");   // reset all modes
 }
 
+void term_clear()
+{
+    
+}
 
+void board_init()
+{
+    printf("\x1b[s");    // save cursor pos
+    printf("\x1b[?47h"); // save screen
+    printf("\x1b[2J");   // erase entire screen
+    printf("\x1b[H");    // home pos
+    cursor_off();
+}
+
+void board_close()
+{
+    printf("\x1b[u");    // restore cursor pos
+    printf("\x1b[?47l"); // restore screen
+    cursor_on();
+}
 
 
 

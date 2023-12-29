@@ -18,8 +18,8 @@ int main(int argc, char **argv)
     S.ImportFromFile(ifile_name); // import catimg redirected output file
 
     cursor_right(5);              // cursor movement functions are included
-    cursor_down(S.h);             // move cursor down to make space for the sprite
-    cursor_up(S.h);               // and move cursor back up the height of the sprite
+    cursor_down(S.h / 2);         // move cursor down to make space for the sprite
+    cursor_up(S.h / 2);           // and move cursor back up the height of the sprite
 
     S.Print(); // print the sprite!
 

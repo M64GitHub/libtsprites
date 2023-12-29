@@ -7,17 +7,16 @@ int main(int argc, char **argv)
 {
     TSprite S;
     unsigned int tick = 50;
+    unsigned int maxtick = 250;
 
     printf("catimg to tsprites conversion/import test utility.\n");
     printf("M64, 2023.\n");
 
     S.ImportFromFile((char*)"resources/demo6_180.unicode");
-    cursor_down(S.h/2+5);
-    cursor_up(S.h/2+5);
 
-    cursor_off();
+    board_init();
 
-    while(1)
+    while(tick < maxtick)
     {
         cursor_reset();  // reset all modes and colors
         tick++;
@@ -25,10 +24,10 @@ int main(int argc, char **argv)
         cursor_right(x);
         S.Print();
         cursor_up(S.h/2 + 2);
-        usleep(1000 * 20);
+        usleep(1000 * 10);
     }
-
-    cursor_on();
     
+    board_close();
+
     return 0;
 }
