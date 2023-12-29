@@ -40,7 +40,7 @@ int main(int argc, char **argv)
 
 ### Sine Movement Test 
 ```C++
-include <stdio.h>
+#include <stdio.h>
 #include <unistd.h>
 #include <math.h>
 #include "tsprites.hpp"
