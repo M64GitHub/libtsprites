@@ -78,7 +78,7 @@ folder from a file. The filename is read as a commandline parameter.
 The method `ImportFromFile()` is used for import, and `Print()` is
 used to print it on screen.
 
-Sprites can be created by using `catimg` utility 
+Sprites can be created by using the `catimg` utility 
 (https://github.com/posva/catimg). Simply redirect it's output to a file.
 
 When a `TSprite` is imported, it is being rewritten into internal datastructures,
