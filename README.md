@@ -11,7 +11,9 @@ The whole lib is based on the concept of `blocks`, not characters. 2 blocks stac
 ### Main Principles
 
  - `blocks`: half characters. Have a color or can be transparent: '▄' or '▀' are individual blocks. 
- - `soft blocks` and `soft lines`: leveraging UTF-8 block characters for pixelwise smooth (constrained) movements and positioning. The UTF-8 block characters enables to form (virtual) 8x8 blocks '█', that can be moved pixelwise: '▐▌'. This is achieved by using 2 characters and specific combinations of foreground and background colors of the supported block character-set. A soft block is visually always (virtual) 8x8 pixels in dimension. The same concept also can be used to form lines of arbitrary length in virtual pixels:'▐█▌', '██▌', ...
+ - `soft blocks` and `soft lines`: leveraging UTF-8 block characters for pixelwise smooth (constrained) movements and positioning.  
+The UTF-8 block characters enables to form (virtual) 8x8 blocks '█', that can be moved pixelwise: '▐▌'. This is achieved by using 2 characters and specific combinations of foreground and background colors of the supported block character-set. A soft block is visually always (virtual) 8x8 pixels in dimension.  
+The same concept also can be used to form lines of arbitrary length in virtual pixels: '▐█▌', '██▌'.
  - `characters`:  ASCII/UNICODE characters
 
 
