@@ -1,33 +1,72 @@
 # libtsprites
-C++ library for truecolor unicode terminal sprites, effects, and animations. Blazingly fast! Ideal for terminal games, or just more interesting user interfaces.  
+C++ library for truecolor unicode terminal sprites, effects, and animations.
+Blazingly fast! Ideal for terminal games, or just more interesting user
+interfaces.  
 
-The intention is to create a library for the state of the art, fast terminals. A well setup terminal today allows for very interesting visual experiences and effects. This is an exploration of what can be achieved taking it to the max.
+The intention is to create a library for the state of the art, fast terminals.
+A well setup terminal today allows for very interesting visual experiences
+and effects. This is an exploration of what can be achieved taking it to
+the max.
 
-It is assumed, that the terminal supports: UTF-8 unicode, 24 bit colors, and is set-up with a proper monospaced font. Tests so far were done on kitty, the gnome-terminal (Ubuntu default), and iTerm2 on the mac. Those for sure work well. A note about nerd-fonts (https://www.nerdfonts.com/font-downloads) shall be given here as well. 
+It is assumed, that the terminal supports: UTF-8 unicode, 24 bit colors, and
+is set-up with a proper monospaced font. Tests so far were done on kitty, the
+gnome-terminal (Ubuntu default), and iTerm2 on the mac. Those for sure work
+well. A note about nerd-fonts (https://www.nerdfonts.com/font-downloads)
+shall be given here as well.
 
 Work in progress ...
 (see tsprites.hpp)
 
 ## CONCEPT
 
-The whole lib is based on the concept of `blocks`, not characters. 2 blocks stacked form a regular character. A regular character has the height of 2, an upper block and a lower block. ASCII characters are 2 units in height. Rectangular shapes formed of `blocks` are called `regular sprites` - the code representation would be a `TSprite`. 
+The whole lib is based on the concept of `blocks`, not characters. 2 blocks
+stacked form a regular character. A regular character has the height of 2,
+an upper block and a lower block. ASCII characters are 2 units in height.
+Rectangular shapes formed of `blocks` are called `regular sprites` - the
+code representation would be a `TSprite`.
 
-The coordinate-system by default uses measurements in blocks. `TSprites` can be moved freely on a virtual coordinate-system measured in blocks. Basically this means the Y-coordinates have twice the resolution of a character. ASCII characters in strings can be moved in blocksize in the X-dimension, but only in steps of 2 in the Y-dimension for example.   
+The coordinate-system by default uses measurements in blocks.
+`TSprites` can be moved freely on a virtual coordinate-system measured in
+blocks. Basically this means the Y-coordinates have twice the resolution of
+a character. ASCII characters in strings can be moved in blocksize in the
+X-dimension, but only in steps of 2 in the Y-dimension for example.
 
-With a bit of trickery, also completely smooth (almost pixelwise) movements of a pair of blocks can be achieved: in 1/8 fraction steps of a characters dimension. This only works for "logical blocks" in dimensions of a character (2 blocks in height). Those "double blocks" are called `soft blocks`.  
-`soft-blocks` can be smoothly moved only: in either the X- or the Y-coordinate, not both at the same time.  
+With a bit of trickery, also completely smooth (almost pixelwise) movements
+of a pair of blocks can be achieved: in 1/8 fraction steps of a characters
+dimension. This only works for "logical blocks" in dimensions of a character
+(2 blocks in height). Those "double blocks" are called `soft blocks`.  
+`soft-blocks` can be smoothly moved only: in either the X- or the
+Y-coordinate, not both at the same time.
 
-Combining 2 blocks to a soft block and using the same technique - also lines of arbitrary length are possible. Such lines share the movement property of a `soft-block` and are called `soft-lines`. Soft-blocks and soft-lines can be mainly used for a very limited usage-set due to their rather "big" visual blockyness of a full character. But with their interesting possibility to move them "freely" and "smooth", some nice special-effects are possible.  
+Combining 2 blocks to a soft block and using the same technique - also lines
+of arbitrary length are possible. Such lines share the movement property of
+a `soft-block` and are called `soft-lines`. Soft-blocks and soft-lines can be
+mainly used for a very limited usage-set due to their rather "big" visual
+blockyness of a full character. But with their interesting possibility to
+move them "freely" and "smooth", some nice special-effects are possible.  
 
-In this means a special type of sprites is available, too: `line sprites`. Their code representation would be a `LSprite`. Imagine the `M64` logo on this page for example. It can be represented as a `line-sprite` and moved smoothly around the screen.
+In this means a special type of sprites is available, too: `line sprites`.
+Their code representation would be a `LSprite`. Imagine the `M64` logo on
+this page for example. It can be represented as a `line-sprite` and moved
+smoothly around the screen.
 
 ### Summary of Main Principles
 
- - `blocks`: half characters. Have a color or can be transparent: '▄' or '▀' are individual blocks. Shapes of blocks are called `regular sprites` or `TSprites`.
- - `soft blocks` and `soft lines`: leveraging UTF-8 block characters for pixelwise smooth (constrained) movements and positioning.  
-The UTF-8 block characters enables to form (virtual) 8x8 blocks '█', that can be moved "pixelwise": '▐▌'. This is achieved by using 2 characters and specific combinations of foreground and background colors of the supported block character-set. A soft block is visually always (virtual) 8x8 pixels in dimension.  
-The same concept also can be used to form lines of arbitrary length in virtual pixels: '▐█▌', '██▌'. A special type of sprites take leverage from these objects and is called `LSprite` or `line-sprite`.
- - `characters`:  ASCII/UNICODE characters. Shapes out of ASCII characters are called `ascii-sprites` or `ASprite`.
+ - `blocks`: half characters. Have a color or can be transparent: '▄' or '▀'
+ are individual blocks. Shapes of blocks are called `regular sprites` or
+ `TSprites`.
+ - `soft blocks` and `soft lines`: leveraging UTF-8 block characters for
+ pixelwise smooth (constrained) movements and positioning.  
+The UTF-8 block characters enables to form (virtual) 8x8 blocks '█', that
+can be moved "pixelwise": '▐▌'. This is achieved by using 2 characters and
+specific combinations of foreground and background colors of the supported
+block character-set. A soft block is visually always (virtual) 8x8 pixels in
+ dimension.  
+The same concept also can be used to form lines of arbitrary length in
+virtual pixels: '▐█▌', '██▌'. A special type of sprites take leverage from
+these objects and is called `LSprite` or `line-sprite`.
+ - `characters`:  ASCII/UNICODE characters. Shapes out of ASCII characters
+are called `ascii-sprites` or `ASprite`.
 
 
 ## EXAMPLE CODE
@@ -66,7 +105,7 @@ int main(int argc, char **argv)
 ```
 ![image](https://github.com/M64GitHub/libtsprites/assets/84202356/53995d62-ef77-4bd9-be4d-c3d081ebb1f1)
 
-### Sine Movement Test 
+### Sine Movement Test
 ```C++
 #include <stdio.h>
 #include <math.h>
