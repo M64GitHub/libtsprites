@@ -4,7 +4,18 @@ C++ library for truecolor unicode terminal sprites, effects, and animations. Bla
 Work in progress ...
 (see tsprites.hpp)
 
-## Example Code
+## CONCEPT
+
+The whole lib is based on the concept of `blocks`, not characters. 2 blocks stacked form a regular character. A regular character has the height of 2, an upper block and a lower block. ASCII characters are 2 units in height.
+
+### Main rinciples
+
+ - `blocks`: half characters. Have a color or can be transparent: '▄' or '▀' are individual blocks. 
+ - `soft blocks` and `soft lines`: leveraging UTF-8 block characters for pixelwise smooth (constrained) movements and positioning. The UTF-8 block characters enables to form 8x8 blocks '█', that can be moved pixelwise: '▐▌'. This is achieved by using 2 characters and specific combinations of foreground and background colors of the supported block character-set. A soft block is visually always 8x8 pixels in dimension. The same concept also can be used to form lines of arbitrary length in pixels: '▐█▌'.
+ - `characters`:  ASCII/UNICODE characters
+
+
+## EXAMPLE CODE
 How to use the the TSprite object.
 
 ### Basic Usage
