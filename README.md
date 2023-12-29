@@ -135,14 +135,13 @@ int main(int argc, char **argv)
     {
         tick++;
         int x = 10 + 10*(sin( ((tick % 100)/100.0) * 6.28  ));
+        cursor_home();
         cursor_right(x);
         S.Print();
-        cursor_home();
         usleep(1000 * 10);
     }
     
     board_close(); // restore screen and cursor
-
     return 0; 
 }
 ```
