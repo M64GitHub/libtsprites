@@ -2,8 +2,10 @@
 C++ library for truecolor unicode terminal sprites, effects, and animations. Blazingly fast! Ideal for terminal games, or just more interesting user interfaces.
 
 Work in progress ...
+(see tsprites.hpp)
 
 ## Example Code
+How to use the the TSprite object.
 
 ### Basic Usage
 
@@ -41,24 +43,27 @@ int main(int argc, char **argv)
 ### Sine Movement Test 
 ```C++
 #include <stdio.h>
-#include <unistd.h>
 #include <math.h>
+#include <unistd.h>
 #include "tsprites.hpp"
 
 int main(int argc, char **argv)
 {
     TSprite S;
-    unsigned int tick = 0;
+    unsigned int tick = 50;
 
     printf("catimg to tsprites conversion/import test utility.\n");
     printf("M64, 2023.\n");
 
-    S.ImportFromFile((char *)"resources/demo6_180.unicode");
+    S.ImportFromFile((char*)"resources/demo6_180.unicode");
     cursor_down(S.h+5);
     cursor_up(S.h+5);
 
-    while(1) {
-        printf ("\x1b[0m\n");   // reset all modes
+    cursor_off();
+
+    while(1)
+    {
+        cursor_reset();  // reset all modes and colors
         tick++;
         int x = 10 + 10*(sin( ((tick % 100)/100.0) * 6.28  ));
         cursor_right(x);
@@ -66,13 +71,16 @@ int main(int argc, char **argv)
         cursor_up(S.h + 2);
         usleep(5000 * 2);
     }
+
+    cursor_on();
     
     return 0;
 }
 ```
 
 
-https://github.com/M64GitHub/libtsprites/assets/84202356/049a5c6c-08c5-45a4-8f41-d462da121f5b
+https://github.com/M64GitHub/libtsprites/assets/84202356/51be2ddf-c30f-4ccd-9e48-b01b8014748a
+
 
 
 
