@@ -5,6 +5,7 @@ Work in progress ...
 (see tsprites.hpp)
 
 ## Example Code
+How to use the the TSprite object.
 
 ### Basic Usage
 
