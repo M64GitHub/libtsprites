@@ -2,6 +2,7 @@
 C++ library for truecolor unicode terminal sprites, effects, and animations. Blazingly fast! Ideal for terminal games, or just more interesting user interfaces.
 
 Work in progress ...
+(see tsprites.hpp)
 
 ## Example Code
 
