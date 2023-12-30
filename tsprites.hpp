@@ -71,6 +71,7 @@ void cursor_up(int n);
 void cursor_down(int n);
 void cursor_left(int n);
 void cursor_right(int n);
+void cursor_home();
 
 void cursor_on();
 void cursor_off();
@@ -78,8 +79,6 @@ void cursor_reset();
 
 void board_init();
 void board_close();
-
-void term_clear();
 
 #endif
 

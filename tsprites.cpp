@@ -238,7 +238,7 @@ void TSprite::Print()
 {
     if(!s) return;
     printf("%s", s);
-    printf ("\x1b[0m"); 
+    printf ("\x1b[0m\n"); 
 }
 
 void TSprite::Reset()
@@ -323,9 +323,10 @@ void cursor_reset()
     printf ("\x1b[0m\n");   // reset all modes
 }
 
-void term_clear()
+void cursor_home()
 {
-    
+
+    printf("\x1b[H");    // home pos
 }
 
 void board_init()
@@ -339,8 +340,8 @@ void board_init()
 
 void board_close()
 {
-    printf("\x1b[u");    // restore cursor pos
     printf("\x1b[?47l"); // restore screen
+    printf("\x1b[u");    // restore cursor pos
     cursor_on();
 }
 

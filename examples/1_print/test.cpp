@@ -1,5 +1,5 @@
 #include <stdio.h>
-#include "tsprites.hpp"
+#include "../../tsprites.hpp"
 
 int main(int argc, char **argv)
 {
