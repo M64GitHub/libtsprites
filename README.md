@@ -82,9 +82,9 @@ Sprite graphics can be created with help of the `catimg` utility
 You can also take any "*.unicode" file from the resource folder to test.
 
 When a `TSprite` is imported, the graphic data is being parsed, normalized,
-and rewritten into the internal datastructures.  
-These prepare for fast movement on screen, and for applying effects to the 
-graphic data more efficiently.
+and rewritten into the internal datastructures. These prepare for fast 
+movement on screen, and for applying effects to the graphic data more
+efficiently.
 
 ```C++
 #include <stdio.h>
@@ -124,8 +124,8 @@ A specific concept of a "board" like a "game board" is not yet implemented,
 so they do not even take any parameters yet. 
 
 As you can see, the movement of the sprite is done simply by moving the cursor,
-and printing the sprite like in the above example. This is one way to easily 
-position a sprite. `Print()` just prints the sprite where the cursor currently 
+and printing the sprite like in the above example. This is one way to easily
+position a sprite. `Print()` just prints the sprite where the cursor currently
 stands.
 
 Since the Sprite is not being "moved", it is also not cleared from the old to 
