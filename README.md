@@ -84,7 +84,7 @@ To build the library only:
 make lib
 ```
 For building your own applications using libtsprites, specify the `include/`
-folder to your projects build process.
+folder in your projects build process.
 
 ## EXAMPLE CODE
 How to use the the `TSprite` object.
