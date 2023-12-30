@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <math.h>
 #include <unistd.h>
-#include "../../tsprites.hpp"
+#include "../../include/tsprites.hpp"
 
 int main(int argc, char **argv)
 {

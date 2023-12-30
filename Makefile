@@ -4,20 +4,33 @@
 # -------------------------------------------------------------------------- #
 
 BINARY=test
-LIBRARY=tsprite
+LIBRARY=tsprites
+
+SONAME=lib$(LIBRARY).so
+SOFILE=lib/$(SONAME)
+LIBOBJFILE=lib/$(LIBRARY).o
+
 # CC=zig c++
 # CXX=zig c++
 
 CXX=g++
 
-CFLAGS+=-O3 -Wall --debug  -lm
+CFLAGS+=-O3 -Wall 
 CXXFLAGS+=$(CFLAGS)
 
-$(BINARY): test.o tsprites.o
-	$(CXX) -o $@ $^ 
+all: $(BINARY)
+
+lib: $(SOFILE)
+
+$(BINARY): test.o $(SOFILE)
+	$(CXX) -o $@ $^ -Llib -l$(LIBRARY) --debug -lm
+
+$(SOFILE): $(LIBRARY).cpp
+	$(CXX) -fPIC -c $(LIBRARY).cpp -o $(LIBOBJFILE)
+	$(CXX) -shared -Wl,-soname,$(SONAME) -o $(SOFILE) $(LIBOBJFILE)
 
 clean:
-	$(RM) *.o $(BINARY)
+	$(RM) *.o lib/*.o lib/*.so $(BINARY)
 
 .phony: clean
 

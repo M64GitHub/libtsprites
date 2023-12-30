@@ -2,8 +2,8 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include "tsprites.hpp"
-#include "format_catimg.hpp"
+#include "include/tsprites.hpp"
+#include "include/format_catimg.hpp"
 
 TSprite::TSprite()
 {
