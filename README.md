@@ -68,6 +68,23 @@ these objects and is called `LSprite` or `line-sprite`.
  - `characters`:  ASCII/UNICODE characters. Shapes out of ASCII characters
 are called `ascii-sprites` or `ASprite`.
 
+## BUILD
+You can build the library along with a simple test program by running
+```bash
+make
+```
+The shared library can then be found in the `lib/` folder.
+The test executable ('test') will be created in the current path.
+You can run it via
+```bash
+LD_PRELOAD=lib/ ./test
+```
+To build the library only:
+```bash
+make lib
+```
+For building your own applications using libtsprites, specify the `include/`
+folder to your projects build process.
 
 ## EXAMPLE CODE
 How to use the the `TSprite` object.
