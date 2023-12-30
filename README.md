@@ -83,8 +83,13 @@ To build the library only:
 ```bash
 make lib
 ```
-For building your own applications using libtsprites, specify the `include/`
-folder in your projects compilation process, and `-ltsprites` in the linking step.
+For building your own applications using libtsprites, include the `include/tsprites.hpp`
+file in your projects compilation process, and `-ltsprites` in the linking step.
+The most easy way to do this is to copy the library to `/usr/lib/`. 
+```bash
+sudo cp lib/libtsprites.so /usr/lib
+```
+You then need not set LD_RELOAD and such for running your program.
 
 ## EXAMPLE CODE
 How to use the the `TSprite` object.
