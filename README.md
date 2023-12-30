@@ -81,10 +81,10 @@ Sprite graphics can be created with help of the `catimg` utility
 (https://github.com/posva/catimg). Simply redirect it's output to a file.
 You can also take any "*.unicode" file from the resource folder to test.
 
-When a `TSprite` is imported, the graphic data is being parsed and rewritten
-into the internal datastructures.  
-These prepare for fast movement on screen, and for applying various effects
-to the graphic data.
+When a `TSprite` is imported, the graphic data is being parsed, normalized,
+and rewritten into the internal datastructures.  
+These prepare for fast movement on screen, and for applying effects to the 
+graphic data more efficiently.
 
 ```C++
 #include <stdio.h>
