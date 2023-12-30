@@ -3,7 +3,7 @@ C++ library for truecolor unicode terminal sprites, effects, and animations.
 Blazingly fast! Ideal for terminal games, or just more interesting user
 interfaces.  
 
-The intention is to create a library for state of the art, fast terminals.
+The intention is to create a library for visual expression on state of the art, fast terminals.
 A well setup terminal today allows for very interesting visual experiences
 and effects. This is an exploration of what can be achieved taking it to
 the max.
@@ -73,16 +73,18 @@ are called `ascii-sprites` or `ASprite`.
 How to use the the `TSprite` object.
 
 ### Basic Usage
-In this example, a `TSprite` is created by importing it from the resource 
-folder from a file. The filename is read as a commandline parameter.
-The method `ImportFromFile()` is used for import, and `Print()` is
-used to print it on screen.
 
-Sprites can be created by using the `catimg` utility 
+Getting started is simple. The two most basic methods of `Tsprite` are used
+in this little "hello world" example: `ImportFromFile()`, and `Print()`.
+
+Sprite graphics can be created with help of the `catimg` utility 
 (https://github.com/posva/catimg). Simply redirect it's output to a file.
+You can also take any "*.unicode" file from the resource folder to test.
 
-When a `TSprite` is imported, it is being rewritten into internal datastructures,
-and prepared for fast movement on screen / for applying various effects to it.
+When a `TSprite` is imported, the graphic data is being parsed, normalized,
+and rewritten into the internal datastructures. These prepare for fast 
+movement on screen, and for applying effects to the graphic data more
+efficiently.
 
 ```C++
 #include <stdio.h>
@@ -118,13 +120,16 @@ int main(int argc, char **argv)
 ### Sine Movement Test
 Here the convenience functions `board_init` and `board_close` are introduced. 
 They will clear the terminal and restore the screen and cursor afterwards.
-A specific concept of a "board" like a "game board" is not present or planned,
-so they do not even take any parameters.
+A specific concept of a "board" like a "game board" is not yet implemented, 
+so they do not even take any parameters yet. 
 
 As you can see, the movement of the sprite is done simply by moving the cursor,
-and printing the sprite like in the above example. This is one way to easily 
-position a sprite. `Print()` just prints the sprite where the cursor currently 
+and printing the sprite like in the above example. This is one way to easily
+position a sprite. `Print()` just prints the sprite where the cursor currently
 stands.
+
+Since the Sprite is not being "moved", it is also not cleared from the old to 
+the new position. This makes up to a nice effect you can see in the video below.
 
 ```C++
 #include <stdio.h>
