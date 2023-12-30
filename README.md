@@ -3,7 +3,7 @@ C++ library for truecolor unicode terminal sprites, effects, and animations.
 Blazingly fast! Ideal for terminal games, or just more interesting user
 interfaces.  
 
-The intention is to create a library for the state of the art, fast terminals.
+The intention is to create a library for state of the art, fast terminals.
 A well setup terminal today allows for very interesting visual experiences
 and effects. This is an exploration of what can be achieved taking it to
 the max.
@@ -73,6 +73,16 @@ are called `ascii-sprites` or `ASprite`.
 How to use the the `TSprite` object.
 
 ### Basic Usage
+In this example, a `TSprite` is created by importing it from the resource 
+folder from a file. The filename is read as a commandline parameter.
+The method `ImportFromFile()` is used for import, and `Print()` is
+used to print it on screen.
+
+Sprites can be created by using the `catimg` utility 
+(https://github.com/posva/catimg). Simply redirect it's output to a file.
+
+When a `TSprite` is imported, it is being rewritten into internal datastructures,
+and prepared for fast movement on screen / for applying various effects to it.
 
 ```C++
 #include <stdio.h>
@@ -106,6 +116,16 @@ int main(int argc, char **argv)
 ![image](https://github.com/M64GitHub/libtsprites/assets/84202356/53995d62-ef77-4bd9-be4d-c3d081ebb1f1)
 
 ### Sine Movement Test
+Here the convenience functions `board_init` and `board_close` are introduced. 
+They will clear the terminal and restore the screen and cursor afterwards.
+A specific concept of a "board" like a "game board" is not present or planned,
+so they do not even take any parameters.
+
+As you can see, the movement of the sprite is done simply by moving the cursor,
+and printing the sprite like in the above example. This is one way to easily 
+position a sprite. `Print()` just prints the sprite where the cursor currently 
+stands.
+
 ```C++
 #include <stdio.h>
 #include <math.h>
@@ -116,35 +136,35 @@ int main(int argc, char **argv)
 {
     TSprite S;
     unsigned int tick = 50;
+    unsigned int maxtick = 250;
 
     printf("catimg to tsprites conversion/import test utility.\n");
     printf("M64, 2023.\n");
 
     S.ImportFromFile((char*)"resources/demo6_180.unicode");
-    cursor_down(S.h/2);
-    cursor_up  (S.h/2);
 
-    cursor_off();
+    // save and clear terminal, set cursor to home position (0,0) and hide it
+    board_init(); 
 
-    while(1)
+    while(tick < maxtick)
     {
-        cursor_reset();  // reset all modes and colors
         tick++;
         int x = 10 + 10*(sin( ((tick % 100)/100.0) * 6.28  ));
+        cursor_home();
         cursor_right(x);
         S.Print();
-        cursor_up(S.h/2+1);
-        usleep(5000 * 2);
+        usleep(1000 * 10);
     }
-
-    cursor_on();
     
-    return 0;
+    board_close(); // restore screen and cursor
+    return 0; 
 }
 ```
 
 
-https://github.com/M64GitHub/libtsprites/assets/84202356/51be2ddf-c30f-4ccd-9e48-b01b8014748a
+
+https://github.com/M64GitHub/libtsprites/assets/84202356/4927a436-3f47-4a18-970f-020eb9ee50fe
+
 
 
 
