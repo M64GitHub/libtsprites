@@ -9,9 +9,6 @@ int main(int argc, char **argv)
     unsigned int tick = 50;
     unsigned int maxtick = 600;
 
-    printf("catimg to tsprites conversion/import test utility.\n");
-    printf("M64, 2023.\n");
-
     S.ImportFromFile((char*)"resources/demo6_180.unicode");
 
     board_init();
@@ -21,7 +18,7 @@ int main(int argc, char **argv)
         tick++;
         int x = 10 + 10*(sin( ((tick % 100)/100.0) * 6.28  ));
         cursor_home();
-        cursor_right(x);
+        cursor_right(x-1);
         S.Print();
         usleep(1000 * 10);
     }

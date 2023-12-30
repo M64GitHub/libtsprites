@@ -9,6 +9,11 @@
 #define DBG(...) 
 #endif
 
+typedef struct s_RGB_color {
+    int r;
+    int g;
+    int b;
+} rgb_color;
 
 // True-Color (24bit RGB) unicode based sprite.
 // All y msmts and related values (height h) in "half" characters!)
@@ -63,7 +68,31 @@ private:
 };
 
 // class LSprite; // Line-Sprite
-// class ASprite; // ASCII sprite
+
+// class ASprite; // ASCII Sprite
+
+// SSprite
+// Simple- or String-Sprite. Sprite for spinners, and such.
+// A collecttion of char *frames, with a fix height of 1 line
+// (2 blocks). All characters of a frame have 1 color
+class SSprite 
+{
+public:
+    SSprite();
+    ~SSprite();
+
+    int frame_count = 0;// up to 256
+    char *frames[256];
+    int widths  [256];  // Widths, or lengths in characters 
+                        // visually on screen
+    rgb_color colors[256];
+    int frame_index = 0;
+
+private:
+
+};
+
+
 
 // -- helper functions
 
