@@ -120,13 +120,16 @@ int main(int argc, char **argv)
 ### Sine Movement Test
 Here the convenience functions `board_init` and `board_close` are introduced. 
 They will clear the terminal and restore the screen and cursor afterwards.
-A specific concept of a "board" like a "game board" is not present or planned,
-so they do not even take any parameters.
+A specific concept of a "board" like a "game board" is not yet implemented, 
+so they do not even take any parameters yet. 
 
 As you can see, the movement of the sprite is done simply by moving the cursor,
 and printing the sprite like in the above example. This is one way to easily 
 position a sprite. `Print()` just prints the sprite where the cursor currently 
 stands.
+
+Since the Sprite is not being "moved", it is also not cleared from the old to 
+the new position. This makes up to a nice effect you can see in the video below.
 
 ```C++
 #include <stdio.h>
