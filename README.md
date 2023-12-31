@@ -175,22 +175,35 @@ int main(int argc, char **argv)
 ### Sine Movement Test
 Here the convenience functions `board_init` and `board_close` are introduced. 
 They will clear the terminal and restore the screen and cursor afterwards.
-A specific concept of a "board" like a "game board" is not yet implemented, 
-so they do not even take any parameters yet. 
+(A specific concept of a "board" like a "game board" is not yet implemented, 
+so they do not take any parameters yet.)
 
-As you can see, the movement of the sprite is done simply by moving the cursor,
-and printing the sprite like in the above example. This is one way to easily
+Also two new `SSPrites` ("String Sprites") are introduced: `S2` for a spinner, and
+`S3` for a simple "static" string.
+The spinner takes an array of strings, it's length (number of sprite frames), and a
+`rgb_color` as input parameters for the constructor. The other just a regular (char *) 
+string.
+
+As you can see, the movement of the sprites is done simply by moving the cursor,
+and printing the sprites like in the above example. This is one way to easily
 position a sprite. `Print()` just prints the sprite where the cursor currently
 stands.
 
-Since the Sprite is not being "moved", it is also not cleared from the old to 
-the new position. This makes up to a nice effect you can see in the video below.
+`S2` was initialized without a color, so it got the default color white on construction.
+But white would be recognizably more "shining" bright: S2 is printed via `PrintUncolored()`.
+This is a method where the color information is completely discarded on output.
+In this case that means the default terminal color is used. This function is intended 
+for when you manually want to set a color for example using a palette and set the 
+output color manually.
+
+Since the Sprites S and S3 are not being "moved", they are also not cleared from the old to 
+the new position. This makes up to a nice effect you can see in the video below:
 
 ```C++
 #include <stdio.h>
 #include <math.h>
 #include <unistd.h>
-#include "include/tsprites.hpp"
+#include "../../include/tsprites.hpp"
 
 int main(int argc, char **argv)
 {
@@ -246,14 +259,4 @@ int main(int argc, char **argv)
     return 0;
 }
 ```
-
-
-
 https://github.com/M64GitHub/libtsprites/assets/84202356/90d4a9d3-815f-405c-beaa-802bda05cc45
-
-
-
-
-
-
-
