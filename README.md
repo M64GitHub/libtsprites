@@ -178,23 +178,19 @@ They will clear the terminal and restore the screen and cursor afterwards.
 (A specific concept of a "board" like a "game board" is not yet implemented, 
 so they do not take any parameters yet.)
 
-Also two new `SSPrites` ("String Sprites") are introduced: `S2` for a spinner, and
-`S3` for a simple "static" string.
+Also two new `SSPrites` ("String Sprites") are introduced: `S2` for some animated 
+spinners, and `S3` for a simple "static"/single-frame string.
 The spinner takes an array of strings, it's length (number of sprite frames), and a
 `rgb_color` as input parameters for the constructor. The other just a regular (char *) 
 string.
 
 As you can see, the movement of the sprites is done simply by moving the cursor,
-and printing the sprites like in the above example. This is one way to easily
+and printing the sprites like in the example above. This is one way to easily
 position a sprite. `Print()` just prints the sprite where the cursor currently
-stands.
-
-`S2` was initialized without a color, so it got the default color white on construction.
-But white would be recognizably more "shining" bright: S2 is printed via `PrintUncolored()`.
-This is a method where the color information is completely discarded on output.
-In this case that means the default terminal color is used. This function is intended 
-for when you manually want to set a color for example using a palette and set the 
-output color manually.
+stands.  
+`S2` is printed via `PrintUncolored()`. This is a method specific to string-sprites:
+the color information is completely discarded on output, that means the default 
+terminal color is used.
 
 Since the Sprites S and S3 are not being "moved", they are also not cleared from the old to 
 the new position. This makes up to a nice effect you can see in the video below:
