@@ -115,7 +115,8 @@ The most easy way to do all this is to copy the library to `/usr/lib/`.
 sudo cp lib/libtsprites.so /usr/lib
 ```
 You then need not set LD_RELOAD and such for running your program,
-and are done by just including the header and use `-ltsprites`.
+and are done by just including the header and adding `-ltsprites`
+to your linker flags.
 
 ## EXAMPLE CODE
 For getting started quickly, example code is provided in the subfolder 
