@@ -18,11 +18,12 @@ shall be given here as well.
 Work in progress ...
 (see tsprites.hpp)
 
-## CONCEPT
+## MAIN CONCEPT
 
-The whole lib is based on the concept of `blocks`, not characters. 2 blocks
-stacked form a regular character. A regular character has the height of 2,
-an upper block and a lower block. ASCII characters are 2 units in height.
+In regard to graphics, the whole lib is based on the concept of `blocks`, 
+not characters. 2 blocks stacked form a regular character. A regular character 
+has the height of 2, an upper block and a lower block. ASCII characters are 
+2 units in height.
 Rectangular shapes formed of `blocks` are called `regular sprites` - the
 code representation would be a `TSprite`.
 
@@ -76,8 +77,8 @@ create animations, but can also be used for color-fading, etc.
 
 The different types of sprites exist to help the realisation of ideas.
 Each sprite class has it's different pro's and con's. A one size fits all
-was therefor not taken. Instead each sprite class has it's own specialities,
-implemented as efficient as posssible.
+approach was therefor not taken. Instead each sprite class has it's own 
+specialities, implemented as efficient as posssible.
 
 ### Classes / Structs
 
