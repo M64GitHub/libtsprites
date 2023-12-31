@@ -6,8 +6,10 @@
 int main(int argc, char **argv)
 {
     TSprite S;
+    SSprite S2((char *)"_.:[M64]:._");
+
     unsigned int tick = 50;
-    unsigned int maxtick = 600;
+    unsigned int maxtick = 850;
 
     S.ImportFromFile((char*)"resources/demo6_180.unicode");
 
@@ -20,6 +22,11 @@ int main(int argc, char **argv)
         cursor_home();
         cursor_right(x-1);
         S.Print();
+        cursor_up(1);
+        cursor_right(90);
+        cursor_right((x-1)/4);
+        S2.PrintUncolored();
+        fflush(stdout);
         usleep(1000 * 10);
     }
     

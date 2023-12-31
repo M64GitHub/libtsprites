@@ -27,7 +27,9 @@ $(BINARY): test.o $(SOFILE)
 
 $(SOFILE): $(LIBRARY).cpp
 	$(CXX) -fPIC -c $(LIBRARY).cpp -o $(LIBOBJFILE)
-	$(CXX) -shared -Wl,-soname,$(SONAME) -o $(SOFILE) $(LIBOBJFILE)
+	$(CXX) -fPIC -c tscolors.cpp -o lib/tscolors.o 
+	$(CXX) -shared -Wl,-soname,$(SONAME) -o $(SOFILE) $(LIBOBJFILE) \
+		lib/tscolors.o
 
 clean:
 	$(RM) *.o lib/*.o lib/*.so $(BINARY)

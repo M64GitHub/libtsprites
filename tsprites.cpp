@@ -5,6 +5,8 @@
 #include "include/tsprites.hpp"
 #include "include/format_catimg.hpp"
 
+
+// -- TSprite -----------------------------------------------------------------
 TSprite::TSprite()
 {
     w = h = x = y = z = 0;
@@ -286,7 +288,74 @@ int TSprite::free_maps()
     return 0;
 }
 
-// -- helper functions
+// -- LSprite -----------------------------------------------------------------
+// -- ASprite -----------------------------------------------------------------
+
+// -- SSprite -----------------------------------------------------------------
+
+SSprite::SSprite()
+{
+    DBG ("[SS] SSprite\n");
+}
+
+SSprite::SSprite(char *str)
+{
+    DBG ("[SS] SSprite(char *s)\n");
+    
+    int l = mystrlen(str);
+    int i;
+
+    SSPriteFrame *F = new SSPriteFrame;
+    frames = new SSPriteFrame*[1];
+    frames[0] = F;
+
+    char *tmpstr = (char*)calloc(l+1, 1);
+    DBG ("[SS] strlen: %d\n", l);
+    tmpstr[l] = 0x00; // extra safe
+    for(i=0;i<l;i++) tmpstr[i] = str[i];
+
+    frames[0]->s =tmpstr; 
+    frames[0]->color.r = 255;
+    frames[0]->color.g = 255;
+    frames[0]->color.b = 255;
+
+    frame_count = 1;
+}
+
+SSprite::SSprite(char **s, int len, rgb_color c)
+{
+}
+
+SSprite::SSprite(char **s, int len, rgb_palette p)
+{
+}
+
+SSprite::~SSprite()
+{
+}
+
+void SSprite::Print()
+{
+    if(!frame_count) return;
+
+    printf("%s", frames[frame_idx]->s);
+}
+
+void SSprite::PrintUncolored()
+{
+    if(!frame_count) return;
+
+    printf("%s", frames[frame_idx]->s);
+}
+
+
+void SSprite::free_frames()
+{
+}
+
+
+
+// -- helper functions --
 
 void cursor_up(int n) 
 {
@@ -345,6 +414,14 @@ void board_close()
     cursor_on();
 }
 
+int mystrlen(char *str)
+{
+    if(!str) return 0;
 
+    int i=0;
+    while(str[i++]);
+
+    return i;
+}
 
 
