@@ -76,10 +76,8 @@ create spinners (1 chareacter animations), and such.
 animations, color-fading, or different rotations of a moving player figure for
 example.
 
-The different types of sprites exist to help the realisation of ideas.
-Each sprite class has it's different pro's and con's. A one size fits all
-approach was therefor not taken. Instead each sprite class has it's own 
-specialities, implemented as efficient as posssible.
+The different types of sprites exist to help in the realisation of ideas.
+Each sprite type has it's own capabilities, pro's and con's. 
 
 ### Classes / Structs
 
