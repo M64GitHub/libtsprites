@@ -11,7 +11,7 @@ the max.
 
 It is assumed, that the terminal supports: UTF-8 unicode, 24 bit colors, and
 is set-up with a proper monospaced font. Tests so far were done on `kitty`, the
-`gnome-terminal` (Ubuntu default), and `kitty on the mac. Those for sure work
+`gnome-terminal` (Ubuntu default), and `kitty` on the mac. Those for sure work
 well and fast.  
 mac note: `iTerm2` "works", but has shown to be very slow. The recommended 
 terminal on the mac would be `kitty`. I run it on linux and mac personally.
