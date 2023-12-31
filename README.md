@@ -179,9 +179,9 @@ They will clear the terminal and restore the screen and cursor afterwards.
 so they do not take any parameters yet.)
 
 Also two new `SSPrites` ("String Sprites") are introduced: `S2` for some animated 
-spinners, and `S3` for a simple "static"/single-frame string.
-The spinner takes an array of strings, it's length (number of sprite frames), and a
-`rgb_color` as input parameters for the constructor. The other just a regular (char *) 
+spinners, and `S3` for a simple (single-frame) string.
+The spinner S2 takes an array of strings, it's length (number of sprite frames), and a
+`rgb_color` as input parameters for the constructor. The other one just a regular (char *) 
 string.
 
 As you can see, the movement of the sprites is done simply by moving the cursor,
