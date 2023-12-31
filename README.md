@@ -3,7 +3,8 @@ C++ library for truecolor unicode terminal sprites, effects, and animations.
 Blazingly fast! Ideal for terminal games, or just more interesting user
 interfaces.  
 
-The intention is to create a library for visual expression on state of the art, fast terminals.
+The intention is to create a library for visual expression on state of the art, 
+fast terminals.
 A well setup terminal today allows for very interesting visual experiences
 and effects. This is an exploration of what can be achieved taking it to
 the max.
@@ -50,7 +51,7 @@ Their code representation would be a `LSprite`. Imagine the `M64` logo on
 this page for example. It can be represented as a `line-sprite` and moved
 smoothly around the screen.
 
-### Summary of Main Principles
+### Summary of Main Principles, Shapes and Objects
 
  - `blocks`: half characters. Have a color or can be transparent: '▄' or '▀'
  are individual blocks. Shapes of blocks are called `regular sprites` or
@@ -64,9 +65,29 @@ block character-set. A soft block is visually always (virtual) 8x8 pixels in
  dimension.  
 The same concept also can be used to form lines of arbitrary length in
 virtual pixels: '▐█▌', '██▌'. A special type of sprites take leverage from
-these objects and is called `LSprite` or `line-sprite`.
- - `characters`:  ASCII/UNICODE characters. Shapes out of ASCII characters
-are called `ascii-sprites` or `ASprite`.
+these shapes and is called `LSprite` or `line-sprite`.
+ - `characters`:  ASCII/UTF-8 characters. Shapes out of UTF-8 characters
+can be built and are called `ascii-sprites` or `ASprite`.
+ - `strings`: to work with text, another sprite class called `SSprite` 
+(`string sprite`) exists. This can be used to place/fade text onto the screen,
+create spinners (1 chareacter animations), and such.
+ - `frames`: each sprite can hold multiple shapes of itself. This is intended to
+create animations, but can also be used for color-fading, etc.
+
+The different types of sprites exist to help the realisation of ideas.
+Each sprite class has it's different pro's and con's. A one size fits all
+was therefor not taken. Instead each sprite class has it's own specialities,
+implemented as efficient as posssible.
+
+### Classes / Structs
+
+ - TSprite
+ - LSprite
+ - ASprite
+ - SSprite
+
+ - rgb_color
+ - rgb_palette
 
 ## BUILD
 You can build the library along with a simple test program by running
