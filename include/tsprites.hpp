@@ -82,6 +82,7 @@ class SSprite
 public:
     SSprite();
     SSprite(char *str); // 1 frame, framecolor=white 
+    SSprite(char **str, int len); // array of strs
     SSprite(char **str, int len, rgb_color c); // array of strs, basecolor
     SSprite(char **str, int len, rgb_palette p); // array of strs, individual colors
     ~SSprite();

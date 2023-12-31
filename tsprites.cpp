@@ -322,9 +322,60 @@ SSprite::SSprite(char *str)
     frame_count = 1;
 }
 
-SSprite::SSprite(char **s, int len, rgb_color c)
+SSprite::SSprite(char **strs, int len)
 {
+    DBG ("[SS] SSprite(char **s)\n");
+    
+    frames = new SSPriteFrame*[len];
+    int i=0;
+
+    for(int j=0; j<len; j++) {
+        int l = mystrlen(strs[j]);
+        SSPriteFrame *F = new SSPriteFrame;
+        frames[j] = F;
+
+        char *tmpstr = (char*)calloc(l+1, 1);
+        DBG ("[SS] strlen: %d\n", l);
+        tmpstr[l] = 0x00; // extra safe
+        for(i=0;i<l;i++) tmpstr[i] = strs[j][i];
+
+        frames[j]->s = tmpstr; 
+        frames[j]->color.r = 255;
+        frames[j]->color.g = 255;
+        frames[j]->color.b = 255;
+    }
+
+    frame_count = len;
 }
+
+SSprite::SSprite(char **strs, int len, rgb_color c)
+{
+    DBG ("[SS] SSprite(char **s, len %d, color: %d,%d,%d)\n",
+                    len, c.r, c.g, c.b
+         );
+    
+    frames = new SSPriteFrame*[len];
+    int i=0;
+
+    for(int j=0; j<len; j++) {
+        int l = mystrlen(strs[j]);
+        SSPriteFrame *F = new SSPriteFrame;
+        frames[j] = F;
+
+        char *tmpstr = (char*)calloc(l+1, 1);
+        DBG ("[SS] strlen: %d\n", l);
+        tmpstr[l] = 0x00; // extra safe
+        for(i=0;i<l;i++) tmpstr[i] = strs[j][i];
+
+        frames[j]->s = tmpstr; 
+        frames[j]->color.r = c.r;
+        frames[j]->color.g = c.g;
+        frames[j]->color.b = c.b;
+    }
+
+    frame_count = len;
+}
+
 
 SSprite::SSprite(char **s, int len, rgb_palette p)
 {
@@ -337,14 +388,16 @@ SSprite::~SSprite()
 void SSprite::Print()
 {
     if(!frame_count) return;
-
+    printf("\x1b[38;2;%d;%d;%dm", frames[frame_idx]->color.r,
+                                   frames[frame_idx]->color.g,
+                                   frames[frame_idx]->color.b
+    );
     printf("%s", frames[frame_idx]->s);
 }
 
 void SSprite::PrintUncolored()
 {
     if(!frame_count) return;
-
     printf("%s", frames[frame_idx]->s);
 }
 
