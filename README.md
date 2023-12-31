@@ -99,7 +99,7 @@ The shared library can then be found in the `lib/` folder.
 The test executable ('test') will be created in the current path.
 You can run it via
 ```bash
-LD_PRELOAD=lib/ ./test
+LD_PRELOAD=./lib/libtsprites.so ./test
 ```
 To build the library only:
 ```bash
