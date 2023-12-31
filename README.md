@@ -114,9 +114,15 @@ sudo cp lib/libtsprites.so /usr/lib
 You then need not set LD_RELOAD and such for running your program.
 
 ## EXAMPLE CODE
-How to use the the `TSprite` object.
+For getting started quickly, example code is provided in the subfolder 
+`examples/`. They all have their own Makefile and include the library code
+directly, without the need of compiling the library as a shared object.
+You can use them as a starter for your own ideas, and copy/extend them
+without ever compiling the library, or have the need to link against
+it, if you prefer.
 
 ### Basic Usage
+How to use the the `TSprite` object.
 
 Getting started is simple. The two most basic methods of `Tsprite` are used
 in this little "hello world" example: `ImportFromFile()`, and `Print()`.
