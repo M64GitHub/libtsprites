@@ -174,8 +174,8 @@ int main(int argc, char **argv)
 ### Sine Movement Test
 Here the convenience functions `board_init` and `board_close` are introduced. 
 They will clear the terminal and restore the screen and cursor afterwards.
-(A specific concept of a "board" like a "game board" is not yet implemented, 
-so they do not take any parameters yet.)
+(A specific concept of a "board" like a "game board" is not yet implemented,
+but planned).
 
 Also two new `SSPrites` ("String Sprites") are introduced: `S2` for some animated 
 spinners, and `S3` for a simple (single-frame) string.
