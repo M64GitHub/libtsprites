@@ -72,8 +72,9 @@ can be built and are called `ascii-sprites` or `ASprite`.
  - `strings`: to work with text, another sprite class called `SSprite` 
 (`string sprite`) exists. This can be used to place/fade text onto the screen,
 create spinners (1 chareacter animations), and such.
- - `frames`: each sprite can hold multiple shapes of itself. This is intended to
-create animations, but can also be used for color-fading, etc.
+ - `frames`: each sprite can hold multiple shapes of itself: for creating 
+animations, color-fading, or different rotations of a moving player figure for
+example.
 
 The different types of sprites exist to help the realisation of ideas.
 Each sprite class has it's different pro's and con's. A one size fits all
