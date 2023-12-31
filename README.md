@@ -126,7 +126,7 @@ without ever compiling the library, or have the need to link against
 it, if you prefer.
 
 ### Basic Usage
-How to use the the `TSprite` object.
+How to use the the `TSprite` object. How to get some graphics onto the screen.
 
 Getting started is simple. The two most basic methods of `Tsprite` are used
 in this little "hello world" example: `ImportFromFile()`, and `Print()`.
