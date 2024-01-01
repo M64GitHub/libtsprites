@@ -31,7 +31,7 @@ In regard to graphics, the whole lib is based on the concept of `blocks`
 
 - Please note: all these concepts are independent, and optional to use. You need no
 board or screen or anything else than (any type of) `sprite` if you just want
-to display some graphics. (see [Basic Usage])
+to display some graphics. (see [Basic Usage](#basic-usage))
 
 The coordinate-system by default uses measurements in blocks. Shapes formed
 of `blocks` are called `regular sprites` - the code representation would be
