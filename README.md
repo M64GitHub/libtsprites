@@ -39,9 +39,9 @@ X-dimension, but only in steps of 2 in the Y-dimension for example.
 With a bit of trickery, also completely smooth (almost pixelwise) movements
 of a pair of blocks can be achieved: in 1/8 fraction steps of a characters
 dimension. This only works for "logical blocks" in dimensions of a character
-(2 blocks in height) '█'. Those "double blocks" are called `soft-blocks`.  
-`soft-blocks` can be smoothly moved only: in either the X- or the
-Y-coordinate, not both at the same time.
+(2 blocks in height) '█'. Those "double blocks" are called `soft-blocks`.
+They can be smoothly moved only: in either the X- or the Y-coordinate, not
+both at the same time.
 
 With mulitple `soft-blocks` and a bit of trickery, lines of arbitrary length
 are possible: '██▌'. Such lines share the movement properties of
