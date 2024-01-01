@@ -26,8 +26,8 @@ Work in progress ...
 ## MAIN CONCEPT
 
 In regard to graphics, the whole lib is based on the concept of `blocks`
-('▄' or '▀'), (various types of) `sprites`, `layers` (Z-dimension), `boards`,
-and a `screen`.  
+('▄' or '▀'), (various types of) `sprites`, `layers` (Z-dimension), `boards`
+("windows"), and a `screen` (the full area to work on).  
 
 The coordinate-system by default uses measurements in blocks. Shapes formed
 of `blocks` are called `regular sprites` - the code representation would be
