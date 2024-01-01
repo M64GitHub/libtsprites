@@ -3,7 +3,7 @@
 
 #include "tscolors.hpp"
 
-// #define DEBUG
+#define DEBUG
 
 #ifdef DEBUG
 #define DBG(...) fprintf (stderr, __VA_ARGS__)
@@ -22,11 +22,8 @@ public:
 
     ~TSprite();
 
-    int ImportFromImgStr(char *s, int l); // str needs not to be 0x00-terminated
     int ImportFromFile(char *fn);
-    int ImportFromColorMap(char *cmap);
-
-    int ExportImgStr(char *fn, int format); // export as .h, txtfile, ...
+    int ImportFromImgStr(char *s, int l); 
 
     void Reset(); // restores original state (after 
                   // possible applied effects)
@@ -45,7 +42,7 @@ public:
 
     // internal representation - for fast effects processing, ...
     char *shadow_map; // w * h: like alpha channel: 0: no px, 1: px
-                      // for collision detection, Print() transparency ...
+                      // for collision detection, transparency
     char *color_map;  // w * h: r, g, b
 
 private:
@@ -84,7 +81,8 @@ public:
     SSprite(char *str); // 1 frame, framecolor=white 
     SSprite(char **str, int len); // array of strs
     SSprite(char **str, int len, rgb_color c); // array of strs, basecolor
-    SSprite(char **str, int len, rgb_palette p); // array of strs, individual colors
+    SSprite(char **str, int len, rgb_palette p); // array of strs, 
+                                                 // individual colors
     ~SSprite();
 
     void Print();

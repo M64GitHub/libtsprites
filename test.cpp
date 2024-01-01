@@ -26,9 +26,11 @@ int main(int argc, char **argv)
     int char_tick = 0;
     unsigned int maxtick = 850;
 
-    S.ImportFromFile((char*)"resources/demo7_188.unicode");
+    S.ImportFromFile((char*)"resources/demo7t_188.unicode");
 
     board_init();
+
+    // --
 
     while(tick < maxtick)
     {
@@ -51,6 +53,9 @@ int main(int argc, char **argv)
 
         usleep(1000 * 10);
     }
+
+    // --
+
     
     board_close();
 

@@ -111,7 +111,7 @@ int TSprite::ImportFromImgStr(char *str, int l)
         while(str[pos + lpos + CATIMG_LINE_END_LEN-1] != 0x0a) {
             unsigned char c = str[pos + lpos];    
 
-            if(c == 0x96) {
+            if(c == 0x96 || c == 0x20) {
                 // 0x80 = upper half block, 0x84 = lower half block
                 if(!lnr) { w++; }// count on the 1st line only
                 pxcount++;
@@ -163,7 +163,12 @@ int TSprite::ImportFromImgStr(char *str, int l)
     DBG ("\nw x h = %d x %d = pxcount = %d, tt size of conversion: %d\n", 
            w, h, pxcount, out_idx);
 
+    // -- now we have w, h -> we know image size and can create and fill
+    //    maps
+
     malloc_maps();
+
+
 
     return 0;
 }
@@ -228,11 +233,6 @@ int TSprite::ImportFromFile(char *fn)
 
     DBG ("[TS][ImportFromFile] file successfully imported!\n");
 
-    return 0;
-}
-
-int TSprite::ExportImgStr(char *fn, int format)
-{
     return 0;
 }
 
@@ -451,6 +451,8 @@ void cursor_home()
     printf("\x1b[H");    // home pos
 }
 
+// -- board -- 
+//
 void board_init()
 {
     printf("\x1b[s");    // save cursor pos
@@ -466,6 +468,8 @@ void board_close()
     printf("\x1b[u");    // restore cursor pos
     cursor_on();
 }
+
+// -- 
 
 int mystrlen(char *str)
 {
