@@ -25,16 +25,13 @@ Work in progress ...
 
 ## MAIN CONCEPT
 
-In regard to graphics, the whole lib is based on the concept of `blocks` 
-('▄' or '▀'), not characters. An upper block and a lower block. ASCII/UTF-8
-characters are 2 units in height. Rectangular shapes formed of `blocks`
-are called `regular sprites` - the code representation would be a `TSprite`.
+In regard to graphics, the whole lib is based on the concept of `blocks`
+('▄' or '▀'), (various types of) `sprites`, `layers` (Z-dimension), `boards`,
+and a `screen`.  
 
-The coordinate-system by default uses measurements in blocks.
-`TSprites` can be moved freely on a virtual coordinate-system measured in
-blocks. Basically this means the Y-coordinates have twice the resolution of
-a character. ASCII characters and strings can be moved in blocksize in the
-X-dimension, but only in steps of 2 in the Y-dimension for example.
+The coordinate-system by default uses measurements in blocks. Shapes formed
+of `blocks` are called `regular sprites` - the code representation would be
+a `TSprite`. `TSprites` can be moved freely in the coordinate-system.
 
 With a bit of trickery, also completely smooth (almost pixelwise) movements
 of a pair of blocks can be achieved: in 1/8 fraction steps of a characters
@@ -71,14 +68,17 @@ block character-set. A soft block is visually always (virtual) 8x8 pixels in
 The same concept also can be used to form lines of arbitrary length in
 virtual pixels: '▐█▌', '██▌'. A special type of sprites take leverage from
 these shapes and is called `LSprite` or `line-sprite`.
- - `characters`:  ASCII/UTF-8 characters. Shapes out of UTF-8 characters
+ - `regular characters`:  ASCII/UTF-8 characters. Shapes out of UTF-8 characters
 can be built and are called `ascii-sprites` or `ASprite`.
- - `strings`: to work with text, another sprite class called `SSprite` 
+ - `regular strings`: to work with text, another sprite class called `SSprite` 
 (`string sprite`) exists. This can be used to place/fade text onto the screen,
 create spinners (1 chareacter animations), and such.
+
  - `frames`: each sprite can hold multiple shapes of itself: for creating 
-animations, color-fading, or different rotations of a moving player figure for
-example.
+animations, slices, specific color-fading, or different rotations of a moving
+player figure for example.
+ - `layers`
+ - `screen`
 
 The different types of sprites exist to help in the realisation of ideas.
 Each sprite type has it's own capabilities, pro's and con's. 
