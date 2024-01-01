@@ -3,61 +3,68 @@ C++ library for truecolor unicode terminal sprites, effects, and animations.
 Blazingly fast! Ideal for terminal games, or just more interesting user
 interfaces.  
 
-The intention is to create a library for visual expression on state of the art, 
-fast terminals.
+The intention is to create a library for visual expression on `state of the art`, 
+`fast` `terminals`.
 A well setup terminal today allows for very interesting visual experiences
 and effects. This is an exploration of what can be achieved taking it to
 the max.
 
 It is assumed, that the terminal supports: UTF-8 unicode, 24 bit colors, and
-is set-up with a proper monospaced font. Tests so far were done on kitty, the
-gnome-terminal (Ubuntu default), and iTerm2 on the mac. Those for sure work
-well. A note about nerd-fonts (https://www.nerdfonts.com/font-downloads)
-shall be given here as well.
+is set-up with a proper monospaced font. Tests so far were done on `kitty`
+on gnu/linux, the `gnome-terminal` (Ubuntu default), and `kitty` on the mac.
+Those for sure work well and fast.  
+mac note: `iTerm2` also "works" (technically), but has shown to be very slow.
+I can not recommend it. `kitty` to me is a perfect terminal, I run it on 
+linux and mac personally.  
+A note about nerd-fonts (https://www.nerdfonts.com/font-downloads)
+shall be given here as well.  
+After all, we want to work on state of the art, fast terminals ;)
 
 Work in progress ...
 (see tsprites.hpp)
 
 ## MAIN CONCEPT
 
-In regard to graphics, the whole lib is based on the concept of `blocks`, 
-not characters. 2 blocks stacked form a regular character. A regular character 
-has the height of 2, an upper block and a lower block. ASCII characters are 
-2 units in height.
-Rectangular shapes formed of `blocks` are called `regular sprites` - the
-code representation would be a `TSprite`.
+In regard to graphics, the whole lib is based on the concept of `blocks`
+('▄' or '▀'), (various types of) `sprites`, `layers` (Z-dimension), `boards`
+("windows"), and a `screen` (the full area to work on).  
 
-The coordinate-system by default uses measurements in blocks.
-`TSprites` can be moved freely on a virtual coordinate-system measured in
-blocks. Basically this means the Y-coordinates have twice the resolution of
-a character. ASCII characters in strings can be moved in blocksize in the
-X-dimension, but only in steps of 2 in the Y-dimension for example.
+- Please note: all these concepts are independent, and optional to use. You need no
+board or screen or anything else than (any type of) `sprite` if you just want
+to display some graphics. (see [Basic Usage](#basic-usage))
+
+The coordinate-system by default uses measurements in blocks. Shapes formed
+of `blocks` are called `regular sprites` - the code representation would be
+a `TSprite`. `TSprites` can be moved freely in the coordinate-system, while
+anything "character-based" like strings or shapes of ASCII/UTF-8 characters
+only in Y-steps of 2.
 
 With a bit of trickery, also completely smooth (almost pixelwise) movements
 of a pair of blocks can be achieved: in 1/8 fraction steps of a characters
 dimension. This only works for "logical blocks" in dimensions of a character
-(2 blocks in height). Those "double blocks" are called `soft blocks`.  
-`soft-blocks` can be smoothly moved only: in either the X- or the
-Y-coordinate, not both at the same time.
+(2 blocks in height) '█'. Those "double blocks" are called `soft-blocks`.
+They can be smoothly moved only: in either the X- or the Y-coordinate, not
+both at the same time.
 
-Combining 2 blocks to a soft block and using the same technique - also lines
-of arbitrary length are possible. Such lines share the movement property of
-a `soft-block` and are called `soft-lines`. Soft-blocks and soft-lines can be
-mainly used for a very limited usage-set due to their rather "big" visual
-blockyness of a full character. But with their interesting possibility to
-move them "freely" and "smooth", some nice special-effects are possible.  
+With mulitple `soft-blocks` and a bit of trickery, lines of arbitrary length
+are possible: '██▌'. Such lines share the movement properties of
+a `soft-block` and are called `soft-lines`.  
+Soft-blocks and soft-lines can be mainly used for a very limited usage-set
+due to their rather "big" visual blockyness of a full character. But with
+their interesting possibility to move them "freely" and "smooth", some nice
+special-effects are possible.  
 
-In this means a special type of sprites is available, too: `line sprites`.
-Their code representation would be a `LSprite`. Imagine the `M64` logo on
-this page for example. It can be represented as a `line-sprite` and moved
-smoothly around the screen.
+These are just the most basic ideas. A multitude of types of sprites exists
+for implementing anything visually as fast and simple as possible.
+
+
 
 ### Summary of Main Principles, Shapes and Objects
 
  - `blocks`: half characters. Have a color or can be transparent: '▄' or '▀'
  are individual blocks. Shapes of blocks are called `regular sprites` or
  `TSprites`.
- - `soft blocks` and `soft lines`: leveraging UTF-8 block characters for
+ - `soft-blocks` and `soft-lines`: leveraging UTF-8 block characters for
  pixelwise smooth (constrained) movements and positioning.  
 The UTF-8 block characters enables to form (virtual) 8x8 blocks '█', that
 can be moved "pixelwise": '▐▌'. This is achieved by using 2 characters and
@@ -67,18 +74,20 @@ block character-set. A soft block is visually always (virtual) 8x8 pixels in
 The same concept also can be used to form lines of arbitrary length in
 virtual pixels: '▐█▌', '██▌'. A special type of sprites take leverage from
 these shapes and is called `LSprite` or `line-sprite`.
- - `characters`:  ASCII/UTF-8 characters. Shapes out of UTF-8 characters
-can be built and are called `ascii-sprites` or `ASprite`.
- - `strings`: to work with text, another sprite class called `SSprite` 
+ - `regular characters`:  Shapes out of ASCII/UTF-8 characters can be built
+and are called `ascii-sprites` or `ASprite`.
+ - `regular strings`: to work with text, another sprite class called `SSprite` 
 (`string sprite`) exists. This can be used to place/fade text onto the screen,
 create spinners (1 chareacter animations), and such.
- - `frames`: each sprite can hold multiple shapes of itself. This is intended to
-create animations, but can also be used for color-fading, etc.
 
-The different types of sprites exist to help the realisation of ideas.
-Each sprite class has it's different pro's and con's. A one size fits all
-approach was therefor not taken. Instead each sprite class has it's own 
-specialities, implemented as efficient as posssible.
+ - `frames`: each sprite can hold multiple shapes of itself: for creating 
+animations, slices, specific color-fading, or different rotations of a moving
+player figure for example.
+ - `layers`
+ - `screen`
+
+The different types of sprites exist to help in the realisation of ideas.
+Each sprite type has it's own capabilities, pro's and con's. 
 
 ### Classes / Structs
 
@@ -89,6 +98,10 @@ specialities, implemented as efficient as posssible.
 
  - rgb_color
  - rgb_palette
+
+ - board
+
+ - screen
 
 ## BUILD
 You can build the library along with a simple test program by running
@@ -114,7 +127,7 @@ The most easy way to do all this is to copy the library to `/usr/lib/`.
 ```bash
 sudo cp lib/libtsprites.so /usr/lib
 ```
-You then need not set LD_RELOAD and such for running your program,
+You then need not set LD_PRELOAD and such for running your program,
 and are done by just including the header and adding `-ltsprites`
 to your linker flags.
 
@@ -127,7 +140,7 @@ without ever compiling the library, or have the need to link against
 it, if you prefer.
 
 ### Basic Usage
-How to use the the `TSprite` object.
+How to use the the `TSprite` object. How to get some graphics onto the screen.
 
 Getting started is simple. The two most basic methods of `Tsprite` are used
 in this little "hello world" example: `ImportFromFile()`, and `Print()`.
@@ -140,6 +153,11 @@ When a `TSprite` is imported, the graphic data is being parsed, normalized,
 and rewritten into the internal datastructures. These prepare for fast 
 movement on screen, and for applying effects to the graphic data more
 efficiently.
+
+`Print()`: please note: the Print() method is the fastest one to print a
+sprite directly on the screen. It does not handle transparency and it is
+comletely unaware of any coordinates, layers and other elements we will
+see used in later examples. 
 
 ```C++
 #include <stdio.h>
@@ -172,25 +190,34 @@ int main(int argc, char **argv)
 ```
 ![image](https://github.com/M64GitHub/libtsprites/assets/84202356/53995d62-ef77-4bd9-be4d-c3d081ebb1f1)
 
-### Sine Movement Test
+### Sine Movement
 Here the convenience functions `board_init` and `board_close` are introduced. 
 They will clear the terminal and restore the screen and cursor afterwards.
-A specific concept of a "board" like a "game board" is not yet implemented, 
-so they do not even take any parameters yet. 
+(A specific concept of a "board" like a "game board" is not yet implemented,
+but planned).
 
-As you can see, the movement of the sprite is done simply by moving the cursor,
-and printing the sprite like in the above example. This is one way to easily
+Also two new `SSPrites` ("String Sprites") are introduced: `S2` for some animated 
+spinners, and `S3` for a simple (single-frame) string.
+The spinner S2 takes an array of strings, it's length (number of sprite frames), and a
+`rgb_color` as input parameters for the constructor. The other one just a regular (char *) 
+string.
+
+As you can see, the movement of the sprites is done simply by moving the cursor,
+and printing the sprites like in the example above. This is one way to easily
 position a sprite. `Print()` just prints the sprite where the cursor currently
-stands.
+stands.  
+`S2` is printed via `PrintUncolored()`. This is a method specific to string-sprites:
+the color information is completely discarded on output, that means the default 
+terminal color is used.
 
-Since the Sprite is not being "moved", it is also not cleared from the old to 
-the new position. This makes up to a nice effect you can see in the video below.
+Since the Sprites S and S3 are not being "moved", they are also not cleared from the old to 
+the new position. This makes up to a nice effect you can see in the video below:
 
 ```C++
 #include <stdio.h>
 #include <math.h>
 #include <unistd.h>
-#include "include/tsprites.hpp"
+#include "../../include/tsprites.hpp"
 
 int main(int argc, char **argv)
 {
@@ -205,7 +232,7 @@ int main(int argc, char **argv)
                         (char*) " / █ ░ SSprite ",
     };
 
-    rgb_color spinner_color = { 0x9C, 0x41, 0xdE };
+    rgb_color spinner_color = { 0x9C, 0x41, 0xdE }; // R, G, B
 
     TSprite S;
     SSprite S2((char *)"_.:[M64]:._");
@@ -246,14 +273,4 @@ int main(int argc, char **argv)
     return 0;
 }
 ```
-
-
-
 https://github.com/M64GitHub/libtsprites/assets/84202356/90d4a9d3-815f-405c-beaa-802bda05cc45
-
-
-
-
-
-
-
