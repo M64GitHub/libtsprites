@@ -53,6 +53,10 @@ special-effects are possible.
 These are just the most basic ideas. A multitude of types of sprites exists
 for implementing anything visually as fast and simple as possible.
 
+- Please note: all concepts are independent, and optional to use. You need no
+board or screen or anything else than (any type of) `sprite` if you just want
+to display some graphics.
+
 ### Summary of Main Principles, Shapes and Objects
 
  - `blocks`: half characters. Have a color or can be transparent: '▄' or '▀'
