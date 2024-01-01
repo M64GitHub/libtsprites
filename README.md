@@ -68,8 +68,8 @@ block character-set. A soft block is visually always (virtual) 8x8 pixels in
 The same concept also can be used to form lines of arbitrary length in
 virtual pixels: '▐█▌', '██▌'. A special type of sprites take leverage from
 these shapes and is called `LSprite` or `line-sprite`.
- - `regular characters`:  ASCII/UTF-8 characters. Shapes out of UTF-8 characters
-can be built and are called `ascii-sprites` or `ASprite`.
+ - `regular characters`:  Shapes out of ASCII/UTF-8 characters can be built
+and are called `ascii-sprites` or `ASprite`.
  - `regular strings`: to work with text, another sprite class called `SSprite` 
 (`string sprite`) exists. This can be used to place/fade text onto the screen,
 create spinners (1 chareacter animations), and such.
