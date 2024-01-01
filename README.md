@@ -29,6 +29,10 @@ In regard to graphics, the whole lib is based on the concept of `blocks`
 ('▄' or '▀'), (various types of) `sprites`, `layers` (Z-dimension), `boards`
 ("windows"), and a `screen` (the full area to work on).  
 
+- Please note: all these concepts are independent, and optional to use. You need no
+board or screen or anything else than (any type of) `sprite` if you just want
+to display some graphics.
+
 The coordinate-system by default uses measurements in blocks. Shapes formed
 of `blocks` are called `regular sprites` - the code representation would be
 a `TSprite`. `TSprites` can be moved freely in the coordinate-system, while
@@ -53,9 +57,7 @@ special-effects are possible.
 These are just the most basic ideas. A multitude of types of sprites exists
 for implementing anything visually as fast and simple as possible.
 
-- Please note: all concepts are independent, and optional to use. You need no
-board or screen or anything else than (any type of) `sprite` if you just want
-to display some graphics.
+
 
 ### Summary of Main Principles, Shapes and Objects
 
