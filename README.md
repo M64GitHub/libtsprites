@@ -25,10 +25,9 @@ Work in progress ...
 
 ## MAIN CONCEPT
 
-In regard to graphics, the whole lib is based on the concept of `blocks`, 
-not characters. 2 blocks stacked form a regular character. A regular character 
-has the height of 2, an upper block and a lower block. ASCII characters are 
-2 units in height.
+In regard to graphics, the whole lib is based on the concept of `blocks` 
+('▄' or '▀'), not characters. A regular character has the height of 2,
+an upper block and a lower block. ASCII characters are 2 units in height.
 Rectangular shapes formed of `blocks` are called `regular sprites` - the
 code representation would be a `TSprite`.
 
@@ -41,11 +40,11 @@ X-dimension, but only in steps of 2 in the Y-dimension for example.
 With a bit of trickery, also completely smooth (almost pixelwise) movements
 of a pair of blocks can be achieved: in 1/8 fraction steps of a characters
 dimension. This only works for "logical blocks" in dimensions of a character
-(2 blocks in height). Those "double blocks" are called `soft blocks`.  
+(2 blocks in height). Those "double blocks" are called `soft-blocks`.  
 `soft-blocks` can be smoothly moved only: in either the X- or the
 Y-coordinate, not both at the same time.
 
-Combining 2 blocks to a soft block and using the same technique - also lines
+Mulitple `soft-blocks` 
 of arbitrary length are possible. Such lines share the movement property of
 a `soft-block` and are called `soft-lines`. Soft-blocks and soft-lines can be
 mainly used for a very limited usage-set due to their rather "big" visual
