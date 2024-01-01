@@ -31,7 +31,9 @@ and a `screen`.
 
 The coordinate-system by default uses measurements in blocks. Shapes formed
 of `blocks` are called `regular sprites` - the code representation would be
-a `TSprite`. `TSprites` can be moved freely in the coordinate-system.
+a `TSprite`. `TSprites` can be moved freely in the coordinate-system, while
+anything "character-based" like strings or shapes of ASCII/UTF-8 characters
+only in Y-steps of 2.
 
 With a bit of trickery, also completely smooth (almost pixelwise) movements
 of a pair of blocks can be achieved: in 1/8 fraction steps of a characters
@@ -47,6 +49,9 @@ Soft-blocks and soft-lines can be mainly used for a very limited usage-set
 due to their rather "big" visual blockyness of a full character. But with
 their interesting possibility to move them "freely" and "smooth", some nice
 special-effects are possible.  
+
+These are just the most basic ideas. A multitude of types of sprites exists
+for implementing anything visually as fast and simple as possible.
 
 ### Summary of Main Principles, Shapes and Objects
 
@@ -87,6 +92,10 @@ Each sprite type has it's own capabilities, pro's and con's.
 
  - rgb_color
  - rgb_palette
+
+ - board
+
+ - screen
 
 ## BUILD
 You can build the library along with a simple test program by running
