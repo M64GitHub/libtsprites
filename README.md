@@ -226,7 +226,7 @@ int main(int argc, char **argv)
                         (char*) " / █ ░ SSprite ",
     };
 
-    rgb_color spinner_color = { 0x9C, 0x41, 0xdE };
+    rgb_color spinner_color = { 0x9C, 0x41, 0xdE }; // R, G, B
 
     TSprite S;
     SSprite S2((char *)"_.:[M64]:._");
