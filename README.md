@@ -39,18 +39,19 @@ X-dimension, but only in steps of 2 in the Y-dimension for example.
 With a bit of trickery, also completely smooth (almost pixelwise) movements
 of a pair of blocks can be achieved: in 1/8 fraction steps of a characters
 dimension. This only works for "logical blocks" in dimensions of a character
-(2 blocks in height). Those "double blocks" are called `soft-blocks`.  
+(2 blocks in height) '█'. Those "double blocks" are called `soft-blocks`.  
 `soft-blocks` can be smoothly moved only: in either the X- or the
 Y-coordinate, not both at the same time.
 
-Mulitple `soft-blocks` 
-of arbitrary length are possible. Such lines share the movement property of
-a `soft-block` and are called `soft-lines`. Soft-blocks and soft-lines can be
-mainly used for a very limited usage-set due to their rather "big" visual
-blockyness of a full character. But with their interesting possibility to
-move them "freely" and "smooth", some nice special-effects are possible.  
+With mulitple `soft-blocks` and a bit of trickery, lines of arbitrary length
+are possible: '██▌'. Such lines share the movement properties of
+a `soft-block` and are called `soft-lines`.  
+Soft-blocks and soft-lines can be mainly used for a very limited usage-set
+due to their rather "big" visual blockyness of a full character. But with
+their interesting possibility to move them "freely" and "smooth", some nice
+special-effects are possible.  
 
-In this means a special type of sprites is available, too: `line sprites`.
+In this means a special type of sprites is available, too: `line-sprites`.
 Their code representation would be a `LSprite`. Imagine the `M64` logo on
 this page for example. It can be represented as a `line-sprite` and moved
 smoothly around the screen.
