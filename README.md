@@ -26,15 +26,14 @@ Work in progress ...
 ## MAIN CONCEPT
 
 In regard to graphics, the whole lib is based on the concept of `blocks` 
-('▄' or '▀'), not characters. A regular character has the height of 2,
-an upper block and a lower block. ASCII characters are 2 units in height.
-Rectangular shapes formed of `blocks` are called `regular sprites` - the
-code representation would be a `TSprite`.
+('▄' or '▀'), not characters. An upper block and a lower block. ASCII/UTF-8
+characters are 2 units in height. Rectangular shapes formed of `blocks`
+are called `regular sprites` - the code representation would be a `TSprite`.
 
 The coordinate-system by default uses measurements in blocks.
 `TSprites` can be moved freely on a virtual coordinate-system measured in
 blocks. Basically this means the Y-coordinates have twice the resolution of
-a character. ASCII characters in strings can be moved in blocksize in the
+a character. ASCII characters and strings can be moved in blocksize in the
 X-dimension, but only in steps of 2 in the Y-dimension for example.
 
 With a bit of trickery, also completely smooth (almost pixelwise) movements
@@ -61,7 +60,7 @@ smoothly around the screen.
  - `blocks`: half characters. Have a color or can be transparent: '▄' or '▀'
  are individual blocks. Shapes of blocks are called `regular sprites` or
  `TSprites`.
- - `soft blocks` and `soft lines`: leveraging UTF-8 block characters for
+ - `soft-blocks` and `soft-lines`: leveraging UTF-8 block characters for
  pixelwise smooth (constrained) movements and positioning.  
 The UTF-8 block characters enables to form (virtual) 8x8 blocks '█', that
 can be moved "pixelwise": '▐▌'. This is achieved by using 2 characters and
