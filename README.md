@@ -145,6 +145,11 @@ and rewritten into the internal datastructures. These prepare for fast
 movement on screen, and for applying effects to the graphic data more
 efficiently.
 
+`Print()`: please note: the Print() method is the fastest one to print a
+sprite directly on the screen. It does not handle transparency and it is
+comletely unaware of any coordinates, layers and other elements we will
+see used in later examples. 
+
 ```C++
 #include <stdio.h>
 #include "tsprites.hpp"
