@@ -33,7 +33,7 @@ In regard to graphics, the whole lib is based on the concept of `blocks`
 no board or screen or anything else than (any type of) `sprite` if you just want
 to display some graphics. (see [Basic Usage](#basic-usage))
 
-The coordinate-system by default uses measurements in blocks. Shapes formed
+A special case: The coordinate-system by default uses measurements in blocks. Shapes formed
 of `blocks` are called `regular sprites` - the code representation would be
 a `TSprite`. `TSprites` can be moved freely in the coordinate-system, while
 anything "character-based" like strings or shapes of ASCII/UTF-8 characters
