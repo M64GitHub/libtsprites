@@ -56,8 +56,6 @@ special-effects are possible, and they are ideal for block-based games.
 These are just the most basic ideas. A multitude of types of sprites exists
 for implementing anything visually as fast and simple as possible.
 
-
-
 ### Summary of Main Principles, Shapes and Objects
 
  - `blocks`: half characters. Have a color or can be transparent: '▄' or '▀'
@@ -77,7 +75,7 @@ these shapes and is called `LSprite` or `line-sprite`.
 and are called `ascii-sprites` or `ASprite`.
  - `regular strings`: to work with text, another sprite class called `SSprite`
 (`string sprite`) exists. This can be used to place/fade text onto the screen,
-create spinners (1 chareacter animations), and such.
+create spinners (1 character animations), and such.
 
  - `frames`: each sprite can hold multiple shapes of itself: for creating
 animations, slices, specific color-fading, or different rotations of a moving
