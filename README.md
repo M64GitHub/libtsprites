@@ -48,7 +48,7 @@ both at the same time.
 With mulitple `soft-blocks` and a bit of trickery, lines of arbitrary length
 are possible: '██▌'. Such lines share the movement properties of
 a `soft-block` and are called `soft-lines`.  
-Soft-blocks and soft-lines can be mainly used for a very limited usage-set
+Soft-blocks and soft-lines can be used for a very limited usage-set
 due to their rather "big" visual blockyness of a full character. But with
 their interesting possibility to move them "freely" and "smooth", some nice
 special-effects are possible, and they are ideal for block-based games.
