@@ -33,16 +33,15 @@ In regard to graphics, the whole lib is based on the concept of `blocks`
 no board or screen or anything else than (any type of) `sprite` if you just want
 to display some graphics. (see [Basic Usage](#basic-usage))
 
-A special case: The coordinate-system by default uses measurements in blocks. Shapes formed
+The coordinate-system by default uses measurements in blocks. Shapes formed
 of `blocks` are called `regular sprites` - the code representation would be
 a `TSprite`. `TSprites` can be moved freely in the coordinate-system, while
 anything "character-based" like strings or shapes of ASCII/UTF-8 characters
 only in Y-steps of 2.
 
-With a bit of trickery, also completely smooth (almost pixelwise) movements
-of a pair of blocks can be achieved: in 1/8 fraction steps of a characters
-dimension. This only works for "logical blocks" in dimensions of a character
-(2 blocks in height) '█'. Those "double blocks" are called `soft-blocks`.
+A special case: Wth a bit of trickery, also completely smooth (almost pixelwise)
+movements of 2 stacked blocks ('█') can be achieved: in 1/8 fraction steps of a 
+characters dimension. Those "double blocks" are called `soft-blocks`.
 They can be smoothly moved only: in either the X- or the Y-coordinate, not
 both at the same time.
 
