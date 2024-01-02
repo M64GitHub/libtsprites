@@ -34,8 +34,8 @@ no board or screen or anything else than (any type of) `sprite` if you just want
 to display some graphics. (see [Basic Usage](#basic-usage))
 
 "Everything is a sprite". Everything you can place on the screen and see is
-any type of a sprite. Every type of sprite has `frames` (ie for animations)
-and is moveable.
+any type of a sprite. Every type of sprite has `frames`, `animations`, and
+is moveable.
 
 The coordinate-system by default uses measurements in blocks. Shapes formed
 of `blocks` are called `regular sprites` - the code representation would be
