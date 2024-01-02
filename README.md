@@ -106,34 +106,6 @@ Each sprite type has it's own capabilities, pro's and con's.
 
  - screen
 
-## BUILD
-You can build the library along with a simple test program by running
-```bash
-make
-```
-The shared library can then be found in the `lib/` folder.
-The test executable ('test') will be created in the current path.
-You can run it via
-```bash
-LD_PRELOAD=./lib/libtsprites.so ./test
-```
-To build the library only:
-```bash
-make lib
-```
-For building your own applications using libtsprites 
- - include the`<PATH TO include>/tsprites.hpp` in your code
- - optionally add `-I<PATH TO include>` to your compiler-flags
- - add `-ltsprites` and `-L<PATH TO .so file>` in the linking step
-
-The most easy way to do all this is to copy the library to `/usr/lib/`.
-```bash
-sudo cp lib/libtsprites.so /usr/lib
-```
-You then need not set LD_PRELOAD and such for running your program,
-and are done by just including the header and adding `-ltsprites`
-to your linker flags.
-
 ## EXAMPLE CODE
 For getting started quickly, example code is provided in the subfolder
 `examples/`. They all have their own Makefile and include the library code
@@ -282,4 +254,33 @@ int main(int argc, char **argv)
 }
 
 ```
+
+## BUILD
+You can build the library along with a simple test program by running
+```bash
+make
+```
+The shared library can then be found in the `lib/` folder.
+The test executable ('test') will be created in the current path.
+You can run it via
+```bash
+LD_PRELOAD=./lib/libtsprites.so ./test
+```
+To build the library only:
+```bash
+make lib
+```
+For building your own applications using libtsprites 
+ - include the`<PATH TO include>/tsprites.hpp` in your code
+ - optionally add `-I<PATH TO include>` to your compiler-flags
+ - add `-ltsprites` and `-L<PATH TO .so file>` in the linking step
+
+The most easy way to do all this is to copy the library to `/usr/lib/`.
+```bash
+sudo cp lib/libtsprites.so /usr/lib
+```
+You then need not set LD_PRELOAD and such for running your program,
+and are done by just including the header and adding `-ltsprites`
+to your linker flags.
+
 https://github.com/M64GitHub/libtsprites/assets/84202356/90d4a9d3-815f-405c-beaa-802bda05cc45
