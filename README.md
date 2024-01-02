@@ -42,7 +42,7 @@ of `blocks` are called `regular sprites` - the code representation would be
 a `TSprite`. `TSprites` can be moved freely in the coordinate-system, while
 anything "character-based" like strings or shapes of ASCII/UTF-8 characters
 only in Y-steps of 2. The Z-coordinate can be used to select flat `layers`
-for output, bringing objects to the fore- or backgound, parellax effects,
+for output, bringing objects to the fore- or backgound, parallax effects,
 etc.
 
 A special case: with a bit of trickery, completely smooth (almost pixelwise)
