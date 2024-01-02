@@ -33,6 +33,9 @@ In regard to graphics, the whole lib is based on the concept of `blocks`
 no board or screen or anything else than (any type of) `sprite` if you just want
 to display some graphics. (see [Basic Usage](#basic-usage))
 
+"Everything is a sprite". Everything you can place on the screen and see is
+any type of a sprite.
+
 The coordinate-system by default uses measurements in blocks. Shapes formed
 of `blocks` are called `regular sprites` - the code representation would be
 a `TSprite`. `TSprites` can be moved freely in the coordinate-system, while
@@ -80,7 +83,8 @@ create spinners (1 character animations), and such.
  - `frames`: each sprite can hold multiple shapes of itself: for creating
 animations, slices, specific color-fading, or different rotations of a moving
 player figure for example.
- - `layers`
+ - `layers` - Z-coordinate
+ - `boards` - 
  - `screen`
 
 The different types of sprites exist to help in the realisation of ideas.
