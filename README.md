@@ -52,7 +52,7 @@ a `soft-block` and are called `soft-lines`.
 Soft-blocks and soft-lines can be mainly used for a very limited usage-set
 due to their rather "big" visual blockyness of a full character. But with
 their interesting possibility to move them "freely" and "smooth", some nice
-special-effects are possible.  
+special-effects are possible, and they are ideal for block-based games.
 
 These are just the most basic ideas. A multitude of types of sprites exists
 for implementing anything visually as fast and simple as possible.
