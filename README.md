@@ -85,6 +85,7 @@ create spinners (1 character animations), and such.
 animations, slices, specific color-fading, or different rotations of a moving
 player figure for example.
  - `layers` - Z-coordinate
+ - `animations` - set of frames combined with relative (movement) coordinates
  - `boards` - 
  - `screen`
 
