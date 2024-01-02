@@ -3,7 +3,7 @@ C++ library for truecolor unicode terminal sprites, effects, and animations.
 Blazingly fast! Ideal for terminal games, or just more interesting user
 interfaces.  
 
-The intention is to create a library for visual expression on `state of the art`, 
+The intention is to create a library for visual expression on `state of the art`,
 `fast` `terminals`.
 A well setup terminal today allows for very interesting visual experiences
 and effects. This is an exploration of what can be achieved taking it to
@@ -14,7 +14,7 @@ is set-up with a proper monospaced font. Tests so far were done on `kitty`
 on gnu/linux, the `gnome-terminal` (Ubuntu default), and `kitty` on the mac.
 Those for sure work well and fast.  
 mac note: `iTerm2` also "works" (technically), but has shown to be very slow.
-I can not recommend it. `kitty` to me is a perfect terminal, I run it on 
+I can not recommend it. `kitty` to me is a perfect terminal, I run it on
 linux and mac personally.  
 A note about nerd-fonts (https://www.nerdfonts.com/font-downloads)
 shall be given here as well.  
@@ -29,8 +29,8 @@ In regard to graphics, the whole lib is based on the concept of `blocks`
 ('▄' or '▀'), (various types of) `sprites`, `layers` (Z-dimension), `boards`
 ("windows"), and a `screen` (the full area to work on).  
 
-- Please note: all these concepts are independent, and optional to use. You need no
-board or screen or anything else than (any type of) `sprite` if you just want
+- Please note: all these concepts are independent, and optional to use. You need
+no board or screen or anything else than (any type of) `sprite` if you just want
 to display some graphics. (see [Basic Usage](#basic-usage))
 
 The coordinate-system by default uses measurements in blocks. Shapes formed
@@ -76,18 +76,18 @@ virtual pixels: '▐█▌', '██▌'. A special type of sprites take leverag
 these shapes and is called `LSprite` or `line-sprite`.
  - `regular characters`:  Shapes out of ASCII/UTF-8 characters can be built
 and are called `ascii-sprites` or `ASprite`.
- - `regular strings`: to work with text, another sprite class called `SSprite` 
+ - `regular strings`: to work with text, another sprite class called `SSprite`
 (`string sprite`) exists. This can be used to place/fade text onto the screen,
 create spinners (1 chareacter animations), and such.
 
- - `frames`: each sprite can hold multiple shapes of itself: for creating 
+ - `frames`: each sprite can hold multiple shapes of itself: for creating
 animations, slices, specific color-fading, or different rotations of a moving
 player figure for example.
  - `layers`
  - `screen`
 
 The different types of sprites exist to help in the realisation of ideas.
-Each sprite type has it's own capabilities, pro's and con's. 
+Each sprite type has it's own capabilities, pro's and con's.
 
 ### Classes / Structs
 
@@ -123,7 +123,7 @@ For building your own applications using libtsprites
  - optionally add `-I<PATH TO include>` to your compiler-flags
  - add `-ltsprites` and `-L<PATH TO .so file>` in the linking step
 
-The most easy way to do all this is to copy the library to `/usr/lib/`. 
+The most easy way to do all this is to copy the library to `/usr/lib/`.
 ```bash
 sudo cp lib/libtsprites.so /usr/lib
 ```
@@ -132,7 +132,7 @@ and are done by just including the header and adding `-ltsprites`
 to your linker flags.
 
 ## EXAMPLE CODE
-For getting started quickly, example code is provided in the subfolder 
+For getting started quickly, example code is provided in the subfolder
 `examples/`. They all have their own Makefile and include the library code
 directly, without the need of compiling the library as a shared object.
 You can use them as a starter for your own ideas, and copy/extend them
@@ -145,12 +145,12 @@ How to use the the `TSprite` object. How to get some graphics onto the screen.
 Getting started is simple. The two most basic methods of `Tsprite` are used
 in this little "hello world" example: `ImportFromFile()`, and `Print()`.
 
-Sprite graphics can be created with help of the `catimg` utility 
+Sprite graphics can be created with help of the `catimg` utility
 (https://github.com/posva/catimg). Simply redirect it's output to a file.
 You can also take any "*.unicode" file from the resource folder to test.
 
 When a `TSprite` is imported, the graphic data is being parsed, normalized,
-and rewritten into the internal datastructures. These prepare for fast 
+and rewritten into the internal datastructures. These prepare for fast
 movement on screen, and for applying effects to the graphic data more
 efficiently.
 
@@ -191,26 +191,28 @@ int main(int argc, char **argv)
 ![image](https://github.com/M64GitHub/libtsprites/assets/84202356/53995d62-ef77-4bd9-be4d-c3d081ebb1f1)
 
 ### Sine Movement
-Here the convenience functions `board_init` and `board_close` are introduced. 
+Here the convenience functions `board_init` and `board_close` are introduced.
 They will clear the terminal and restore the screen and cursor afterwards.
 (A specific concept of a "board" like a "game board" is not yet implemented,
 but planned).
 
-Also two new `SSPrites` ("String Sprites") are introduced: `S2` for some animated 
-spinners, and `S3` for a simple (single-frame) string.
-The spinner S2 takes an array of strings, it's length (number of sprite frames), and a
-`rgb_color` as input parameters for the constructor. The other one just a regular (char *) 
-string.
+Also two new `SSPrites` ("String Sprites") are introduced: `S2` for some
+animated spinners, and `S3` for a simple (single-frame) string.
+The spinner S2 takes an array of strings, it's length (number of sprite frames),
+and a
+`rgb_color` as input parameters for the constructor. The other one just a
+regular (char *) string.
 
 As you can see, the movement of the sprites is done simply by moving the cursor,
 and printing the sprites like in the example above. This is one way to easily
 position a sprite. `Print()` just prints the sprite where the cursor currently
 stands.  
 `S2` is printed via `PrintUncolored()`. This is a method specific to string-sprites:
-the color information is completely discarded on output, that means the default 
+the color information is completely discarded on output, that means the default
 terminal color is used.
 
-Since the Sprites S and S3 are not being "moved", they are also not cleared from the old to 
+Since the Sprites S and S3 are not being "moved", they are also not cleared from
+the old to 
 the new position. This makes up to a nice effect you can see in the video below:
 
 ```C++
@@ -239,12 +241,14 @@ int main(int argc, char **argv)
     SSprite S3(spinner, 8, spinner_color);
 
     unsigned int tick = 50;
-    int char_tick = 0;
     unsigned int maxtick = 850;
+    int spinner_tick = 0;
 
-    S.ImportFromFile((char*)"resources/demo7_188.unicode");
+    S.ImportFromFile((char*)"../../resources/demo7_188.unicode");
 
-    board_init();
+    screen_init();
+
+    // --
 
     while(tick < maxtick)
     {
@@ -262,15 +266,18 @@ int main(int argc, char **argv)
         cursor_home();
         cursor_down(15);
         cursor_right(5);
-        if(!(tick % 8)) S3.frame_idx = (++char_tick % 8);
+        if(!(tick % 8)) S3.frame_idx = (++spinner_tick % 8);
         S3.Print();
 
         usleep(1000 * 10);
     }
+
+    // --
     
-    board_close();
+    screen_close();
 
     return 0;
 }
+
 ```
 https://github.com/M64GitHub/libtsprites/assets/84202356/90d4a9d3-815f-405c-beaa-802bda05cc45

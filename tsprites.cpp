@@ -9,46 +9,11 @@
 // -- TSprite -----------------------------------------------------------------
 TSprite::TSprite()
 {
-    w = h = x = y = z = 0;
-    shadow_map = 0;
-    color_map = 0;
-    shadow_map_source = 0;
-    color_map_source = 0;
-    maps_initialized = 0;
-    s_source = 0;
-
     DBG ("[TS] TSprite\n");
-}
-
-TSprite::TSprite(int ww, int hh)
-{
-    DBG ("[TS] TSprite(%d, %d)\n", ww, hh);
-    x = y = z = 0;
-    shadow_map = 0;
-    color_map = 0;
-    shadow_map_source = 0;
-    color_map_source = 0;
-    maps_initialized = 0;
-    s_source = 0;
-
-    if(!malloc_maps()) return; 
-
-    // only on success
-    w = ww;
-    h = hh;
-    DBG ("[TS] TSprite(%d, %d) initialized\n", w, h);
 }
 
 TSprite::TSprite(char *imgstr, int strlen)
 {
-    w = h = x = y = z = 0;
-    shadow_map = 0;
-    color_map = 0;
-    shadow_map_source = 0;
-    color_map_source = 0;
-    maps_initialized = 0;
-    s_source = 0;
-
     DBG ("[TS] TSprite(imgstr, strlen)\n");
 
     if(ImportFromImgStr(imgstr, strlen)) {
@@ -58,7 +23,7 @@ TSprite::TSprite(char *imgstr, int strlen)
 
 TSprite::~TSprite()
 {
-    free_maps();
+    free_frames();
 }
 
 int TSprite::ImportFromImgStr(char *str, int l)
@@ -158,17 +123,20 @@ int TSprite::ImportFromImgStr(char *str, int l)
 
     // --
     tmpbuf[out_idx] = 0x0;
+    if(s) free(s); // when called from Reset();
     s = tmpbuf;
+   
+    // Skip, when called from Reset();
+    if(!s_source) {
+        s_source = strdup(tmpbuf);
+        s_source_len = out_idx;
+    }
 
     DBG ("\nw x h = %d x %d = pxcount = %d, tt size of conversion: %d\n", 
            w, h, pxcount, out_idx);
 
     // -- now we have w, h -> we know image size and can create and fill
-    //    maps
-
-    malloc_maps();
-
-
+    //    maps (build a frame[0]
 
     return 0;
 }
@@ -245,7 +213,9 @@ void TSprite::Print()
 
 void TSprite::Reset()
 {
-    if(!maps_initialized) return;
+    if(!s || !s_source) return;
+    // s will be free'd in ImportFromImgStr
+    ImportFromImgStr(s_source, s_source_len);
 }
 
 void TSprite::Render()
@@ -255,37 +225,8 @@ void TSprite::Render()
 
 // -- 
 
-int TSprite::malloc_maps()
+void TSprite::free_frames()
 {
-    shadow_map = (char *) calloc(w * h, 1);
-    if(!shadow_map) return 1;
-
-    color_map = (char *) calloc(w * h * 3, 1); // r, g, b
-    if(!color_map) { free_maps(); return 1; }
-
-    shadow_map_source = (char *) calloc(w * h, 1);
-    if(!shadow_map_source) { free_maps(); return 1; }
-
-    color_map_source = (char *) calloc(w * h * 3, 1); // r, g, b
-    if(!color_map_source) { free_maps(); return 1; }
-
-    maps_initialized = 1; // all or none
-
-    return 0;
-}
-
-int TSprite::free_maps()
-{
-    if(s_source) free(s_source);
-    if(shadow_map) free(shadow_map);
-    if(color_map) free(color_map);
-    if(shadow_map_source) free(shadow_map_source);
-    if(color_map_source) free(color_map_source);
-    if(s_source) free(s_source);
-
-    maps_initialized = 0;
-
-    return 0;
 }
 
 // -- LSprite -----------------------------------------------------------------
@@ -451,9 +392,9 @@ void cursor_home()
     printf("\x1b[H");    // home pos
 }
 
-// -- board -- 
+// -- screen -- 
 //
-void board_init()
+void screen_init()
 {
     printf("\x1b[s");    // save cursor pos
     printf("\x1b[?47h"); // save screen
@@ -462,7 +403,7 @@ void board_init()
     cursor_off();
 }
 
-void board_close()
+void screen_close()
 {
     printf("\x1b[?47l"); // restore screen
     printf("\x1b[u");    // restore cursor pos
@@ -481,4 +422,28 @@ int mystrlen(char *str)
     return i;
 }
 
+int mystrcpy(char *dest, char *src)
+{
+    if(!dest || !src) return 0;
+
+    int i=0;
+    while(src[i]) {
+        dest[i]=src[i];
+        i++;
+    }
+    dest[i] = 0x00;
+
+    return i;
+}
+
+char *strdup(char *src)
+{
+    if(!src) return 0;
+
+    int l = mystrlen(src);
+    char *tmpstr = (char*)calloc(l+1, 1);
+    mystrcpy(tmpstr, src);
+    
+    return tmpstr;
+}
 

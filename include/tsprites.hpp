@@ -3,7 +3,7 @@
 
 #include "tscolors.hpp"
 
-#define DEBUG
+// #define DEBUG
 
 #ifdef DEBUG
 #define DBG(...) fprintf (stderr, __VA_ARGS__)
@@ -11,6 +11,13 @@
 #define DBG(...) 
 #endif
 
+// TSprite
+
+typedef struct s_TSpriteFrame {
+    
+} TSPriteFrame;
+
+// TSprite 
 // True-Color (24bit RGB) unicode based sprite.
 // All y msmts and related values (height h) in "half" characters!)
 class TSprite
@@ -40,40 +47,36 @@ public:
     int z = 0;
     char *s = 0; // for fast printf(), restored after Reset()
 
-    // internal representation - for fast effects processing, ...
-    char *shadow_map; // w * h: like alpha channel: 0: no px, 1: px
-                      // for collision detection, transparency
-    char *color_map;  // w * h: r, g, b
-
 private:
-    int malloc_maps();
-    int free_maps();
-    int free_strings();
-
-    int maps_initialized = 0; // either all or none,
-                              // for better readibility          
-
     // copies of initial state
     char *s_source;           // internal, converted representation 
     int   s_source_len;       // for speed, to avoid strlen()
-    char *shadow_map_source;  //
-    char *color_map_source;   //
+
+    int  add_frameset(int width, int height, int num);
+    void free_frames();
+
+    int frame_count = 0;
+    TSPriteFrame **frames=0;
+    int frame_idx = 0; // current frame
 };
 
 // class LSprite; // Line-Sprite
 
 // class ASprite; // ASCII Sprite
 
+
+// SSprite
+
+//
+typedef struct s_SSPrite_Frame {
+    char *s = 0;            // frame content;
+    rgb_color color; 
+} SSPriteFrame;
+
 // SSprite
 // Simple- or String-Sprite. Sprite for spinners, and such.
 // A collecttion of char *frames, with a fix height of 1 line
 // (2 blocks). All characters of a frame have 1 color
-
-typedef struct s_SSPrite_Frame {
-    char *s;            // frame content;
-    rgb_color color; 
-} SSPriteFrame;
-
 class SSprite 
 {
 public:
@@ -109,10 +112,12 @@ void cursor_on();
 void cursor_off();
 void cursor_reset();
 
-void board_init();
-void board_close();
+void screen_init();
+void screen_close();
 
 int mystrlen(char *s);
+int mystrcpy(char *dest, char *src);
+char *strdup(char *src);
 
 #endif
 

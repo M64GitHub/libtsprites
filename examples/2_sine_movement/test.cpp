@@ -16,19 +16,19 @@ int main(int argc, char **argv)
                         (char*) " / █ ░ SSprite ",
     };
 
-    rgb_color spinner_color = { 0x9C, 0x41, 0xdE };
+    rgb_color spinner_color = { 0x9C, 0x41, 0xdE }; // R, G, B
 
     TSprite S;
     SSprite S2((char *)"_.:[M64]:._");
     SSprite S3(spinner, 8, spinner_color);
 
     unsigned int tick = 50;
-    int char_tick = 0;
     unsigned int maxtick = 850;
+    int spinner_tick = 0;
 
     S.ImportFromFile((char*)"../../resources/demo7_188.unicode");
 
-    board_init();
+    screen_init();
 
     // --
 
@@ -48,16 +48,15 @@ int main(int argc, char **argv)
         cursor_home();
         cursor_down(15);
         cursor_right(5);
-        if(!(tick % 8)) S3.frame_idx = (++char_tick % 8);
+        if(!(tick % 8)) S3.frame_idx = (++spinner_tick % 8);
         S3.Print();
 
         usleep(1000 * 10);
     }
 
     // --
-
     
-    board_close();
+    screen_close();
 
     return 0;
 }
