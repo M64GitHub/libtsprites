@@ -39,7 +39,7 @@ a `TSprite`. `TSprites` can be moved freely in the coordinate-system, while
 anything "character-based" like strings or shapes of ASCII/UTF-8 characters
 only in Y-steps of 2.
 
-A special case: with a bit of trickery, also completely smooth (almost pixelwise)
+A special case: with a bit of trickery, completely smooth (almost pixelwise)
 movements of 2 stacked blocks ('█') can be achieved: in 1/8 fraction steps of a 
 characters dimension. Those "double blocks" are called `soft-blocks`.
 They can be smoothly moved only: in either the X- or the Y-coordinate, not
@@ -51,7 +51,7 @@ a `soft-block` and are called `soft-lines`.
 Soft-blocks and soft-lines can be used for a very limited usage-set
 due to their rather "big" visual blockyness of a full character. But with
 their interesting possibility to move them "freely" and "smooth", some nice
-special-effects are possible, and they are ideal for block-based games.
+special-effects are possible, and they are ideal for `block-based games`.
 
 These are just the most basic ideas. A multitude of types of sprites exists
 for implementing anything visually as fast and simple as possible.
