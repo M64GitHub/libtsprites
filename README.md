@@ -84,10 +84,10 @@ create spinners (1 character animations), and such.
  - `frames`: each sprite can hold multiple shapes of itself: for creating
 animations, slices, specific color-fading, or different rotations of a moving
 player figure for example.
- - `layers` - Z-coordinate
  - `animations` - set of frames combined with relative (movement) coordinates
- - `boards` - 
- - `screen`
+ - `layers` - Z-coordinate
+ - `boards`
+ - `screen` 
 
 The different types of sprites exist to help in the realisation of ideas.
 Each sprite type has it's own capabilities, pro's and con's.
