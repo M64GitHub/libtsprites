@@ -142,7 +142,7 @@ it, if you prefer.
 ### Basic Usage
 How to use the the `TSprite` object. How to get some graphics onto the screen.
 
-Getting started is simple. The two most basic methods of `Tsprite` are used
+Getting started is simple. The two most basic methods of `TSprite` are used
 in this little "hello world" example: `ImportFromFile()`, and `Print()`.
 
 Sprite graphics can be created with help of the `catimg` utility
