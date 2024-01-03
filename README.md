@@ -26,38 +26,41 @@ Work in progress ...
 ## MAIN CONCEPT
 
 In regard to graphics, the whole lib is based on the concept of `blocks`
-('▄' or '▀'), (various types of) `sprites`, `layers` (Z-dimension), `boards`
-("windows"), and a `screen` (the full area to work on).  
+('▄' or '▀'), (various types of) `sprites`, `boards` ("windows"), and a
+`screen` (the full area to work on).  
 
 - Please note: all these concepts are independent, and optional to use. You need
 no board or screen or anything else than (any type of) `sprite` if you just want
 to display some graphics. (see [Basic Usage](#basic-usage))
 
+"Everything is a sprite". Everything you can place on the screen and see is
+any type of a sprite. Every type of sprite has `frames`, `animations`, and
+is moveable.
+
 The coordinate-system by default uses measurements in blocks. Shapes formed
 of `blocks` are called `regular sprites` - the code representation would be
 a `TSprite`. `TSprites` can be moved freely in the coordinate-system, while
 anything "character-based" like strings or shapes of ASCII/UTF-8 characters
-only in Y-steps of 2.
+only in Y-steps of 2. The Z-coordinate can be used to select flat `layers`
+for output, bringing objects to the fore- or backgound, parallax effects,
+etc.
 
-With a bit of trickery, also completely smooth (almost pixelwise) movements
-of a pair of blocks can be achieved: in 1/8 fraction steps of a characters
-dimension. This only works for "logical blocks" in dimensions of a character
-(2 blocks in height) '█'. Those "double blocks" are called `soft-blocks`.
+A special case: with a bit of trickery, completely smooth (almost pixelwise)
+movements of 2 stacked blocks ('█') can be achieved: in 1/8 fraction steps of a 
+characters dimension. Those "double blocks" are called `soft-blocks`.
 They can be smoothly moved only: in either the X- or the Y-coordinate, not
 both at the same time.
 
 With mulitple `soft-blocks` and a bit of trickery, lines of arbitrary length
 are possible: '██▌'. Such lines share the movement properties of
 a `soft-block` and are called `soft-lines`.  
-Soft-blocks and soft-lines can be mainly used for a very limited usage-set
+Soft-blocks and soft-lines can be used for a very limited usage-set
 due to their rather "big" visual blockyness of a full character. But with
 their interesting possibility to move them "freely" and "smooth", some nice
-special-effects are possible.  
+special-effects are possible, and they are ideal for `block-based games`.
 
 These are just the most basic ideas. A multitude of types of sprites exists
 for implementing anything visually as fast and simple as possible.
-
-
 
 ### Summary of Main Principles, Shapes and Objects
 
@@ -78,13 +81,15 @@ these shapes and is called `LSprite` or `line-sprite`.
 and are called `ascii-sprites` or `ASprite`.
  - `regular strings`: to work with text, another sprite class called `SSprite`
 (`string sprite`) exists. This can be used to place/fade text onto the screen,
-create spinners (1 chareacter animations), and such.
+create spinners (1 character animations), and such.
 
  - `frames`: each sprite can hold multiple shapes of itself: for creating
 animations, slices, specific color-fading, or different rotations of a moving
 player figure for example.
- - `layers`
- - `screen`
+ - `animations` - set of frames combined with relative (movement) coordinates
+ - `layers` - Z-coordinate
+ - `boards` - windows (clipping)
+ - `screen` - full work area (clipping)
 
 The different types of sprites exist to help in the realisation of ideas.
 Each sprite type has it's own capabilities, pro's and con's.
@@ -103,34 +108,6 @@ Each sprite type has it's own capabilities, pro's and con's.
 
  - screen
 
-## BUILD
-You can build the library along with a simple test program by running
-```bash
-make
-```
-The shared library can then be found in the `lib/` folder.
-The test executable ('test') will be created in the current path.
-You can run it via
-```bash
-LD_PRELOAD=./lib/libtsprites.so ./test
-```
-To build the library only:
-```bash
-make lib
-```
-For building your own applications using libtsprites 
- - include the`<PATH TO include>/tsprites.hpp` in your code
- - optionally add `-I<PATH TO include>` to your compiler-flags
- - add `-ltsprites` and `-L<PATH TO .so file>` in the linking step
-
-The most easy way to do all this is to copy the library to `/usr/lib/`.
-```bash
-sudo cp lib/libtsprites.so /usr/lib
-```
-You then need not set LD_PRELOAD and such for running your program,
-and are done by just including the header and adding `-ltsprites`
-to your linker flags.
-
 ## EXAMPLE CODE
 For getting started quickly, example code is provided in the subfolder
 `examples/`. They all have their own Makefile and include the library code
@@ -142,7 +119,7 @@ it, if you prefer.
 ### Basic Usage
 How to use the the `TSprite` object. How to get some graphics onto the screen.
 
-Getting started is simple. The two most basic methods of `Tsprite` are used
+Getting started is simple. The two most basic methods of `TSprite` are used
 in this little "hello world" example: `ImportFromFile()`, and `Print()`.
 
 Sprite graphics can be created with help of the `catimg` utility
@@ -191,10 +168,9 @@ int main(int argc, char **argv)
 ![image](https://github.com/M64GitHub/libtsprites/assets/84202356/53995d62-ef77-4bd9-be4d-c3d081ebb1f1)
 
 ### Sine Movement
-Here the convenience functions `board_init` and `board_close` are introduced.
+Here the convenience functions `screen_init` and `screen_close` are introduced.
 They will clear the terminal and restore the screen and cursor afterwards.
-(A specific concept of a "board" like a "game board" is not yet implemented,
-but planned).
+(A specific concept of a "screen" is not yet implemented, but planned).
 
 Also two new `SSPrites` ("String Sprites") are introduced: `S2` for some
 animated spinners, and `S3` for a simple (single-frame) string.
@@ -280,4 +256,35 @@ int main(int argc, char **argv)
 }
 
 ```
+
 https://github.com/M64GitHub/libtsprites/assets/84202356/90d4a9d3-815f-405c-beaa-802bda05cc45
+
+
+## BUILD
+You can build the library along with a simple test program by running
+```bash
+make
+```
+The shared library can then be found in the `lib/` folder.
+The test executable ('test') will be created in the current path.
+You can run it via
+```bash
+LD_PRELOAD=./lib/libtsprites.so ./test
+```
+To build the library only:
+```bash
+make lib
+```
+For building your own applications using libtsprites 
+ - include the`<PATH TO include>/tsprites.hpp` in your code
+ - optionally add `-I<PATH TO include>` to your compiler-flags
+ - add `-ltsprites` and `-L<PATH TO .so file>` in the linking step
+
+The most easy way to do all this is to copy the library to `/usr/lib/`.
+```bash
+sudo cp lib/libtsprites.so /usr/lib
+```
+You then need not set LD_PRELOAD and such for running your program,
+and are done by just including the header and adding `-ltsprites`
+to your linker flags.
+
