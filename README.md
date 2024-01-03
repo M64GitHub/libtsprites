@@ -38,8 +38,8 @@ of `blocks` are called `regular sprites` - the code representation would be
 a `TSprite`. `TSprites` can be moved freely in the coordinate-system, while
 anything "character-based" like strings or shapes of ASCII/UTF-8 characters
 only in Y-steps of 2. The Z-coordinate can be used to select flat `layers`
-for output, bringing objects to the fore- or backgound, parallax effects,
-etc.
+for output, bringing objects closer to the fore- or backgound, for 
+parallax effects, etc.
 
 A special case: with a bit of trickery, completely smooth (almost pixelwise)
 movements of 2 stacked blocks ('█') can be achieved: in 1/8 fraction steps of a 
