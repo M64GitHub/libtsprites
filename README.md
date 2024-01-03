@@ -22,8 +22,9 @@ Work in progress ...
 
 ## MAIN CONCEPT
 
-The whole lib is based on the concept of `blocks` ('▄' or '▀'), (various types
-of) `sprites`, `boards` ("windows"), and a `screen` (the full area to work on).  
+The whole lib is based on the concept of `blocks` ('▄' or '▀'), `sprites`
+(various sorts of), `boards` (like "windows" / for clipping), and a `screen` 
+(the full area to work on).  
 
 - Please note: all these concepts are independent, and optional to use. You need
 no board or screen or anything else than (any type of) `sprite` if you just want
