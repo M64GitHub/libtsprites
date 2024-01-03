@@ -14,12 +14,22 @@
 // TSprite
 
 typedef struct s_TSpriteFrame {
-    
+  rgb_color *colormap = 0;
+  unsigned char *shadow_map = 0;
 } TSPriteFrame;
+
+typedef struct s_TSpriteAnimation {
+    char *name = 0;
+    
+    int *animation; // array of frame indizes
+    int *rel_x = 0; // relative x moves
+    int *rel_y = 0; // relative y moves
+
+    int len;
+} TSpriteAnimation;
 
 // TSprite 
 // True-Color (24bit RGB) unicode based sprite.
-// All y msmts and related values (height h) in "half" characters!)
 class TSprite
 {
 public:
@@ -47,17 +57,17 @@ public:
     int z = 0;
     char *s = 0; // for fast printf(), restored after Reset()
 
+    int frame_count = 0;
+    TSPriteFrame **frames=0; // array of pointers
+    int frame_idx = 0; // current frame
 private:
+    int add_frames(int n);
+    int fill_maps_from_inputstr(char *str, TSPriteFrame *F);
+    void free_frames();
+
     // copies of initial state
     char *s_source;           // internal, converted representation 
     int   s_source_len;       // for speed, to avoid strlen()
-
-    int  add_frameset(int width, int height, int num);
-    void free_frames();
-
-    int frame_count = 0;
-    TSPriteFrame **frames=0;
-    int frame_idx = 0; // current frame
 };
 
 // class LSprite; // Line-Sprite

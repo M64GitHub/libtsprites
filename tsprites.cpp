@@ -136,7 +136,123 @@ int TSprite::ImportFromImgStr(char *str, int l)
            w, h, pxcount, out_idx);
 
     // -- now we have w, h -> we know image size and can create and fill
-    //    maps (build a frame[0]
+    //    maps:
+    add_frames(1);
+    TSPriteFrame *F = frames[frame_count-1]; // our added frame
+    F->colormap = new rgb_color[w * h];
+    F->shadow_map = new unsigned char[w * h];
+    fill_maps_from_inputstr(str, F);
+
+    // -- fill maps from input string ...
+
+    return 0;
+}
+
+int TSprite::fill_maps_from_inputstr(char *str, TSPriteFrame *F)
+{
+    unsigned int pos, map_idx, map_x, map_y;
+    int res, r1, g1, b1, r2, g2, b2;
+    r1 = 0; g1 = 0; b1 = 0;
+    r2 = 0; g2 = 0; b2 = 0;
+    int count = 0;
+    char tmpbuf1k[1024];
+
+    pos = CATIMG_HDR_LEN;
+    DBG("PARSING ...\n");
+
+    for(map_y = 0; map_y < (h/2); map_y++) {
+    for(map_x = 0; map_x < w; map_x++) {
+        // -- case 1: doublepixel
+        res = sscanf(str + pos, "\x1b[48;2;%d;%d;%dm\x1b[38;2;%d;%d;%dm\u2584",
+                    &r1, &g1, &b1,&r2, &g2, &b2);
+        if(res == 6) {
+            count++;
+            DBG("%d case 1: doublepixel: %d %d %d, %d %d %d\n", pos,
+                r1, g1, b1, r2, g2, b2);
+            while((unsigned char)str[pos] != 0x84) pos++;
+            pos++;
+            // write to maps 
+            continue;
+        }
+
+        // -- case 2 or 3: 
+        //    2: upper pixel, lower transparent: 0x80
+        //    3: lower pixel, upper transparent: 0x84
+        res = sscanf(str + pos, "\x1b[0;38;2;%d;%d;%dm",
+                    &r1, &g1, &b1);
+        if(res == 3) {
+            count++;
+            DBG ("STHG found at pos: %d\n", pos);
+            int lookahead;
+            int found = 0;
+            unsigned char c;
+            for(lookahead = 14; lookahead < 25; lookahead++) {
+                if((unsigned char)str[pos + lookahead] == 0x84) {
+                    found = 0x84;
+                    DBG("%d case 3: lower pixel: %d %d %d\n", pos,
+                        r1, g1, b1);
+                    pos+=lookahead+1;
+                    // write to maps 
+                    break;
+                }
+                if((unsigned char)str[pos + lookahead] == 0x80) {
+                    found = 0x80;
+                    DBG("%d case 2: upper pixel: %d %d %d\n", pos,
+                        r1, g1, b1);
+                    pos+=lookahead+1;
+                    // write to maps 
+                    break;
+                }
+            }
+            if(!found) {
+                DBG("ERR at %d\n", pos); 
+                return 1;
+            }
+            continue;
+        }
+
+        // -- case 4: spc
+        if((unsigned char)str[pos + 3] == 0x20) {
+            count++;
+            DBG("%d case 4: SPACE upper pixel and lower transparent\n", pos);
+            pos+=4;
+            // write to maps 
+            continue;
+        }
+
+        DBG ("%d NOT FOUND!\n", pos);
+        
+    }
+
+    DBG ("count: %d\n", count);
+    DBG ("pos: %d\n", pos); pos+=4;
+
+    }
+
+    return 0;
+}
+
+int TSprite::add_frames(int n)
+{
+    if(n < 1) return -1;
+
+    // build new frames
+    TSPriteFrame **new_frames = new TSPriteFrame *[frame_count + n];
+    
+    // copy old frames, if any
+    for(int i=0; i<frame_count; i++) new_frames[i] = frames[i];
+
+    // add new frames
+    for(int i=0; i<n; i++) {
+        TSPriteFrame *F = new TSPriteFrame;
+        new_frames[frame_count + i] = F;
+    }
+
+    // delete old array if one
+    if(frames) free(frames);
+
+    frames = new_frames;
+    frame_count = frame_count + n;
 
     return 0;
 }
@@ -347,8 +463,6 @@ void SSprite::free_frames()
 {
 }
 
-
-
 // -- helper functions --
 
 void cursor_up(int n) 
@@ -393,7 +507,7 @@ void cursor_home()
 }
 
 // -- screen -- 
-//
+
 void screen_init()
 {
     printf("\x1b[s");    // save cursor pos
@@ -410,7 +524,7 @@ void screen_close()
     cursor_on();
 }
 
-// -- 
+// -- helpers
 
 int mystrlen(char *str)
 {
