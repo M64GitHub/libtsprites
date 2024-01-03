@@ -133,7 +133,7 @@ comletely unaware of any coordinates, layers and other elements we will
 see used in later examples. 
 
 ```C++
-#include <stdio.h>
+#include <stdio.h> // for printf()
 #include "tsprites.hpp"
 
 int main(int argc, char **argv)
@@ -188,9 +188,8 @@ the old to
 the new position. This makes up to a nice effect you can see in the video below:
 
 ```C++
-#include <stdio.h>
-#include <math.h>
-#include <unistd.h>
+#include <math.h>   // for sin()
+#include <unistd.h> // for usleep()
 #include "../../include/tsprites.hpp"
 
 int main(int argc, char **argv)
