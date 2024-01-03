@@ -240,6 +240,8 @@ int TSprite::fill_maps_from_inputstr(char *str, TSPriteFrame *F)
     r2 = 0; g2 = 0; b2 = 0;
     int count = 0;
     char tmpbuf1k[1024];
+    rgb_color upper_color;
+    rgb_color lower_color;
 
     pos = CATIMG_HDR_LEN;
     DBG("PARSING ...\n");
@@ -255,7 +257,13 @@ int TSprite::fill_maps_from_inputstr(char *str, TSPriteFrame *F)
                 r1, g1, b1, r2, g2, b2);
             while((unsigned char)str[pos] != 0x84) pos++;
             pos++;
-            // write to maps 
+            // write to maps
+            upper_color.r = r1; upper_color.g = g1; upper_color.b = b1;
+            lower_color.r = r2; lower_color.g = g2; lower_color.b = b2;
+            F->colormap[(map_y*2)*h + map_x]   = upper_color;
+            F->colormap[(map_y*2+1)*h + map_x] = lower_color;
+            F->shadow_map[(map_y*2)*h + map_x]  = 1;
+            F->shadow_map[(map_y*2+1)*h + map_x] = 1;
             continue;
         }
 
@@ -277,6 +285,16 @@ int TSprite::fill_maps_from_inputstr(char *str, TSPriteFrame *F)
                         r1, g1, b1);
                     pos+=lookahead+1;
                     // write to maps 
+                    lower_color.r = r1; 
+                    lower_color.g = g1; 
+                    lower_color.b = b1;
+                    upper_color.r = 0; 
+                    upper_color.g = 0; 
+                    upper_color.b = 0;
+                    F->colormap[(map_y*2)*h + map_x]   = upper_color;
+                    F->colormap[(map_y*2+1)*h + map_x] = lower_color;
+                    F->shadow_map[(map_y*2)*h + map_x]  = 0;
+                    F->shadow_map[(map_y*2+1)*h + map_x] = 1;
                     break;
                 }
                 if((unsigned char)str[pos + lookahead] == 0x80) {
@@ -285,6 +303,16 @@ int TSprite::fill_maps_from_inputstr(char *str, TSPriteFrame *F)
                         r1, g1, b1);
                     pos+=lookahead+1;
                     // write to maps 
+                    upper_color.r = r1; 
+                    upper_color.g = g1; 
+                    upper_color.b = b1;
+                    lower_color.r = 0; 
+                    lower_color.g = 0; 
+                    lower_color.b = 0;
+                    F->colormap[(map_y*2)*h + map_x]   = upper_color;
+                    F->colormap[(map_y*2+1)*h + map_x] = lower_color;
+                    F->shadow_map[(map_y*2)*h + map_x]  = 1;
+                    F->shadow_map[(map_y*2+1)*h + map_x] = 0;
                     break;
                 }
             }
@@ -301,6 +329,16 @@ int TSprite::fill_maps_from_inputstr(char *str, TSPriteFrame *F)
             DBG("%d case 4: SPACE upper pixel and lower transparent\n", pos);
             pos+=4;
             // write to maps 
+            upper_color.r = 0; 
+            upper_color.g = 0; 
+            upper_color.b = 0;
+            lower_color.r = 0; 
+            lower_color.g = 0; 
+            lower_color.b = 0;
+            F->colormap[(map_y*2)*h + map_x]   = upper_color;
+            F->colormap[(map_y*2+1)*h + map_x] = lower_color;
+            F->shadow_map[(map_y*2)*h + map_x]  = 0;
+            F->shadow_map[(map_y*2+1)*h + map_x] = 0;
             continue;
         }
         DBG ("%d NOT FOUND!\n", pos);
