@@ -28,6 +28,8 @@ int main(int argc, char **argv)
 
     S.ImportFromFile((char*)"resources/demo7t_188.unicode");
 
+    S.Render(); return 0;
+
     screen_init();
 
     // --

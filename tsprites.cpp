@@ -227,7 +227,21 @@ void TSprite::Reset()
 
 void TSprite::Render()
 {
-    
+   for(int y = 0; y < h; y++) {
+        for(int x=0; x < w; x++) {
+            if(frames[0]->shadow_map[y*w+x]) {
+                printf("\x1b[38;2;%d;%d;%dm",
+                       frames[0]->colormap[y*w+x].r,
+                       frames[0]->colormap[y*w+x].g,
+                       frames[0]->colormap[y*w+x].b
+                       );
+
+                printf("*");
+            }
+            else printf(" ");
+        }
+        printf("\n");
+    }
 }
 
 // -- 
@@ -260,10 +274,10 @@ int TSprite::fill_maps_from_inputstr(char *str, TSPriteFrame *F)
             // write to maps
             upper_color.r = r1; upper_color.g = g1; upper_color.b = b1;
             lower_color.r = r2; lower_color.g = g2; lower_color.b = b2;
-            F->colormap[(map_y*2)*h + map_x]   = upper_color;
-            F->colormap[(map_y*2+1)*h + map_x] = lower_color;
-            F->shadow_map[(map_y*2)*h + map_x]  = 1;
-            F->shadow_map[(map_y*2+1)*h + map_x] = 1;
+            F->colormap[(map_y*2)*w + map_x]   = upper_color;
+            F->colormap[(map_y*2+1)*w + map_x] = lower_color;
+            F->shadow_map[(map_y*2)*w + map_x]  = 1;
+            F->shadow_map[(map_y*2+1)*w + map_x] = 1;
             continue;
         }
 
@@ -291,10 +305,10 @@ int TSprite::fill_maps_from_inputstr(char *str, TSPriteFrame *F)
                     upper_color.r = 0; 
                     upper_color.g = 0; 
                     upper_color.b = 0;
-                    F->colormap[(map_y*2)*h + map_x]   = upper_color;
-                    F->colormap[(map_y*2+1)*h + map_x] = lower_color;
-                    F->shadow_map[(map_y*2)*h + map_x]  = 0;
-                    F->shadow_map[(map_y*2+1)*h + map_x] = 1;
+                    F->colormap[(map_y*2)*w + map_x]   = upper_color;
+                    F->colormap[(map_y*2+1)*w + map_x] = lower_color;
+                    F->shadow_map[(map_y*2)*w + map_x]  = 0;
+                    F->shadow_map[(map_y*2+1)*w + map_x] = 1;
                     break;
                 }
                 if((unsigned char)str[pos + lookahead] == 0x80) {
@@ -309,10 +323,10 @@ int TSprite::fill_maps_from_inputstr(char *str, TSPriteFrame *F)
                     lower_color.r = 0; 
                     lower_color.g = 0; 
                     lower_color.b = 0;
-                    F->colormap[(map_y*2)*h + map_x]   = upper_color;
-                    F->colormap[(map_y*2+1)*h + map_x] = lower_color;
-                    F->shadow_map[(map_y*2)*h + map_x]  = 1;
-                    F->shadow_map[(map_y*2+1)*h + map_x] = 0;
+                    F->colormap[(map_y*2)*w + map_x]   = upper_color;
+                    F->colormap[(map_y*2+1)*w + map_x] = lower_color;
+                    F->shadow_map[(map_y*2)*w + map_x]  = 1;
+                    F->shadow_map[(map_y*2+1)*w + map_x] = 0;
                     break;
                 }
             }
@@ -335,10 +349,10 @@ int TSprite::fill_maps_from_inputstr(char *str, TSPriteFrame *F)
             lower_color.r = 0; 
             lower_color.g = 0; 
             lower_color.b = 0;
-            F->colormap[(map_y*2)*h + map_x]   = upper_color;
-            F->colormap[(map_y*2+1)*h + map_x] = lower_color;
-            F->shadow_map[(map_y*2)*h + map_x]  = 0;
-            F->shadow_map[(map_y*2+1)*h + map_x] = 0;
+            F->colormap[(map_y*2)*w + map_x]   = upper_color;
+            F->colormap[(map_y*2+1)*w + map_x] = lower_color;
+            F->shadow_map[(map_y*2)*w + map_x]  = 0;
+            F->shadow_map[(map_y*2+1)*w + map_x] = 0;
             continue;
         }
         DBG ("%d NOT FOUND!\n", pos);
