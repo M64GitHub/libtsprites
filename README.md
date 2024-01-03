@@ -19,7 +19,6 @@ A note about nerd-fonts (https://www.nerdfonts.com/font-downloads)
 shall be given here as well.  
 
 Work in progress ...
-(see tsprites.hpp)
 
 ## MAIN CONCEPT
 
