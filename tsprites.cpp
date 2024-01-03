@@ -238,7 +238,10 @@ void TSprite::Render()
 
                 printf("*");
             }
-            else printf(" ");
+            else {
+                printf("\x1b[38;2;0;0;0m");
+                printf(".");
+            }
         }
         printf("\n");
     }
