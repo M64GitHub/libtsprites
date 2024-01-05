@@ -1,7 +1,8 @@
-#include <stdio.h>
-#include <math.h>
-#include <unistd.h>
+#include <math.h>   // for sin()
+#include <unistd.h> // for usleep()
 #include "include/tsprites.hpp"
+
+#include <stdio.h>
 
 int main(int argc, char **argv)
 {
@@ -27,6 +28,25 @@ int main(int argc, char **argv)
     int spinner_tick = 0;
 
     S.ImportFromFile((char*)"resources/demo7t_188.unicode");
+
+    // -- 
+    S.ImportFromFile((char*)"resources/demo6_180.unicode");
+
+    S.Print();
+    cursor_right(10);
+    printf("%s", S.frames[0]->s);
+    cursor_left(5);
+    printf("%s", S.frames[1]->s);
+    cursor_left(5);
+
+    S.PrintDebugMap(S.frames[0]);
+    S.PrintDebugMap(S.frames[1]);
+
+    return 0;
+
+    // --
+
+
 
     screen_init();
 

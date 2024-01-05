@@ -12,11 +12,14 @@ TSprite::TSprite()
     DBG ("[TS] TSprite\n");
 }
 
-TSprite::TSprite(char *imgstr, int strlen)
+// TSprite(char *imgstr)
+// initialize from imgstr (catimg format), ie when included via 'xxd -i'
+// make sure imgstr is 0x00 terminated!
+TSprite::TSprite(char *imgstr)
 {
-    DBG ("[TS] TSprite(imgstr, strlen)\n");
+    DBG ("[TS] TSprite(imgstr)\n");
 
-    if(ImportFromImgStr(imgstr, strlen)) {
+    if(ImportFromImgStr(imgstr)) {
         printf("[TS] ERROR: unable to convert imgstr.\n");
     }
 }
@@ -26,10 +29,15 @@ TSprite::~TSprite()
     free_frames();
 }
 
-int TSprite::ImportFromImgStr(char *str, int l)
+int TSprite::ImportFromImgStr(char *str)
 {
     char hdr[] = { CATIMG_HDR };
     int chk = 0;
+    int width = 0;
+    int height = 0;
+    int l = 0;
+
+    l = mystrlen(str);
 
     // -- check file "hdr": catimg esc seq 0x1b, 0x5b, 0x73 = "\x1b[s"
     if(l < CATIMG_HDR_LEN) {
@@ -48,23 +56,23 @@ int TSprite::ImportFromImgStr(char *str, int l)
     }
     DBG ("[TS][ImportFromImgStr] file-header OK!\n");
 
-    // start conversion
+    // -- start conversion
     int pos = CATIMG_HDR_LEN; // start of 1st line
     int lnr = 0;
-    char *tmpbuf = 0; // imported, ready2print char * string, with relative
+    char *outstr = 0; // imported, ready2print char * string, with relative
                       // line ends
     char buf8k[8192]; // 8k buf 
 
-    tmpbuf = (char *) calloc(1, l + 4096); // surplus for new lineend encodings
+    outstr = (char *) calloc(1, l + 4096); // surplus for new lineend encodings
                                            // 0x0a -> esc: go w left, 1 down 
-    if(!tmpbuf) {
+    if(!outstr) {
         printf("[TS][ImportFromImgStr] ERROR: unable to alloc tmp mem!\n");
         return 1;
     } else {
         DBG ("[TS][ImportFromImgStr] pre-allocated %d bytes for s\n", l+4096);
     }
 
-    // convert line by line
+    // -- convert line by line
     int lpos    = 0; // pos in line
     int pxcount = 0;
     unsigned int out_idx = 0;
@@ -78,7 +86,7 @@ int TSprite::ImportFromImgStr(char *str, int l)
 
             if(c == 0x96 || c == 0x20) {
                 // 0x80 = upper half block, 0x84 = lower half block
-                if(!lnr) { w++; }// count on the 1st line only
+                if(!lnr) { width++; }// count on the 1st line only
                 pxcount++;
             }
             lpos++;
@@ -90,60 +98,61 @@ int TSprite::ImportFromImgStr(char *str, int l)
 
         // copy line to s
         int i;
-        for(i=0; i<lpos; i++) tmpbuf[out_idx++] = str[pos+i]; 
+        for(i=0; i<lpos; i++) outstr[out_idx++] = str[pos+i]; 
         
-        // create new, relative line end (avoiding strncat):
+        // create new, relative line end
 
         i=0;
         sprintf(buf8k, "\x1b[0m");  // clear all modes
         while(buf8k[i]) {
-            tmpbuf[out_idx++] = buf8k[i++];
+            outstr[out_idx++] = buf8k[i++];
         }
 
         i=0;
-        sprintf(buf8k, "\x1b[%dD", w);  // cursor go left(lpos)
+        sprintf(buf8k, "\x1b[%dD", width);  // cursor go left(lpos)
         while(buf8k[i]) {
-            tmpbuf[out_idx++] = buf8k[i++];
+            outstr[out_idx++] = buf8k[i++];
         }
 
         i=0;
         sprintf(buf8k, "\x1b[%dB",1);  // cursor go down(1)
         while(buf8k[i]) {
-            tmpbuf[out_idx++] = buf8k[i++];
+            outstr[out_idx++] = buf8k[i++];
         }
 
         // -- 
 
         lpos += CATIMG_LINE_END_LEN; 
         
-        lnr++; h+=2; // 1 char = 2 blocks high
+        lnr++; height+=2; // 1 char = 2 blocks high
 
         pos += lpos;
     }
+    outstr[out_idx] = 0x0; // conversion done
 
-    // --
-    tmpbuf[out_idx] = 0x0;
-    if(s) free(s); // when called from Reset();
-    s = tmpbuf;
-   
-    // Skip, when called from Reset();
-    if(!s_source) {
-        s_source = strdup(tmpbuf);
-        s_source_len = out_idx;
-    }
-
-    DBG ("\nw x h = %d x %d = pxcount = %d, tt size of conversion: %d\n", 
-           w, h, pxcount, out_idx);
+    DBG ("\nw x h = %d x %d = pxcount = %d, tt px-size of conversion: %d\n", 
+           width, height, pxcount, out_idx);
 
     // -- now we have w, h -> we know image size and can create and fill
-    //    maps:
-    add_frames(1);
-    TSPriteFrame *F = frames[frame_count-1]; // our added frame
-    F->colormap = new rgb_color[w * h];
-    F->shadow_map = new unsigned char[w * h];
-    fill_maps_from_inputstr(str, F);
+    //    maps / a new frame:
 
-    // -- fill maps from input string ...
+    TSPriteFrame *F = add_frames(1, width, height);
+    F->s = strdup(outstr);
+
+    // -- fill maps from input string
+    imgstr_2maps(str, F);
+
+    // -- create 1down representation, store in frame
+    create_1down_str(F);
+
+    // Skip, when called for further frames:
+    // Sprite gets initialized only from 1st frame (frame 0)
+    if(!frame_count) { 
+        s = outstr;
+        h = height;
+        w = width;
+        s_1down = strdup(F->s_1down);
+    }
 
     return 0;
 }
@@ -153,7 +162,7 @@ int TSprite::ImportFromFile(char *fn)
 {
     FILE *f;
     unsigned long f_size;
-    char *file_contents = 0;
+    char *f_contents = 0;
 
     if(!(f = fopen(fn, "rb"))) {
         printf("[TS][ImportFromFile] ERROR: can not open file.\n");
@@ -179,31 +188,33 @@ int TSprite::ImportFromFile(char *fn)
     }
 
     // -- read file
-    file_contents = (char *) calloc(1, f_size);
-    if(file_contents == NULL) {
-        printf("[TS][ImportFromFile] ERROR: unable to allocate memory for file.\n");
+    f_contents = (char *) calloc(1, f_size + 1); // add 1 for 0x00 terminator
+    if(f_contents == NULL) {
+        printf("[TS][ImportFromFile] ERROR: unable to allocate memory"
+               " for file.\n");
         fclose(f);
         return 1;
     }
     for(unsigned long i=0;i<f_size;i++) {
-        if(!fread(file_contents+i, 1, 1, f)) {
+        if(!fread(f_contents+i, 1, 1, f)) {
             printf("[TS][ImportFromFile] ERROR: unable to read file.\n");
-            free(file_contents);
+            free(f_contents);
             fclose(f);
             return 1;
         }
     }
+    f_contents[f_size] = 0x00; // terminate string properly
     DBG ("[TS][ImportFromFile] successfully read file into buffer.\n");
 
-    // ImportFromImgStr...
-    if(ImportFromImgStr(file_contents, f_size)) {
+    // ImportFromImgStr... 
+    if(ImportFromImgStr(f_contents)) {
             printf("[TS][ImportFromFile] ERROR: unable to convert file.\n");
-            free(file_contents);
+            free(f_contents);
             fclose(f);
             return 1;
     }
 
-    free(file_contents);
+    free(f_contents);
     fclose(f);
 
     DBG ("[TS][ImportFromFile] file successfully imported!\n");
@@ -218,40 +229,67 @@ void TSprite::Print()
     printf ("\x1b[0m\n"); 
 }
 
-void TSprite::Reset()
+void TSprite::Print(int x, int y)
 {
-    if(!s || !s_source) return;
-    // s will be free'd in ImportFromImgStr
-    ImportFromImgStr(s_source, s_source_len);
+    cursor_home();
+    cursor_down(y);
+    cursor_right(x);
+
+    // if(
 }
 
 void TSprite::Render()
 {
-   for(int y = 0; y < h; y++) {
-        for(int x=0; x < w; x++) {
-            if(frames[0]->shadow_map[y*w+x]) {
-                printf("\x1b[38;2;%d;%d;%dm",
-                       frames[0]->colormap[y*w+x].r,
-                       frames[0]->colormap[y*w+x].g,
-                       frames[0]->colormap[y*w+x].b
-                       );
+}
 
-                printf("*");
+void TSprite::PrintDebugMap(TSPriteFrame *F)
+{
+    printf("Frame #%d: COLOR:'o', TRANSPARENCY:'-' (with colors) "
+           "w x h: %d x %d\nblk ln map\n", F->nr, F->w, F->h);
+    for(int y = 0; y < F->h; y++) {
+        printf("%02d, %02d ", y, y/2);
+        for(int x=0; x < F->w; x++) {
+            if(F->shadow_map[y*F->w+x]) {
+                printf("\x1b[38;2;%d;%d;%dm",
+                       F->colormap[y*F->w+x].r,
+                       F->colormap[y*F->w+x].g,
+                       F->colormap[y*F->w+x].b
+                       );
+                printf("o");
             }
             else {
-                printf("\x1b[38;2;0;0;0m");
-                printf(".");
+                printf("\x1b[38;2;60;60;60m");
+                printf("-");
+            }
+        }
+        printf("\x1b[0m\n");
+    }
+    printf ("\x1b[0m\n"); 
+    printf("Frame #%d: COLOR: 'o', TRANSPARENCY: '-' (without colors) "
+           "w x h: %d x %d\nblk ln map\n", F->nr, F->w, F->h);
+    for(int y = 0; y < F->h; y++) {
+        printf("%02d, %02d ", y, y/2);
+        for(int x=0; x < F->w; x++) {
+            if(F->shadow_map[y*F->w+x]) {
+                printf("o");
+            }
+            else {
+                printf("-");
             }
         }
         printf("\n");
     }
+    printf ("\x1b[0m\n"); 
 }
 
 // -- 
 
-int TSprite::fill_maps_from_inputstr(char *str, TSPriteFrame *F)
+// TSprite::imgstr_2maps
+//
+// helper for ImportFromImgStr: catimg line ends!
+int TSprite::imgstr_2maps(char *str, TSPriteFrame *F)
 {
-    unsigned int pos, map_idx, map_x, map_y;
+    unsigned int pos, map_x, map_y;
     int res, r1, g1, b1, r2, g2, b2;
     r1 = 0; g1 = 0; b1 = 0;
     r2 = 0; g2 = 0; b2 = 0;
@@ -263,8 +301,8 @@ int TSprite::fill_maps_from_inputstr(char *str, TSPriteFrame *F)
     pos = CATIMG_HDR_LEN;
     DBG("PARSING ...\n");
 
-    for(map_y = 0; map_y < (h/2); map_y++) {
-    for(map_x = 0; map_x < w; map_x++) {
+    for(map_y = 0; map_y < (F->h/2); map_y++) {
+    for(map_x = 0; map_x < F->w; map_x++) {
         // -- case 1: doublepixel
         res = sscanf(str + pos, "\x1b[48;2;%d;%d;%dm\x1b[38;2;%d;%d;%dm\u2584",
                     &r1, &g1, &b1,&r2, &g2, &b2);
@@ -277,10 +315,10 @@ int TSprite::fill_maps_from_inputstr(char *str, TSPriteFrame *F)
             // write to maps
             upper_color.r = r1; upper_color.g = g1; upper_color.b = b1;
             lower_color.r = r2; lower_color.g = g2; lower_color.b = b2;
-            F->colormap[(map_y*2)*w + map_x]   = upper_color;
-            F->colormap[(map_y*2+1)*w + map_x] = lower_color;
-            F->shadow_map[(map_y*2)*w + map_x]  = 1;
-            F->shadow_map[(map_y*2+1)*w + map_x] = 1;
+            F->colormap  [(map_y*2  ) * F->w + map_x] = upper_color;
+            F->colormap  [(map_y*2+1) * F->w + map_x] = lower_color;
+            F->shadow_map[(map_y*2  ) * F->w + map_x] = 1;
+            F->shadow_map[(map_y*2+1) * F->w + map_x] = 1;
             continue;
         }
 
@@ -308,10 +346,10 @@ int TSprite::fill_maps_from_inputstr(char *str, TSPriteFrame *F)
                     upper_color.r = 0; 
                     upper_color.g = 0; 
                     upper_color.b = 0;
-                    F->colormap[(map_y*2)*w + map_x]   = upper_color;
-                    F->colormap[(map_y*2+1)*w + map_x] = lower_color;
-                    F->shadow_map[(map_y*2)*w + map_x]  = 0;
-                    F->shadow_map[(map_y*2+1)*w + map_x] = 1;
+                    F->colormap  [(map_y*2  ) * F->w + map_x] = upper_color;
+                    F->colormap  [(map_y*2+1) * F->w + map_x] = lower_color;
+                    F->shadow_map[(map_y*2  ) * F->w + map_x] = 0;
+                    F->shadow_map[(map_y*2+1) * F->w + map_x] = 1;
                     break;
                 }
                 if((unsigned char)str[pos + lookahead] == 0x80) {
@@ -326,10 +364,10 @@ int TSprite::fill_maps_from_inputstr(char *str, TSPriteFrame *F)
                     lower_color.r = 0; 
                     lower_color.g = 0; 
                     lower_color.b = 0;
-                    F->colormap[(map_y*2)*w + map_x]   = upper_color;
-                    F->colormap[(map_y*2+1)*w + map_x] = lower_color;
-                    F->shadow_map[(map_y*2)*w + map_x]  = 1;
-                    F->shadow_map[(map_y*2+1)*w + map_x] = 0;
+                    F->colormap  [(map_y*2  ) * F->w + map_x] = upper_color;
+                    F->colormap  [(map_y*2+1) * F->w + map_x] = lower_color;
+                    F->shadow_map[(map_y*2  ) * F->w + map_x] = 1;
+                    F->shadow_map[(map_y*2+1) * F->w + map_x] = 0;
                     break;
                 }
             }
@@ -352,10 +390,10 @@ int TSprite::fill_maps_from_inputstr(char *str, TSPriteFrame *F)
             lower_color.r = 0; 
             lower_color.g = 0; 
             lower_color.b = 0;
-            F->colormap[(map_y*2)*w + map_x]   = upper_color;
-            F->colormap[(map_y*2+1)*w + map_x] = lower_color;
-            F->shadow_map[(map_y*2)*w + map_x]  = 0;
-            F->shadow_map[(map_y*2+1)*w + map_x] = 0;
+            F->colormap  [(map_y*2  ) * F->w + map_x] = upper_color;
+            F->colormap  [(map_y*2+1) * F->w + map_x] = lower_color;
+            F->shadow_map[(map_y*2  ) * F->w + map_x] = 0;
+            F->shadow_map[(map_y*2+1) * F->w + map_x] = 0;
             continue;
         }
         DBG ("%d NOT FOUND!\n", pos);
@@ -368,9 +406,59 @@ int TSprite::fill_maps_from_inputstr(char *str, TSPriteFrame *F)
     return 0;
 }
 
-int TSprite::add_frames(int n)
+// create_1down_str(TSPriteFrame *F)
+// helper for ImportFromImgStr
+// Uses the frame's color / shadow maps to create a position independent
+// printable string, having the sprite moved down 1/2 a character.
+char *TSprite::create_1down_str(TSPriteFrame *F)
 {
-    if(n < 1) return -1;
+    char *tmpstr = (char *)calloc(1, mystrlen(F->s) * 2); // more than enough
+    int tmpstr_idx = 0;
+    rgb_color upper;
+    rgb_color lower;
+
+    // h was initialized with +=2 -> always cleanly divisable
+    for(int Y=0; Y < F->h/2; Y++) {
+        // if line #0
+        if(!Y) {             
+            for(int X=0; X < F->w; X++) {
+                // assume 1st row transparent
+                upper = { 0, 0, 0}; // not required at all
+                lower = F->colormap[X];
+                // printf a top transparent color of map-row 0, 
+                // then line-end
+            }
+            continue;
+        }
+
+        // all else
+        for(int X=0; X < F->w; X++) {
+            lower = F->colormap[X + (Y*2) * F->w];
+            // printf a double color, then line-end
+        }
+
+        // if last line: print 1 more depending on shadow map, or not
+        if(Y == (F->h/2 - 1)) {
+            // when it starts with no pixel, none more will follow, break
+            if(!F->shadow_map[(Y*2 + 1)]) break;
+            // else do the line with n upper pixel, and last row of 
+            // colormap as upper color
+        }
+    }
+
+    char *outstr = strdup(tmpstr); // copies and truncates properly
+    free(tmpstr);                  // so we can free excess memory
+
+    return outstr;
+}
+
+
+// add_frames
+// DOES allocate or initialize colormap / shadowmap!
+// returns the 1st of appended / new frames
+TSPriteFrame *TSprite::add_frames(int n, int width, int height)
+{
+    if(n < 1) return 0;
 
     // build new frames
     TSPriteFrame **new_frames = new TSPriteFrame *[frame_count + n];
@@ -382,6 +470,13 @@ int TSprite::add_frames(int n)
     for(int i=0; i<n; i++) {
         TSPriteFrame *F = new TSPriteFrame;
         new_frames[frame_count + i] = F;
+        F->nr          = frame_count + i;
+        F->colormap    = new rgb_color[width * height];
+        F->shadow_map  = new unsigned char[width * height];
+        F->w           = width;
+        F->h           = height;
+        F->s           = 0;
+        F->s_1down     = 0;
     }
 
     // delete old array if one
@@ -390,7 +485,7 @@ int TSprite::add_frames(int n)
     frames = new_frames;
     frame_count = frame_count + n;
 
-    return 0;
+    return frames[frame_count - n];
 }
 
 void TSprite::free_frames()

@@ -14,8 +14,13 @@
 // TSprite
 
 typedef struct s_TSpriteFrame {
-  rgb_color *colormap = 0;
+  int            nr = 0;
+  rgb_color     *colormap   = 0;
   unsigned char *shadow_map = 0;
+  int            w = 0;
+  int            h = 0;
+  char          *s = 0;    // copy of (lineend-converted) s
+  char          *s_1down;  // copy of (lineend-converted) s_1down
 } TSPriteFrame;
 
 typedef struct s_TSpriteAnimation {
@@ -35,19 +40,19 @@ class TSprite
 public:
     TSprite();
     TSprite(int ww, int hh);
-    TSprite(char *imgstr, int strlen);
+    TSprite(char *imgstr); // catimg format
 
     ~TSprite();
 
     int ImportFromFile(char *fn);
-    int ImportFromImgStr(char *s, int l); 
+    int ImportFromImgStr(char *s); // catimg format
 
-    void Reset(); // restores original state (after 
-                  // possible applied effects)
+    void Print(); // printf s
+    void Print(int x, int y); // move cursor, printf s or s_1down
 
-    void Print(); // output s
+    virtual void Render(); // reassemble from maps and render 
 
-    virtual void Render(); // reassemble from maps and render on screen
+    void PrintDebugMap(TSPriteFrame *F); // colored map representation
 
     // main attributes w/o getters for fastest access
     int w = 0;
@@ -55,19 +60,25 @@ public:
     int x = 0;
     int y = 0; // in blocks / "half characters"
     int z = 0;
-    char *s = 0; // for fast printf(), restored after Reset()
+    char *s = 0; // for fast Print() / printf()
+    char *s_1down = 0; // for convenience, created on import: 
+        // pre-rendered string-representation, having the sprite 
+        // moved 1 block down. For fast Print(x, y) ( using only printf() ),
+        // if you don't want to deal with frames / rendering at all.
+        // -> Makes smooth Y-movements possible with fast printf();
 
-    int frame_count = 0;
+    int frame_count = 0;     // 1 after Import
     TSPriteFrame **frames=0; // array of pointers
-    int frame_idx = 0; // current frame
-private:
-    int add_frames(int n);
-    int fill_maps_from_inputstr(char *str, TSPriteFrame *F);
-    void free_frames();
+    int frame_idx = 0;       // current frame
 
-    // copies of initial state
-    char *s_source;           // internal, converted representation 
-    int   s_source_len;       // for speed, to avoid strlen()
+private:
+    // allocates maps, returns first new frame 
+    TSPriteFrame *add_frames(int n, int width, int height);
+    void free_frames();
+    
+    // import helpers
+    int   imgstr_2maps(char *str, TSPriteFrame *F); // part of import
+    char *create_1down_str(TSPriteFrame *F); // part of import
 };
 
 // class LSprite; // Line-Sprite
@@ -79,7 +90,7 @@ private:
 
 //
 typedef struct s_SSPrite_Frame {
-    char *s = 0;            // frame content;
+    char *s = 0; // frame content;
     rgb_color color; 
 } SSPriteFrame;
 

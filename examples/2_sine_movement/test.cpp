@@ -1,6 +1,5 @@
-#include <stdio.h>
-#include <math.h>
-#include <unistd.h>
+#include <math.h>   // for sin()
+#include <unistd.h> // for usleep()
 #include "../../include/tsprites.hpp"
 
 int main(int argc, char **argv)
