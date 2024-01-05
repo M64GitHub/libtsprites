@@ -134,6 +134,8 @@ void cursor_on();
 void cursor_off();
 void cursor_reset();
 
+void colorprintf(rgb_color c, const char *f, ...);
+
 void screen_init();
 void screen_close();
 

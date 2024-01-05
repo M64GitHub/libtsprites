@@ -1,6 +1,7 @@
 // tsprites.cpp, 2023 M64
 
 #include <stdio.h>
+#include <stdarg.h>
 #include <stdlib.h>
 #include "include/tsprites.hpp"
 #include "include/format_catimg.hpp"
@@ -252,16 +253,19 @@ void TSprite::Render()
 
 void TSprite::PrintDebugMap(TSPriteFrame *F)
 {
-    printf("Frame #%d: COLOR:'o', TRANSPARENCY:'-' (with colors) "
-           "w x h: %d x %d\nblk ln map\n", F->nr, F->w, F->h);
-    for(int y = 0; y < F->h; y++) {
-        printf("%02d, %02d ", y, y/2);
-        for(int x=0; x < F->w; x++) {
-            if(F->shadow_map[y*F->w+x]) {
+    rgb_color c = { 0x80, 0x80, 0xA0 };
+
+    colorprintf(c, 
+        "Frame #%d: COLOR:'o', TRANSPARENCY:'-' (with colors) "
+        "w x h: %d x %d blocks\nblk ln map\n", F->nr, F->w, F->h);
+    for(int Y = 0; Y < F->h; Y++) {
+        colorprintf(c, "%02d, %02d ", Y, Y/2);
+        for(int X=0; X < F->w; X++) {
+            if(F->shadow_map[Y*F->w+X]) {
                 printf("\x1b[38;2;%d;%d;%dm",
-                       F->colormap[y*F->w+x].r,
-                       F->colormap[y*F->w+x].g,
-                       F->colormap[y*F->w+x].b
+                       F->colormap[Y*F->w+X].r,
+                       F->colormap[Y*F->w+X].g,
+                       F->colormap[Y*F->w+X].b
                        );
                 printf("o");
             }
@@ -274,11 +278,11 @@ void TSprite::PrintDebugMap(TSPriteFrame *F)
     }
     printf ("\x1b[0m\n"); 
     printf("Frame #%d: COLOR: 'o', TRANSPARENCY: '-' (without colors) "
-           "w x h: %d x %d\nblk ln map\n", F->nr, F->w, F->h);
-    for(int y = 0; y < F->h; y++) {
-        printf("%02d, %02d ", y, y/2);
-        for(int x=0; x < F->w; x++) {
-            if(F->shadow_map[y*F->w+x]) {
+           "w x h: %d x %d blocks\nblk ln map\n", F->nr, F->w, F->h);
+    for(int Y = 0; Y < F->h; Y++) {
+        printf("%02d, %02d ", Y, Y/2);
+        for(int X=0; X < F->w; X++) {
+            if(F->shadow_map[Y*F->w+X]) {
                 printf("o");
             }
             else {
@@ -659,6 +663,17 @@ void cursor_home()
 {
 
     printf("\x1b[H");    // home pos
+}
+
+// --
+
+void colorprintf(rgb_color c, const char *f, ...)
+{
+    printf("\x1b[0;38;2;%d;%d;%dm", c.r, c.g, c.b);
+    va_list l;
+    va_start(l, f);
+    vprintf(f, l);
+    va_end(l);
 }
 
 // -- screen -- 
