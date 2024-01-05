@@ -49,6 +49,7 @@ public:
 
     void Print(); // printf s
     void Print(int x, int y); // move cursor, printf s or s_1down
+    void PrintFrame(int n); // printf a frame
 
     virtual void Render(); // reassemble from maps and render 
 

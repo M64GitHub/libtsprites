@@ -147,7 +147,7 @@ int TSprite::ImportFromImgStr(char *str)
 
     // Skip, when called for further frames:
     // Sprite gets initialized only from 1st frame (frame 0)
-    if(!frame_count) { 
+    if(frame_count==1) { 
         s = outstr;
         h = height;
         w = width;
@@ -228,6 +228,14 @@ void TSprite::Print()
     printf("%s", s);
     printf ("\x1b[0m\n"); 
 }
+
+void TSprite::PrintFrame(int n)
+{
+    if(frame_count < n) return;
+    printf("%s", frames[n]->s);
+    printf ("\x1b[0m"); 
+}
+
 
 void TSprite::Print(int x, int y)
 {
