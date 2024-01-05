@@ -14,20 +14,17 @@ is set-up with a proper monospaced font. Tests so far were done on `kitty`
 on gnu/linux, the `gnome-terminal` (Ubuntu default), and `kitty` on the mac.
 Those for sure work well and fast.  
 mac note: `iTerm2` also "works" (technically), but has shown to be very slow.
-I can not recommend it. `kitty` to me is a perfect terminal, I run it on
-linux and mac personally.  
+I can not recommend it.
 A note about nerd-fonts (https://www.nerdfonts.com/font-downloads)
 shall be given here as well.  
-After all, we want to work on state of the art, fast terminals ;)
 
 Work in progress ...
-(see tsprites.hpp)
 
 ## MAIN CONCEPT
 
-In regard to graphics, the whole lib is based on the concept of `blocks`
-('▄' or '▀'), (various types of) `sprites`, `boards` ("windows"), and a
-`screen` (the full area to work on).  
+The whole lib is based on the concept of `blocks` ('▄' or '▀'), `sprites`
+(various sorts of), `boards` (like "windows" / for clipping), and a `screen` 
+(the full area to work on).  
 
 - Please note: all these concepts are independent, and optional to use. You need
 no board or screen or anything else than (any type of) `sprite` if you just want
@@ -42,8 +39,8 @@ of `blocks` are called `regular sprites` - the code representation would be
 a `TSprite`. `TSprites` can be moved freely in the coordinate-system, while
 anything "character-based" like strings or shapes of ASCII/UTF-8 characters
 only in Y-steps of 2. The Z-coordinate can be used to select flat `layers`
-for output, bringing objects to the fore- or backgound, parallax effects,
-etc.
+for output, bringing objects closer to the fore- or backgound, for 
+parallax effects, etc.
 
 A special case: with a bit of trickery, completely smooth (almost pixelwise)
 movements of 2 stacked blocks ('█') can be achieved: in 1/8 fraction steps of a 
@@ -137,7 +134,7 @@ comletely unaware of any coordinates, layers and other elements we will
 see used in later examples. 
 
 ```C++
-#include <stdio.h>
+#include <stdio.h> // for printf()
 #include "tsprites.hpp"
 
 int main(int argc, char **argv)
@@ -192,9 +189,8 @@ the old to
 the new position. This makes up to a nice effect you can see in the video below:
 
 ```C++
-#include <stdio.h>
-#include <math.h>
-#include <unistd.h>
+#include <math.h>   // for sin()
+#include <unistd.h> // for usleep()
 #include "../../include/tsprites.hpp"
 
 int main(int argc, char **argv)
