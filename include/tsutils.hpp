@@ -17,8 +17,8 @@ void set_color(rgb_color c);
 void set_bgcolor(rgb_color c);
 void colorprintf(rgb_color c, const char *f, ...);
 
-void screen_init();
-void screen_close();
+void term_init();
+void term_close();
 
 int mystrlen(char *s);
 int mystrcpy(char *dest, char *src);

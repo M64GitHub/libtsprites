@@ -12,7 +12,7 @@ CXX=g++
 CFLAGS+=-O3 -Wall --debug 
 CXXFLAGS+=$(CFLAGS)
 
-$(BINARY): test.o ../../tsprites.o
+$(BINARY): test.o ../../tsprites.o ../../tsutils.o
 	$(CXX) -o $@ $^ 
 
 clean:

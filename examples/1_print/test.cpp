@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include "../../include/tsprites.hpp"
+#include "../../include/tsutils.hpp"
 
 int main(int argc, char **argv)
 {

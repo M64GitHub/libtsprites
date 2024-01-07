@@ -12,13 +12,13 @@ TScreen::TScreen(int width, int height)
     w = width;
     h = height;
 
-    screen_init();
+    term_init();
     CClear(' '); // so cursor pos is below screen
 }
 
 TScreen::~TScreen()
 {
-    screen_close();
+    term_close();
 }
 
 int TScreen::Height() const

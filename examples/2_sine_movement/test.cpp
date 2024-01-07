@@ -1,6 +1,7 @@
 #include <math.h>   // for sin()
 #include <unistd.h> // for usleep()
 #include "../../include/tsprites.hpp"
+#include "../../include/tsutils.hpp"
 
 int main(int argc, char **argv)
 {
@@ -27,7 +28,7 @@ int main(int argc, char **argv)
 
     S.ImportFromFile((char*)"../../resources/demo7_188.unicode");
 
-    screen_init();
+    term_init();
 
     // --
 
@@ -55,7 +56,7 @@ int main(int argc, char **argv)
 
     // --
     
-    screen_close();
+    term_close();
 
     return 0;
 }

@@ -66,7 +66,7 @@ void colorprintf(rgb_color c, const char *f, ...)
 
 // -- screen -- 
 
-void screen_init()
+void term_init()
 {
     printf("\x1b[s");    // save cursor pos
     printf("\x1b[?47h"); // save screen
@@ -75,7 +75,7 @@ void screen_init()
     cursor_off();
 }
 
-void screen_close()
+void term_close()
 {
     printf("\x1b[?47l"); // restore screen
     printf("\x1b[u");    // restore cursor pos
