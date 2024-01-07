@@ -134,8 +134,9 @@ comletely unaware of any coordinates, layers and other elements we will
 see used in later examples. 
 
 ```C++
-#include <stdio.h> // for printf()
-#include "tsprites.hpp"
+#include <stdio.h>
+#include "../../include/tsprites.hpp"
+#include "../../include/tsutils.hpp" // for cursor movements
 
 int main(int argc, char **argv)
 {
@@ -154,8 +155,8 @@ int main(int argc, char **argv)
     S.ImportFromFile(ifile_name); // import catimg redirected output file
 
     cursor_right(5);              // cursor movement functions are included
-    cursor_down(S.h/2);           // move cursor down to make space for the sprite
-    cursor_up  (S.h/2);           // and move cursor back up the height of the sprite
+    cursor_down(S.h / 2);         // move cursor down to make space for the sprite
+    cursor_up(S.h / 2);           // and move cursor back up the height of the sprite
 
     S.Print(); // print the sprite!
 
@@ -165,9 +166,8 @@ int main(int argc, char **argv)
 ![image](https://github.com/M64GitHub/libtsprites/assets/84202356/53995d62-ef77-4bd9-be4d-c3d081ebb1f1)
 
 ### Sine Movement
-Here the convenience functions `screen_init` and `screen_close` are introduced.
+Here the convenience functions `term_init` and `term_close` are introduced.
 They will clear the terminal and restore the screen and cursor afterwards.
-(A specific concept of a "screen" is not yet implemented, but planned).
 
 Also two new `SSPrites` ("String Sprites") are introduced: `S2` for some
 animated spinners, and `S3` for a simple (single-frame) string.
@@ -192,6 +192,7 @@ the new position. This makes up to a nice effect you can see in the video below:
 #include <math.h>   // for sin()
 #include <unistd.h> // for usleep()
 #include "../../include/tsprites.hpp"
+#include "../../include/tsutils.hpp"
 
 int main(int argc, char **argv)
 {
@@ -218,8 +219,7 @@ int main(int argc, char **argv)
 
     S.ImportFromFile((char*)"../../resources/demo7_188.unicode");
 
-    screen_init();
-
+    term_init();
     // --
 
     while(tick < maxtick)
@@ -245,8 +245,7 @@ int main(int argc, char **argv)
     }
 
     // --
-    
-    screen_close();
+    term_close();
 
     return 0;
 }
