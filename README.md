@@ -134,8 +134,9 @@ comletely unaware of any coordinates, layers and other elements we will
 see used in later examples. 
 
 ```C++
-#include <stdio.h> // for printf()
-#include "tsprites.hpp"
+#include <stdio.h>
+#include "../../include/tsprites.hpp"
+#include "../../include/tsutils.hpp" // for cursor movements
 
 int main(int argc, char **argv)
 {
@@ -154,8 +155,8 @@ int main(int argc, char **argv)
     S.ImportFromFile(ifile_name); // import catimg redirected output file
 
     cursor_right(5);              // cursor movement functions are included
-    cursor_down(S.h/2);           // move cursor down to make space for the sprite
-    cursor_up  (S.h/2);           // and move cursor back up the height of the sprite
+    cursor_down(S.h / 2);         // move cursor down to make space for the sprite
+    cursor_up(S.h / 2);           // and move cursor back up the height of the sprite
 
     S.Print(); // print the sprite!
 
