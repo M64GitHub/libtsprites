@@ -1,4 +1,3 @@
-
 #define CATIMG_HDR       0x1b,0x5b,0x73,0x1b,0x5b,0x3f,0x32,0x35,0x6c
 #define CATIMG_HDR_LEN   9
 
@@ -11,3 +10,4 @@
 #define CATIMG_FILE_END_LEN 6
 
 #define CATIMG_MAXSIZE  (1024*256)
+

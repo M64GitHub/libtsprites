@@ -1,31 +1,36 @@
 #include <math.h>   // for sin()
 #include <unistd.h> // for usleep()
+#include "include/tscreen.hpp"
 #include "include/tsprites.hpp"
+#include "include/tsutils.hpp"
 
 #include <stdio.h>
 
 int main(int argc, char **argv)
 {
-    TSprite S;
+    TScreen Screen(120, 30);
+    // TSprite S1;
+    TSprite Spaceship;
 
-    // import sprite graphics 
-    S.ImportFromFile((char*)"resources/demo7t_188.unicode");
+    ruler(120);
 
-    // add (append) another frame 
-    S.ImportFromFile((char*)"resources/demo6_180.unicode");
+    // S1.ImportFromFile(
+    //     (char *)"resources/demo7t_188.unicode");
 
-    S.Print();  
+    //
+    // --
+    Spaceship.ImportFromFile(
+        (char *)"resources/spaceship1_1.unicode");
 
-    cursor_right(10);
-    S.PrintFrame(0);
-    cursor_left(5);
-    S.PrintFrame(1);
-    cursor_left(5);
+    Spaceship.PrintDebugMap(Spaceship.frames[0]);
 
-    S.PrintDebugMap(S.frames[0]);
-    S.PrintDebugMap(S.frames[1]);
-
-    return 0;
+    // S1.Print(20, 0);
+    Spaceship.Print(20, 8);
 
     // --
+    
+    char tmp[16]; int n = 0;
+    n = fread(tmp, 1, 1, stdin);
+
+    return 0;
 }

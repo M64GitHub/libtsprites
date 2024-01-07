@@ -15,10 +15,10 @@
 
 typedef struct s_TSpriteFrame {
   int            nr = 0;
+  int            w  = 0;
+  int            h  = 0;
   rgb_color     *colormap   = 0;
   unsigned char *shadow_map = 0;
-  int            w = 0;
-  int            h = 0;
   char          *s = 0;    // copy of (lineend-converted) s
   char          *s_1down;  // copy of (lineend-converted) s_1down
 } TSPriteFrame;
@@ -27,10 +27,12 @@ typedef struct s_TSpriteAnimation {
     char *name = 0;
     
     int *animation; // array of frame indizes
+    int ani_len;
     int *rel_x = 0; // relative x moves
     int *rel_y = 0; // relative y moves
 
-    int len;
+    class TSprite *S = 0; // sprite can reference frames
+                          // of other sprites (overlay animations)
 } TSpriteAnimation;
 
 // TSprite 
@@ -48,7 +50,7 @@ public:
     int ImportFromImgStr(char *s); // catimg format
 
     void Print(); // printf s
-    void Print(int x, int y); // move cursor, printf s or s_1down
+    void Print(int X, int Y); // move cursor, printf s or s_1down
     void PrintFrame(int n); // printf a frame
 
     virtual void Render(); // reassemble from maps and render 
@@ -68,9 +70,23 @@ public:
         // if you don't want to deal with frames / rendering at all.
         // -> Makes smooth Y-movements possible with fast printf();
 
+    // frames for slicing, animations, ...
     int frame_count = 0;     // 1 after Import
     TSPriteFrame **frames=0; // array of pointers
     int frame_idx = 0;       // current frame
+
+    // animations (framesets)
+    int ani_count = 0; 
+    TSpriteAnimation **animations = 0; // array of pointers
+
+    int counter1 = 0; // convenience counters and thresholds
+    int counter2 = 0;
+    int counter3 = 0;
+    int threshhold1 = 0;
+    int threshhold2 = 0;
+    int threshhold3 = 0;
+
+    int state       = 0; // generic type to support own concepts
 
 private:
     // allocates maps, returns first new frame 
@@ -80,6 +96,8 @@ private:
     // import helpers
     int   imgstr_2maps(char *str, TSPriteFrame *F); // part of import
     char *create_1down_str(TSPriteFrame *F); // part of import
+  
+    rgb_color     *background = 0; // for rendering
 };
 
 // class LSprite; // Line-Sprite
@@ -121,27 +139,6 @@ private:
     unsigned char color_override = 0; // if frame color is unsed,
                                       // or overriden by effect.
 };
-
-// -- helper functions
-
-void cursor_up(int n);
-void cursor_down(int n);
-void cursor_left(int n);
-void cursor_right(int n);
-void cursor_home();
-
-void cursor_on();
-void cursor_off();
-void cursor_reset();
-
-void colorprintf(rgb_color c, const char *f, ...);
-
-void screen_init();
-void screen_close();
-
-int mystrlen(char *s);
-int mystrcpy(char *dest, char *src);
-char *strdup(char *src);
 
 #endif
 
