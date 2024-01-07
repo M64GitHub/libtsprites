@@ -25,7 +25,9 @@ int main(int argc, char **argv)
     Spaceship.PrintDebugMap(Spaceship.frames[0]);
 
     // S1.Print(20, 0);
-    Spaceship.Print(20, 8);
+    Spaceship.Print(0, 0);
+    Spaceship.Print(20, 4);
+    Spaceship.Print(36, 5);
 
     // --
     

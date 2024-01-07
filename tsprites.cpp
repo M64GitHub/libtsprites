@@ -143,7 +143,7 @@ int TSprite::ImportFromImgStr(char *str)
     imgstr_2maps(str, F);
 
     // -- create 1down representation, store in frame
-    // create_1down_str(F);
+    create_1down_str(F);
 
     // Skip, when called for further frames:
     // Sprite gets initialized only from 1st frame (frame 0)
@@ -151,7 +151,7 @@ int TSprite::ImportFromImgStr(char *str)
         s = outstr;
         h = height;
         w = width;
-        // s_1down = strdup(F->s_1down);
+        s_1down = strdup(F->s_1down);
     }
 
     return 0;
@@ -428,23 +428,26 @@ char *TSprite::create_1down_str(TSPriteFrame *F)
 {
     char *tmpstr = (char *)calloc(1, mystrlen(F->s) * 2); // more than enough
     int tmpstr_idx = 0;
-    char buf1k[1024];
+    char buf1k[4096];
     rgb_color upper;
     rgb_color lower;
     int i = 0;
 
+    char *outstr = 0;
+
     // print this "extra line"
     for(int X=0; X < F->w; X++) {
         // uppest block row always transparent
-        upper = { 0, 0, 0 }; // screen.bgcolor
+        upper = { 0xff, 0xff, 0xff }; // screen.bgcolor
         lower = F->colormap[X];
         // printf a top transparent color of map-row 0, 
         // then line-end
-        sprintf(buf1k, "\x1b[38;2;%d;%d;%dm\u2580", 
+        sprintf(buf1k, "\x1b[38;2;%d;%d;%dm\u2584", 
                 lower.r, lower.g, lower.b);
-        mystrcpy(tmpstr + tmpstr_idx, buf1k);
-        tmpstr_idx += mystrlen(buf1k);
+///        mystrcpy(tmpstr + tmpstr_idx, buf1k);
+        i=0; while(buf1k[i]) tmpstr[tmpstr_idx++] = buf1k[i++];
     }
+
     // relative line end
     i=0; sprintf(buf1k, "\x1b[0m");  // clear all modes
     while(buf1k[i]) tmpstr[tmpstr_idx++] = buf1k[i++];
@@ -461,7 +464,7 @@ char *TSprite::create_1down_str(TSPriteFrame *F)
         // -- if last line: print 1 more depending on shadow map, or not
         if(Y == (F->h/2 - 1)) {
             // when it starts with no pixel, none more will follow, break
-            if(!F->shadow_map[(Y*2 + 1)]) break;
+            if(!F->shadow_map[(Y*2 + 1) * F->w]) break;
             // else do the line with n upper pixel, and last row of 
             // colormap as upper color
             for(int X=0; X < F->w; X++) {
@@ -472,8 +475,7 @@ char *TSprite::create_1down_str(TSPriteFrame *F)
                 // then line-end
                 sprintf(buf1k, "\x1b[38;2;%d;%d;%dm\u2580", 
                         lower.r, lower.g, lower.b);
-                mystrcpy(tmpstr + tmpstr_idx, buf1k);
-                tmpstr_idx += mystrlen(buf1k);
+                i=0; while(buf1k[i]) tmpstr[tmpstr_idx++] = buf1k[i++];
             }
             // relative line end
             i=0; sprintf(buf1k, "\x1b[0m");  // clear all modes
@@ -488,14 +490,13 @@ char *TSprite::create_1down_str(TSPriteFrame *F)
         } else {
             // -- all else lines
             for(int X=0; X < F->w; X++) {
-                lower = F->colormap[X + (Y*2)    * F->w];
-                upper = F->colormap[X + (Y*2 -1) * F->w];
+                lower = F->colormap[X + ((Y+1)*2)    * F->w];
+                upper = F->colormap[X + ((Y+1)*2 -1) * F->w];
                 // printf a double color, then line-end/
                 sprintf(buf1k, "\x1b[48;2;%d;%d;%dm\x1b[38;2;%d;%d;%dm\u2584",
                         upper.r, upper.g, upper.b,
                         lower.r, lower.g, lower.b);
-                mystrcpy(tmpstr + tmpstr_idx, buf1k);
-                tmpstr_idx += mystrlen(buf1k);
+                i=0; while(buf1k[i]) tmpstr[tmpstr_idx++] = buf1k[i++];
             }
             // relative line end
             i=0; sprintf(buf1k, "\x1b[0m");  // clear all modes
@@ -510,7 +511,7 @@ char *TSprite::create_1down_str(TSPriteFrame *F)
         }
     }
 
-    char *outstr = strdup(tmpstr); // copies and truncates properly
+    outstr = strdup(tmpstr); // copies and truncates properly
     free(tmpstr);                  // so we can free excess memory
 
     F->s_1down = outstr;

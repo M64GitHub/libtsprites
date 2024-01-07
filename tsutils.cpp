@@ -3,6 +3,8 @@
 #include <stdlib.h>
 #include <stdarg.h>
 
+// -- cursor
+
 void cursor_up(int n) 
 {
     printf ("\x1b[%dA", n);
@@ -44,7 +46,8 @@ void cursor_home()
     printf("\x1b[H");    // home pos
 }
 
-// --
+// -- color
+
 void set_color(rgb_color c)
 {
     printf("\x1b[38;2;%d;%d;%dm", c.r, c.g, c.b);
@@ -64,7 +67,7 @@ void colorprintf(rgb_color c, const char *f, ...)
     va_end(l);
 }
 
-// -- screen -- 
+// -- term -- 
 
 void term_init()
 {
@@ -82,14 +85,14 @@ void term_close()
     cursor_on();
 }
 
-// -- helpers
+// -- string
 
 int mystrlen(char *str)
 {
     if(!str) return 0;
 
     int i=0;
-    while(str[i++]);
+    while((unsigned char)str[i++]);
 
     return i;
 }
@@ -99,7 +102,7 @@ int mystrcpy(char *dest, char *src)
     if(!dest || !src) return 0;
 
     int i=0;
-    while(src[i]) {
+    while((unsigned char)src[i]) {
         dest[i]=src[i];
         i++;
     }
@@ -118,6 +121,41 @@ char *strdup(char *src)
     
     return tmpstr;
 }
+
+void printhex(char *s)
+{
+    int i=0;
+    rgb_color c  { 0x80, 0x80, 0x80 };
+    rgb_color ce { 0xff, 0x80, 0x80 };
+
+    if(!s) {  colorprintf(ce, "(null!)"); }
+    if(!s[0]) colorprintf(ce, "(empty)");
+
+    while((unsigned char)s[i]) {
+        colorprintf(c, "%02x ", (unsigned char)s[i++]);
+    }
+    colorprintf(ce, "00 ");
+}
+
+void printhex(char *name, char *s)
+{
+    int i=0;
+    rgb_color c  { 0x80, 0x80, 0x80 };
+    rgb_color ce { 0xff, 0x80, 0x80 };
+    rgb_color cn { 0xb0, 0xb0, 0xb0 };
+
+    colorprintf(cn, "%s ", name);
+
+    if(!s) {  colorprintf(ce, "(null!)"); }
+    if(!s[0]) colorprintf(ce, "(empty)");
+
+    while(s[i]) {
+        colorprintf(c, "%02x ", (unsigned char)s[i++]);
+    }
+    colorprintf(ce, "00 ");
+}
+
+// -- utils
 
 void ruler(int n)
 {
