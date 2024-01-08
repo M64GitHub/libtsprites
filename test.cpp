@@ -21,7 +21,7 @@ int main(int argc, char **argv)
     
     // --
     Spaceship.ImportFromFile(
-        (int)"resources/spaceship1_1.unicode");
+        (char *)"resources/spaceship1_1.unicode");
 
     Spaceship.PrintDebugMap(Spaceship.frames[0]);
 
@@ -31,9 +31,8 @@ int main(int argc, char **argv)
     Spaceship.Print(40, 31);
 
     // --
-    // char tmp[16]; int n = 0;
-    // n = fread(tmp, 1, 1, stdin);
-    while(ftell(stdin) <=1 ) {}
+    char tmp[16]; int n = 0;
+    n = fread(tmp, 1, 1, stdin);
 
     return 0;
 }
