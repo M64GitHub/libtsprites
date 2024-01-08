@@ -51,5 +51,6 @@ void TScreen::CClear(char c)
     set_bgcolor(bg_color);
     for(int i=0;i<h;i++) printf("%s", clr_line);
     printf ("\x1b[0m");   // reset all modes
+    fflush(stdout);
 }
 

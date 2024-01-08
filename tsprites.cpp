@@ -226,7 +226,6 @@ void TSprite::Print()
 {
     if(!s) return;
     printf("%s", s);
-    printf ("\x1b[0m\n"); 
 }
 
 void TSprite::Print(int X, int Y)
@@ -237,15 +236,12 @@ void TSprite::Print(int X, int Y)
 
     if((Y+2)%2) printf("%s", s_1down);
     else      printf("%s", s);
-
-    printf("\x1b[0m"); 
 }
 
 void TSprite::PrintFrame(int n)
 {
     if(frame_count < n) return;
     printf("%s", frames[n]->s);
-    printf ("\x1b[0m"); 
 }
 
 void TSprite::Render()
@@ -444,7 +440,6 @@ char *TSprite::create_1down_str(TSPriteFrame *F)
         // then line-end
         sprintf(buf1k, "\x1b[38;2;%d;%d;%dm\u2584", 
                 lower.r, lower.g, lower.b);
-///        mystrcpy(tmpstr + tmpstr_idx, buf1k);
         i=0; while(buf1k[i]) tmpstr[tmpstr_idx++] = buf1k[i++];
     }
 
@@ -512,7 +507,7 @@ char *TSprite::create_1down_str(TSPriteFrame *F)
     }
 
     outstr = strdup(tmpstr); // copies and truncates properly
-    free(tmpstr);                  // so we can free excess memory
+    free(tmpstr);            // so we can free excess memory
 
     F->s_1down = outstr;
 
