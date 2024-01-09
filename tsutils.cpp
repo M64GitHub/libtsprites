@@ -93,6 +93,7 @@ void term_close()
 
 // -- string
 
+// returns size of string, so includes 0x00 !
 int mystrlen(char *str)
 {
     if(!str) return 0;
@@ -122,7 +123,7 @@ char *strdup(char *src)
     if(!src) return 0;
 
     int l = mystrlen(src);
-    char *tmpstr = (char*)calloc(l+1, 1);
+    char *tmpstr = (char*)calloc(l, 1);
     mystrcpy(tmpstr, src);
     
     return tmpstr;

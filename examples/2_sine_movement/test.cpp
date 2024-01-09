@@ -31,7 +31,7 @@ int main(int argc, char **argv)
 
     term_init();          // clear terminal
 
-    while(TS.counter1 < TS.threshhold1)
+    while(TS.counter1 < TS.threshhold1) 
     {
         TS.counter1++;
         cursor_home();    // move the cursor to topleft in terminal

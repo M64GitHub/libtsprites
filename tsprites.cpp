@@ -591,21 +591,18 @@ SSprite::SSprite(char *str)
     DBG ("[SS] SSprite(char *s)\n");
     
     int l = mystrlen(str);
-    int i;
+    DBG ("[SS] strlen: %d\n", l);
 
     SSPriteFrame *F = new SSPriteFrame;
     frames = new SSPriteFrame*[1];
     frames[0] = F;
 
-    char *tmpstr = (char*)calloc(l+1, 1);
-    DBG ("[SS] strlen: %d\n", l);
-    tmpstr[l] = 0x00; // extra safe
-    for(i=0;i<l;i++) tmpstr[i] = str[i];
-
-    frames[0]->s =tmpstr; 
+    frames[0]->s = strdup(str); 
     frames[0]->color.r = 255;
     frames[0]->color.g = 255;
     frames[0]->color.b = 255;
+
+    s = strdup(frames[0]->s);
 
     frame_count = 1;
 }
@@ -664,7 +661,6 @@ SSprite::SSprite(char **strs, int len, rgb_color c)
     frame_count = len;
 }
 
-
 SSprite::SSprite(char **s, int len, rgb_palette p)
 {
 }
@@ -677,8 +673,8 @@ void SSprite::Print()
 {
     if(!frame_count) return;
     printf("\x1b[38;2;%d;%d;%dm", frames[frame_idx]->color.r,
-                                   frames[frame_idx]->color.g,
-                                   frames[frame_idx]->color.b
+                                  frames[frame_idx]->color.g,
+                                  frames[frame_idx]->color.b
     );
     printf("%s", frames[frame_idx]->s);
 }
@@ -686,8 +682,8 @@ void SSprite::Print()
 void SSprite::Print(int X, int Y)
 {
     cursor_home();
-    if(Y>1) cursor_down(Y/2);
-    if(X)   cursor_right(X);
+    if(Y >= 2) cursor_down(Y >> 1);
+    if(X)      cursor_right(X);
 
     printf("%s", s);
     fflush(stdout);
