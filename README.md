@@ -183,6 +183,7 @@ the new position. This makes up to a nice effect you can see in the video below:
 ```C++
 #include <math.h>   // for sin()
 #include <unistd.h> // for usleep()
+#include <stdio.h>  // for printf()
 #include "../../include/tsprites.hpp"
 #include "../../include/tsutils.hpp"
 
@@ -201,47 +202,42 @@ int main(int argc, char **argv)
 
     rgb_color spinner_color = { 0x9C, 0x41, 0xdE }; // R, G, B
 
-    TSprite S;
-    SSprite S2((char *)"_.:[M64]:._");
-    SSprite S3(spinner, 8, spinner_color);
+    TSprite TS;
 
-    unsigned int tick = 50;
-    unsigned int maxtick = 850;
-    int spinner_tick = 0;
+    SSprite S1((char *)"_.:[M64]:._");
+    SSprite S2(spinner, 8, spinner_color);
 
-    S.ImportFromFile((char*)"../../resources/demo7_188.unicode");
+    TS.counter1    =  50;
+    TS.threshhold1 = 850;
+
+    TS.ImportFromFile((char*)"../../resources/demo7_188.unicode");
 
     term_init();
-    // --
 
-    while(tick < maxtick)
+    while(TS.counter1 < TS.threshhold1)
     {
-        tick++;
-        int x = 10 + 10*(sin( ((tick % 100)/100.0) * 6.28  ));
+        TS.counter1++;
+        int x = 10 + 10*(sin( ((TS.counter1 % 100)/100.0)*6.28 ))-1;
         cursor_home();
-        cursor_right(x-1);
-        S.Print();
+        cursor_right(x);
 
-        cursor_right(90);
-        cursor_right((x-1)/4);
-        S2.PrintUncolored();
+        TS.Print(); printf("\n");
+
+        cursor_right(90 + x/4);
+        S1.PrintUncolored();
 
         // spinner
-        cursor_home();
-        cursor_down(15);
-        cursor_right(5);
-        if(!(tick % 8)) S3.frame_idx = (++spinner_tick % 8);
-        S3.Print();
+        cursor_left (90 + x/4);
+        if(!(TS.counter1 % 8)) S2.frame_idx = (++S2.counter1 % 8);
+        S2.Print();
 
         usleep(1000 * 10);
     }
-
-    // --
+    
     term_close();
 
     return 0;
 }
-
 ```
 
 https://github.com/M64GitHub/libtsprites/assets/84202356/90d4a9d3-815f-405c-beaa-802bda05cc45
