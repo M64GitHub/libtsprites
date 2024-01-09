@@ -158,27 +158,30 @@ int main(int argc, char **argv)
 ![image](https://github.com/M64GitHub/libtsprites/assets/84202356/d61df269-0c09-497f-a057-0598cca94aa0)
 
 ### Sine Movement
-Here the convenience functions `term_init` and `term_close` are introduced.
+Here the convenience functions `term_init()` and `term_close()` are introduced.
 They will clear the terminal and restore the screen and cursor afterwards.
 
-Also two new `SSPrites` ("String Sprites") are introduced: `S2` for some
-animated spinners, and `S3` for a simple (single-frame) string.
-The spinner S2 takes an array of strings, it's length (number of sprite frames),
-and a
-`rgb_color` as input parameters for the constructor. The other one just a
-regular (char *) string.
+Also two new `SSPrites` ("String Sprites") are introduced: `S1` for a simple 
+(single-frame) string, and `S2` for some animated spinners.
+The spinner S2 takes an array of strings, the arrays's length (number of 
+sprite frames), and a `rgb_color` as input parameters for the constructor. 
+The other one just a regular (char *) string.
 
-As you can see, the movement of the sprites is done simply by moving the cursor,
-and printing the sprites like in the example above. This is one way to easily
+The x-movement of the sprites is again done simply by moving the cursor, and 
+printing the sprites like in the example above. This is one way to easily
 position a sprite. `Print()` just prints the sprite where the cursor currently
 stands.  
-`S2` is printed via `PrintUncolored()`. This is a method specific to string-sprites:
-the color information is completely discarded on output, that means the default
-terminal color is used.
+As you can see, `S1` is printed via `PrintUncolored()`. This is a method specific
+to string-sprites: the color information is completely discarded on output, and 
+the default terminal color is used.
 
-Since the Sprites S and S3 are not being "moved", they are also not cleared from
-the old to 
-the new position. This makes up to a nice effect you can see in the video below:
+Since S1 and S2 are not being "moved" (just printed where the cursor stands)
+they are also not cleared from the old to the new position. This makes up to a
+nice effect you can see in the video below.
+
+For convenience, every Sprite class has 3 counters and 3 thresholds builtin.
+This can come in handy when used in some synced effects for exapmle, and 
+can save you from definning a lot of temporary variables.
 
 ```C++
 #include <math.h>   // for sin()
