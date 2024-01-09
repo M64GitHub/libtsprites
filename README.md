@@ -136,7 +136,7 @@ see used in later examples.
 ```C++
 #include <stdio.h>
 #include "../../include/tsprites.hpp"
-#include "../../include/tsutils.hpp" // for cursor movements
+#include "../../include/tsutils.hpp"
 
 int main(int argc, char **argv)
 {
@@ -149,16 +149,16 @@ int main(int argc, char **argv)
     if (argc != 2) { printf("Usage: ./test <filename>\n"); return 1; }
 
     ifile_name = argv[1];         // get filename from cmdline
-
+    term_clear();
     printf("hello world!\n");
     
     S.ImportFromFile(ifile_name); // import catimg redirected output file
 
-    cursor_right(5);              // cursor movement functions are included
-    cursor_down(S.h / 2);         // move cursor down to make space for the sprite
-    cursor_up(S.h / 2);           // and move cursor back up the height of the sprite
+    cursor_right(5); printf("*"); // cursor movement functions are included
 
     S.Print(); // print the sprite!
+
+    printf("*\n"); // ensure prompt is on a new line!
 
     return 0;
 }
