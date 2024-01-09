@@ -180,7 +180,7 @@ they are also not cleared from the old to the new position. This makes up to a
 nice effect you can see in the video below.
 
 For convenience, every Sprite class has 3 `counters` and 3 `thresholds` builtin.
-This can come in handy when used in some synced effects for exapmle, and 
+This can come in handy when used in some synced effects for example, and 
 can save you from definning a lot of temporary variables.
 
 ```C++
