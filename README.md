@@ -141,12 +141,12 @@ see used in later examples.
 int main(int argc, char **argv)
 {
     char *ifile_name = 0;
+    TSprite S;                    // create a TSprite object S
 
-    // create a TSprite object S
-    TSprite S;
 
     // check cmdline for filename
     if (argc != 2) { printf("Usage: ./test <filename>\n"); return 1; }
+
     ifile_name = argv[1];         // get filename from cmdline
 
     term_clear();                 // clear the screen
