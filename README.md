@@ -136,67 +136,63 @@ see used in later examples.
 ```C++
 #include <stdio.h>
 #include "../../include/tsprites.hpp"
-#include "../../include/tsutils.hpp" // for cursor movements
+#include "../../include/tsutils.hpp"
 
 int main(int argc, char **argv)
 {
-    char *ifile_name = 0;
-
-    // create a TSprite object S
-    TSprite S;
+    TSprite S;                    // create a TSprite object S
 
     // check cmdline for filename
     if (argc != 2) { printf("Usage: ./test <filename>\n"); return 1; }
 
-    ifile_name = argv[1];         // get filename from cmdline
+    char *file_name = argv[1];    // get filename from cmdline
 
+    term_clear();                 // clear the screen
     printf("hello world!\n");
-    
-    S.ImportFromFile(ifile_name); // import catimg redirected output file
-
-    cursor_right(5);              // cursor movement functions are included
-    cursor_down(S.h / 2);         // move cursor down to make space for the sprite
-    cursor_up(S.h / 2);           // and move cursor back up the height of the sprite
-
-    S.Print(); // print the sprite!
+    S.ImportFromFile(file_name);  // import catimg redirected output file
+    S.Print();                    // print the sprite!
 
     return 0;
 }
 ```
-![image](https://github.com/M64GitHub/libtsprites/assets/84202356/53995d62-ef77-4bd9-be4d-c3d081ebb1f1)
+![image](https://github.com/M64GitHub/libtsprites/assets/84202356/d61df269-0c09-497f-a057-0598cca94aa0)
 
 ### Sine Movement
-Here the convenience functions `term_init` and `term_close` are introduced.
+Here the convenience functions `term_init()` and `term_close()` are introduced.
 They will clear the terminal and restore the screen and cursor afterwards.
 
-Also two new `SSPrites` ("String Sprites") are introduced: `S2` for some
-animated spinners, and `S3` for a simple (single-frame) string.
-The spinner S2 takes an array of strings, it's length (number of sprite frames),
-and a
-`rgb_color` as input parameters for the constructor. The other one just a
-regular (char *) string.
+Also two new `SSPrites` ("String Sprites") are introduced: `S1` for a simple 
+(single-frame) string, and `S2` for some animated spinners.
+The spinner S2 takes an array of strings, the arrays's length (number of 
+sprite frames), and a `rgb_color` as input parameters for the constructor. 
+The other one just a regular (char *) string.
 
-As you can see, the movement of the sprites is done simply by moving the cursor,
-and printing the sprites like in the example above. This is one way to easily
+The x-movement of the sprites is again done simply by moving the cursor, and 
+printing the sprites like in the example above. This is one way to easily
 position a sprite. `Print()` just prints the sprite where the cursor currently
 stands.  
-`S2` is printed via `PrintUncolored()`. This is a method specific to string-sprites:
-the color information is completely discarded on output, that means the default
-terminal color is used.
+As you can see, `S1` is printed via `PrintUncolored()`. This is a method specific
+to string-sprites: the color information is completely discarded on output, and 
+the default terminal color is used.
 
-Since the Sprites S and S3 are not being "moved", they are also not cleared from
-the old to 
-the new position. This makes up to a nice effect you can see in the video below:
+Since S1 and S2 are not being "moved" (just printed where the cursor stands)
+they are also not cleared from the old to the new position. This makes up to a
+nice effect you can see in the video below.
+
+For convenience, every Sprite class has 3 `counters` and 3 `thresholds` builtin.
+This can come in handy when used in some synced effects for example, and 
+can save you from definning a lot of temporary variables.
 
 ```C++
 #include <math.h>   // for sin()
 #include <unistd.h> // for usleep()
+#include <stdio.h>  // for printf()
 #include "../../include/tsprites.hpp"
 #include "../../include/tsutils.hpp"
 
 int main(int argc, char **argv)
 {
-    char *spinner[] = { 
+    char *spinners[] = { 
                         (char*) " - ▁   SSprite ", 
                         (char*) " \\ ▂ ░ SSprite ",
                         (char*) " | ▃ ▒ SSprite ",
@@ -207,49 +203,44 @@ int main(int argc, char **argv)
                         (char*) " / █ ░ SSprite ",
     };
 
-    rgb_color spinner_color = { 0x9C, 0x41, 0xdE }; // R, G, B
+    rgb_color spinners_color = { 0x9C, 0x41, 0xdE }; // R, G, B
 
-    TSprite S;
-    SSprite S2((char *)"_.:[M64]:._");
-    SSprite S3(spinner, 8, spinner_color);
+    TSprite TS;
 
-    unsigned int tick = 50;
-    unsigned int maxtick = 850;
-    int spinner_tick = 0;
+    SSprite S1((char *)"_.:[M64]:._");
+    SSprite S2(spinners, 8, spinners_color);
 
-    S.ImportFromFile((char*)"../../resources/demo7_188.unicode");
+    TS.counter1    =  50;
+    TS.threshhold1 = 850;
+
+    TS.ImportFromFile((char*)"../../resources/demo7_188.unicode");
 
     term_init();
-    // --
 
-    while(tick < maxtick)
+    while(TS.counter1 < TS.threshhold1)
     {
-        tick++;
-        int x = 10 + 10*(sin( ((tick % 100)/100.0) * 6.28  ));
+        TS.counter1++;
+        int x = 10 + 10*(sin( ((TS.counter1 % 100)/100.0)*6.28 ))-1;
         cursor_home();
-        cursor_right(x-1);
-        S.Print();
+        cursor_right(x);
+        TS.Print(); 
+        printf("\n");
 
-        cursor_right(90);
-        cursor_right((x-1)/4);
-        S2.PrintUncolored();
+        cursor_right(90 + x/4);
+        S1.PrintUncolored();
 
-        // spinner
-        cursor_home();
-        cursor_down(15);
-        cursor_right(5);
-        if(!(tick % 8)) S3.frame_idx = (++spinner_tick % 8);
-        S3.Print();
+        // animate spinners by selecting frame to be printed
+        cursor_left (90 + x/4);
+        if(!(TS.counter1 % 8)) S2.frame_idx = (S2.counter1++ % 8);
+        S2.Print();
 
         usleep(1000 * 10);
     }
-
-    // --
+    
     term_close();
 
     return 0;
 }
-
 ```
 
 https://github.com/M64GitHub/libtsprites/assets/84202356/90d4a9d3-815f-405c-beaa-802bda05cc45
