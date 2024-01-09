@@ -140,30 +140,22 @@ see used in later examples.
 
 int main(int argc, char **argv)
 {
-    char *ifile_name = 0;
     TSprite S;                    // create a TSprite object S
-
 
     // check cmdline for filename
     if (argc != 2) { printf("Usage: ./test <filename>\n"); return 1; }
 
-    ifile_name = argv[1];         // get filename from cmdline
+    char *file_name = argv[1];    // get filename from cmdline
 
     term_clear();                 // clear the screen
     printf("hello world!\n");
-    
-    S.ImportFromFile(ifile_name); // import catimg redirected output file
-
-    cursor_right(5); printf("*"); // cursor movement functions are included
-
+    S.ImportFromFile(file_name);  // import catimg redirected output file
     S.Print();                    // print the sprite!
-
-    printf("*\n");                // ensure prompt is on a new line!
 
     return 0;
 }
 ```
-![image](https://github.com/M64GitHub/libtsprites/assets/84202356/53995d62-ef77-4bd9-be4d-c3d081ebb1f1)
+![image](https://github.com/M64GitHub/libtsprites/assets/84202356/d61df269-0c09-497f-a057-0598cca94aa0)
 
 ### Sine Movement
 Here the convenience functions `term_init` and `term_close` are introduced.
