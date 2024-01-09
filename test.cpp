@@ -20,7 +20,7 @@ int main(int argc, char **argv)
     
     // --
     Spaceship.ImportFromFile(
-        (char *)"resources/spaceship1_1.unicode");
+        (char *)"resources/spc.unicode");
 
     Spaceship.PrintDebugMap(Spaceship.frames[0]);
 
