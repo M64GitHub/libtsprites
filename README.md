@@ -192,7 +192,7 @@ can save you from definning a lot of temporary variables.
 
 int main(int argc, char **argv)
 {
-    char *spinner[] = { 
+    char *spinners[] = { 
                         (char*) " - ▁   SSprite ", 
                         (char*) " \\ ▂ ░ SSprite ",
                         (char*) " | ▃ ▒ SSprite ",
@@ -203,12 +203,12 @@ int main(int argc, char **argv)
                         (char*) " / █ ░ SSprite ",
     };
 
-    rgb_color spinner_color = { 0x9C, 0x41, 0xdE }; // R, G, B
+    rgb_color spinners_color = { 0x9C, 0x41, 0xdE }; // R, G, B
 
     TSprite TS;
 
     SSprite S1((char *)"_.:[M64]:._");
-    SSprite S2(spinner, 8, spinner_color);
+    SSprite S2(spinners, 8, spinners_color);
 
     TS.counter1    =  50;
     TS.threshhold1 = 850;
@@ -223,15 +223,15 @@ int main(int argc, char **argv)
         int x = 10 + 10*(sin( ((TS.counter1 % 100)/100.0)*6.28 ))-1;
         cursor_home();
         cursor_right(x);
-
-        TS.Print(); printf("\n");
+        TS.Print(); 
+        printf("\n");
 
         cursor_right(90 + x/4);
         S1.PrintUncolored();
 
-        // spinner
+        // animate spinners by selecting frame to be printed
         cursor_left (90 + x/4);
-        if(!(TS.counter1 % 8)) S2.frame_idx = (++S2.counter1 % 8);
+        if(!(TS.counter1 % 8)) S2.frame_idx = (S2.counter1++ % 8);
         S2.Print();
 
         usleep(1000 * 10);
