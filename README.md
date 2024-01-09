@@ -154,6 +154,10 @@ int main(int argc, char **argv)
     return 0;
 }
 ```
+```bash
+./test ../../resources/demo7_188.unicode
+```
+
 ![image](https://github.com/M64GitHub/libtsprites/assets/84202356/d61df269-0c09-497f-a057-0598cca94aa0)
 
 ### Sine Movement
