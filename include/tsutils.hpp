@@ -22,6 +22,7 @@ void colorprintf(rgb_color c, const char *f, ...);
 //-- term
 void term_init();
 void term_close();
+void term_clear();
 
 // -- string
 int mystrlen(char *s);

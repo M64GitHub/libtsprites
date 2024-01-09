@@ -3,7 +3,7 @@
 
 #include "tscolors.hpp"
 
-//#define DEBUG
+// #define DEBUG
 
 #ifdef DEBUG
 #define DBG(...) fprintf (stderr, __VA_ARGS__)
@@ -11,7 +11,7 @@
 #define DBG(...) 
 #endif
 
-// TSprite
+// -- TSprite
 
 typedef struct s_TSpriteFrame {
   int            nr = 0;
@@ -27,12 +27,9 @@ typedef struct s_TSpriteAnimation {
     char *name = 0;
     
     int *animation; // array of frame indizes
-    int ani_len;
-    int *rel_x = 0; // relative x moves
-    int *rel_y = 0; // relative y moves
-
-    class TSprite *S = 0; // sprite can reference frames
-                          // of other sprites (overlay animations)
+    int ani_len = 0;
+    int *rel_x  = 0; // relative x moves
+    int *rel_y  = 0; // relative y moves
 } TSpriteAnimation;
 
 // TSprite 
@@ -49,11 +46,18 @@ public:
     int ImportFromFile(char *fn);
     int ImportFromImgStr(char *s); // catimg format
 
-    void Print(); // printf s
+    int Slice(int swidth);
+    int Slice(int *swidths, int numslices);
+
+    void Print();       // printf s
     void Print(int X, int Y); // move cursor, printf s or s_1down
     void PrintFrame(int n); // printf a frame
 
-    virtual void Render(); // reassemble from maps and render 
+    void PrintDimmed(); // printf s
+
+    virtual void Prepare();
+    virtual void Render(); // reassemble from maps, apply effects, 
+                           // animations, and render  into outframe
 
     void PrintDebugMap(TSPriteFrame *F); // colored map representation
 
@@ -74,6 +78,8 @@ public:
     int frame_count = 0;     // 1 after Import
     TSPriteFrame **frames=0; // array of pointers
     int frame_idx = 0;       // current frame
+
+    TSPriteFrame *outframe = 0;
 
     // animations (framesets)
     int ani_count = 0; 
@@ -104,19 +110,22 @@ private:
 
 // class ASprite; // ASCII Sprite
 
+// -- SSprite
 
-// SSprite
-
-//
 typedef struct s_SSPrite_Frame {
     char *s = 0; // frame content;
     rgb_color color; 
+
+    int *animation; // array of frame indizes
+    int ani_len = 0;
+    int *rel_x  = 0; // relative x moves
+    int *rel_y  = 0; // relative y moves
 } SSPriteFrame;
 
 // SSprite
 // Simple- or String-Sprite. Sprite for spinners, and such.
 // A collecttion of char *frames, with a fix height of 1 line
-// (2 blocks). All characters of a frame have 1 color
+// (2 blocks). 
 class SSprite 
 {
 public:
@@ -129,15 +138,38 @@ public:
     ~SSprite();
 
     void Print();
+    void Print(int X, int Y);
     void PrintUncolored();
+    void PrintDimmed(); // printf s
+
+    void PrintFrame(int n); // printf a frame
+
+    virtual void Render(); // apply effects, anis, and render into outframe
+
+    int x   = 0;
+    int y   = 0; // in blocks / "half characters"
+    int z   = 0;
+    char *s = 0; // for fast Print() / printf()
 
     int frame_count = 0;
     SSPriteFrame **frames=0;
     int frame_idx = 0; // current frame
+
+    SSPriteFrame *outframe = 0;
+
+    int counter1 = 0; // convenience counters and thresholds
+    int counter2 = 0;
+    int counter3 = 0;
+    int threshhold1 = 0;
+    int threshhold2 = 0;
+    int threshhold3 = 0;
+
+    int state       = 0; // generic type to support own concepts
 private:
     void free_frames();
     unsigned char color_override = 0; // if frame color is unsed,
                                       // or overriden by effect.
+    rgb_color     *background = 0; // for rendering
 };
 
 #endif

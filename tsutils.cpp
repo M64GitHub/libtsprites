@@ -37,7 +37,7 @@ void cursor_off()
 
 void cursor_reset()
 {
-    printf ("\x1b[0m\n");   // reset all modes
+    printf ("\x1b[0m");   // reset all modes
 }
 
 void cursor_home()
@@ -76,6 +76,12 @@ void term_init()
     printf("\x1b[2J");   // erase entire screen
     printf("\x1b[H");    // home pos
     cursor_off();
+}
+
+void term_clear()
+{
+    printf("\x1b[2J");   // erase entire screen
+    printf("\x1b[H");    // home pos
 }
 
 void term_close()

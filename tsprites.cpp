@@ -128,7 +128,7 @@ int TSprite::ImportFromImgStr(char *str)
 
         pos += lpos;
     }
-    outstr[out_idx] = 0x0; // conversion done
+    outstr[out_idx] = 0x00; // conversion done
 
     DBG ("\nw x h = %d x %d = pxcount = %d, tt px-size of conversion: %d\n", 
            width, height, pxcount, out_idx);
@@ -222,20 +222,33 @@ int TSprite::ImportFromFile(char *fn)
     return 0;
 }
 
+int TSprite::Slice(int swidth)
+{
+    return 0;
+}
+
+int TSprite::Slice(int *swidths, int numslices)
+{
+    return 0;
+}
+
 void TSprite::Print()
 {
     if(!s) return;
     printf("%s", s);
+    
+    fflush(stdout);
 }
 
 void TSprite::Print(int X, int Y)
 {
     cursor_home();
-    if(Y>2) cursor_down(Y/2);
+    if(Y>1) cursor_down(Y/2);
     if(X)   cursor_right(X);
 
     if((Y+2)%2) printf("%s", s_1down);
     else      printf("%s", s);
+    fflush(stdout);
 }
 
 void TSprite::PrintFrame(int n)
@@ -244,7 +257,15 @@ void TSprite::PrintFrame(int n)
     printf("%s", frames[n]->s);
 }
 
-void TSprite::Render()
+void TSprite::PrintDimmed() // TODO
+{
+}
+
+void TSprite::Prepare()
+{
+}
+
+void TSprite::Render() // TODO
 {
 }
 
@@ -299,7 +320,8 @@ void TSprite::PrintDebugMap(TSPriteFrame *F)
 // helper for ImportFromImgStr: catimg line ends!
 int TSprite::imgstr_2maps(char *str, TSPriteFrame *F)
 {
-    unsigned int pos, map_x, map_y;
+    unsigned int pos; 
+    int map_x, map_y;
     int res, r1, g1, b1, r2, g2, b2;
     r1 = 0; g1 = 0; b1 = 0;
     r2 = 0; g2 = 0; b2 = 0;
@@ -661,12 +683,33 @@ void SSprite::Print()
     printf("%s", frames[frame_idx]->s);
 }
 
+void SSprite::Print(int X, int Y)
+{
+    cursor_home();
+    if(Y>1) cursor_down(Y/2);
+    if(X)   cursor_right(X);
+
+    printf("%s", s);
+    fflush(stdout);
+}
+
 void SSprite::PrintUncolored()
 {
     if(!frame_count) return;
     printf("%s", frames[frame_idx]->s);
 }
 
+void SSprite::PrintDimmed() // TODO
+{
+}
+
+void SSprite::PrintFrame(int n) // TODO
+{
+}
+
+void SSprite::Render()
+{
+}
 
 void SSprite::free_frames()
 {

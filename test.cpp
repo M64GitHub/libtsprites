@@ -10,7 +10,6 @@
 int main(int argc, char **argv)
 {
     TScreen Screen(120, 45);
-    fflush(stdout);
     TSprite S1;
     TSprite Spaceship;
 
@@ -31,8 +30,10 @@ int main(int argc, char **argv)
     Spaceship.Print(40, 31);
 
     // --
-    char tmp[16]; int n = 0;
-    n = fread(tmp, 1, 1, stdin);
+
+    while(1) {
+        usleep(1000 * 20);
+    }
 
     return 0;
 }
