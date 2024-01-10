@@ -53,7 +53,7 @@ public:
     void Print(int X, int Y); // move cursor, printf s or s_1down
     void PrintFrame(int n); // printf a frame
 
-    void PrintDimmed(); // printf s
+    void PrintDimmed(int amount); // printf s
 
     virtual void Prepare();
     virtual void Render(); // reassemble from maps, apply effects, 

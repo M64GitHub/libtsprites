@@ -42,7 +42,6 @@ void cursor_reset()
 
 void cursor_home()
 {
-
     printf("\x1b[H");    // home pos
 }
 
@@ -93,8 +92,8 @@ void term_close()
 
 // -- string
 
-// returns size of string, so includes 0x00 !
-int mystrlen(char *str)
+// returns size of string, includes 0x00 !
+int strsize(char *str)
 {
     if(!str) return 0;
 
@@ -122,8 +121,8 @@ char *strdup(char *src)
 {
     if(!src) return 0;
 
-    int l = mystrlen(src);
-    char *tmpstr = (char*)calloc(l, 1);
+    int l = strsize(src);
+    char *tmpstr = (char*) calloc(l, 1);
     mystrcpy(tmpstr, src);
     
     return tmpstr;
@@ -202,10 +201,10 @@ void ruler(int n)
     l1[len] = 0x00;
     char tmp[16];
     sprintf(tmp, "%d", len);
-    sprintf(l2+len-mystrlen(tmp)+1, "%s", tmp);
+    sprintf(l2+len-strsize(tmp)+1, "%s", tmp);
     
     printf("%s", l1); 
-    cursor_left(mystrlen(l1)-1);
+    cursor_left(strsize(l1)-1);
     cursor_down(1);
     printf("%s\n", l2); 
 
@@ -244,7 +243,7 @@ void idx_ruler(int n)
     sprintf(l2+len-3, "%s", tmp);
     
     printf("%s", l1);
-    cursor_left(mystrlen(l1)-1);
+    cursor_left(strsize(l1)-1);
     cursor_down(1);
     printf("%s\n", l2);
 

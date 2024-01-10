@@ -25,7 +25,7 @@ void term_close();
 void term_clear();
 
 // -- string
-int mystrlen(char *s);
+int strsize(char *s);
 int mystrcpy(char *dest, char *src);
 char *strdup(char *src);
 void printhex(char *s);

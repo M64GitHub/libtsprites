@@ -37,7 +37,7 @@ int TSprite::ImportFromImgStr(char *str)
     int height = 0;
     int l = 0;
 
-    l = mystrlen(str);
+    l = strsize(str);
 
     // -- check file "hdr": catimg esc seq 0x1b, 0x5b, 0x73 = "\x1b[s"
     if(l < CATIMG_HDR_LEN) {
@@ -257,7 +257,7 @@ void TSprite::PrintFrame(int n)
     printf("%s", frames[n]->s);
 }
 
-void TSprite::PrintDimmed() // TODO
+void TSprite::PrintDimmed(int amount) 
 {
 }
 
@@ -326,7 +326,6 @@ int TSprite::imgstr_2maps(char *str, TSPriteFrame *F)
     r1 = 0; g1 = 0; b1 = 0;
     r2 = 0; g2 = 0; b2 = 0;
     int count = 0;
-    char tmpbuf1k[1024];
     rgb_color upper_color;
     rgb_color lower_color;
 
@@ -364,7 +363,6 @@ int TSprite::imgstr_2maps(char *str, TSPriteFrame *F)
             DBG ("STHG found at pos: %d\n", pos);
             int lookahead;
             int found = 0;
-            unsigned char c;
             for(lookahead = 14; lookahead < 25; lookahead++) {
                 if((unsigned char)str[pos + lookahead] == 0x84) {
                     found = 0x84;
@@ -444,7 +442,7 @@ int TSprite::imgstr_2maps(char *str, TSPriteFrame *F)
 // printable string, having the sprite moved down 1/2 a character.
 char *TSprite::create_1down_str(TSPriteFrame *F)
 {
-    char *tmpstr = (char *)calloc(1, mystrlen(F->s) * 2); // more than enough
+    char *tmpstr = (char *)calloc(1, strsize(F->s) * 2); // more than enough
     int tmpstr_idx = 0;
     char buf1k[4096];
     rgb_color upper;
@@ -453,7 +451,8 @@ char *TSprite::create_1down_str(TSPriteFrame *F)
 
     char *outstr = 0;
 
-    // print this "extra line"
+    // always print this "extra line" 
+    /// TODO: print as SPC, when lower = 0 0 0 !
     for(int X=0; X < F->w; X++) {
         // uppest block row always transparent
         upper = { 0xff, 0xff, 0xff }; // screen.bgcolor
@@ -477,57 +476,52 @@ char *TSprite::create_1down_str(TSPriteFrame *F)
     tmpstr[tmpstr_idx] = 0x00; // terminator
 
     // h was initialized with +=2 -> always cleanly divisable
-    for(int Y=0; Y < F->h/2; Y++) {
-        // -- if last line: print 1 more depending on shadow map, or not
-        if(Y == (F->h/2 - 1)) {
-            // when it starts with no pixel, none more will follow, break
-            if(!F->shadow_map[(Y*2 + 1) * F->w]) break;
-            // else do the line with n upper pixel, and last row of 
-            // colormap as upper color
-            for(int X=0; X < F->w; X++) {
-                // uppest block row always transparent
-                upper = { 0, 0, 0 }; // screen.bgcolor
-                lower = F->colormap[X];
-                // printf a top transparent color of map-row 0, 
-                // then line-end
-                sprintf(buf1k, "\x1b[38;2;%d;%d;%dm\u2580", 
-                        lower.r, lower.g, lower.b);
-                i=0; while(buf1k[i]) tmpstr[tmpstr_idx++] = buf1k[i++];
-            }
-            // relative line end
-            i=0; sprintf(buf1k, "\x1b[0m");  // clear all modes
-            while(buf1k[i]) tmpstr[tmpstr_idx++] = buf1k[i++];
-            
-            i=0; sprintf(buf1k, "\x1b[%dD", F->w);  // cursor go left(lpos)
-            while(buf1k[i]) tmpstr[tmpstr_idx++] = buf1k[i++];
-            
-            i=0; sprintf(buf1k, "\x1b[%dB",1);  // cursor go down(1)
-            while(buf1k[i]) tmpstr[tmpstr_idx++] = buf1k[i++];
-            tmpstr[tmpstr_idx] = 0x00; // terminator
-        } else {
-            // -- all else lines
-            for(int X=0; X < F->w; X++) {
-                lower = F->colormap[X + ((Y+1)*2)    * F->w];
-                upper = F->colormap[X + ((Y+1)*2 -1) * F->w];
-                // printf a double color, then line-end/
-                sprintf(buf1k, "\x1b[48;2;%d;%d;%dm\x1b[38;2;%d;%d;%dm\u2584",
-                        upper.r, upper.g, upper.b,
-                        lower.r, lower.g, lower.b);
-                i=0; while(buf1k[i]) tmpstr[tmpstr_idx++] = buf1k[i++];
-            }
-            // relative line end
-            i=0; sprintf(buf1k, "\x1b[0m");  // clear all modes
-            while(buf1k[i]) tmpstr[tmpstr_idx++] = buf1k[i++];
-            
-            i=0; sprintf(buf1k, "\x1b[%dD", F->w);  // cursor go left(lpos)
-            while(buf1k[i]) tmpstr[tmpstr_idx++] = buf1k[i++];
-            
-            i=0; sprintf(buf1k, "\x1b[%dB",1);  // cursor go down(1)
-            while(buf1k[i]) tmpstr[tmpstr_idx++] = buf1k[i++];
-            tmpstr[tmpstr_idx] = 0x00; // terminator
+    for(int Y=0; Y < ((F->h - 2) >> 1); Y++) {
+        // -- all else lines
+        for(int X=0; X < F->w; X++) {
+            lower = F->colormap[X + ((Y+1)*2)    * F->w];
+            upper = F->colormap[X + ((Y+1)*2 -1) * F->w];
+            // printf a double color, then line-end/
+            sprintf(buf1k, "\x1b[48;2;%d;%d;%dm\x1b[38;2;%d;%d;%dm\u2584",
+                    upper.r, upper.g, upper.b,
+                    lower.r, lower.g, lower.b);
+            i=0; while(buf1k[i]) tmpstr[tmpstr_idx++] = buf1k[i++];
         }
+        // relative line end
+        i=0; sprintf(buf1k, "\x1b[0m");  // clear all modes
+        while(buf1k[i]) tmpstr[tmpstr_idx++] = buf1k[i++];
+        
+        i=0; sprintf(buf1k, "\x1b[%dD", F->w);  // cursor go left(lpos)
+        while(buf1k[i]) tmpstr[tmpstr_idx++] = buf1k[i++];
+        
+        i=0; sprintf(buf1k, "\x1b[%dB",1);  // cursor go down(1)
+        while(buf1k[i]) tmpstr[tmpstr_idx++] = buf1k[i++];
+        tmpstr[tmpstr_idx] = 0x00; // terminator
     }
 
+    int Y = (F->h -1);
+    // do the line with n upper pixel, and last row of 
+    // colormap as upper color
+    for(int X=0; X < F->w; X++) {
+        // uppest block row always transparent
+        upper = F->colormap[X + Y * F->w];
+        // printf a top transparent color of map-row 0, 
+        // then line-end
+        sprintf(buf1k, "\x1b[38;2;%d;%d;%dm\u2580", 
+                upper.r, upper.g, upper.b);
+        i=0; while(buf1k[i]) tmpstr[tmpstr_idx++] = buf1k[i++];
+    }
+    // relative line end
+    i=0; sprintf(buf1k, "\x1b[0m");  // clear all modes
+    while(buf1k[i]) tmpstr[tmpstr_idx++] = buf1k[i++];
+
+    i=0; sprintf(buf1k, "\x1b[%dD", F->w);  // cursor go left(lpos)
+    while(buf1k[i]) tmpstr[tmpstr_idx++] = buf1k[i++];
+
+    i=0; sprintf(buf1k, "\x1b[%dB",1);  // cursor go down(1)
+    while(buf1k[i]) tmpstr[tmpstr_idx++] = buf1k[i++];
+    tmpstr[tmpstr_idx] = 0x00; // terminator
+    
     outstr = strdup(tmpstr); // copies and truncates properly
     free(tmpstr);            // so we can free excess memory
 
@@ -589,9 +583,7 @@ SSprite::SSprite()
 SSprite::SSprite(char *str)
 {
     DBG ("[SS] SSprite(char *s)\n");
-    
-    int l = mystrlen(str);
-    DBG ("[SS] strlen: %d\n", l);
+    DBG ("[SS] strlen: %d\n", strsize(str)-1);
 
     SSPriteFrame *F = new SSPriteFrame;
     frames = new SSPriteFrame*[1];
@@ -615,7 +607,7 @@ SSprite::SSprite(char **strs, int len)
     int i=0;
 
     for(int j=0; j<len; j++) {
-        int l = mystrlen(strs[j]);
+        int l = strsize(strs[j]);
         SSPriteFrame *F = new SSPriteFrame;
         frames[j] = F;
 
@@ -643,7 +635,7 @@ SSprite::SSprite(char **strs, int len, rgb_color c)
     int i=0;
 
     for(int j=0; j<len; j++) {
-        int l = mystrlen(strs[j]);
+        int l = strsize(strs[j]);
         SSPriteFrame *F = new SSPriteFrame;
         frames[j] = F;
 
