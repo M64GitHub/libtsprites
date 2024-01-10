@@ -16,9 +16,8 @@ TSprite::TSprite()
 // make sure imgstr is 0x00 terminated!
 TSprite::TSprite(char *imgstr)
 {
-    if(ImportFromImgStr(imgstr)) {
+    if(ImportFromImgStr(imgstr)) 
         printf("[TS] ERROR: unable to convert imgstr.\n");
-    }
 }
 
 TSprite::~TSprite()
@@ -40,7 +39,6 @@ int TSprite::ImportFromImgStr(char *str)
     int l      = 0;
 
     l = strsize(str);
-    DBG ("[TS][ImportFromImgStr] Importing catimg ...strsize:\n", l);
 
     // -- check file "hdr": catimg esc seq 0x1b, 0x5b, 0x73 = "\x1b[s"
     if(l < CATIMG_HDR_LEN) {
@@ -57,7 +55,7 @@ int TSprite::ImportFromImgStr(char *str)
     if(!chk) {
         printf("[TS][ImportFromImgStr] ERROR: invalid file type!\n");
         return 1;
-    } DBG ("[TS][ImportFromImgStr] file-header: OK!\n");
+    }
 
     // -- start conversion
     int pos = CATIMG_HDR_LEN; // start of 1st line
@@ -71,7 +69,7 @@ int TSprite::ImportFromImgStr(char *str)
     if(!outstr) {
         printf("[TS][ImportFromImgStr] ERROR: unable to alloc tmp mem!\n");
         return 1;
-    } DBG ("[TS][ImportFromImgStr] pre-allocated %d bytes for s\n", l+4096);
+    }
 
     // -- convert line by line
     int lpos    = 0; // pos in line
@@ -95,7 +93,8 @@ int TSprite::ImportFromImgStr(char *str)
 
         // -- here we stand at line end, and have width: 
         // -> add this line + go left + go down to result
-        DBG ("\nline nr #%d, pos: %d, llen: %d\n", lnr, pos, lpos);
+        DBG ("\n[TS][ImportFromImgStr] line nr #%d, pos: %d,"
+             " llen: %d\n", lnr, pos, lpos);
 
         // copy line to result
         for(i=0; i<lpos; i++) outstr[out_idx++] = str[pos+i]; 
@@ -118,11 +117,12 @@ int TSprite::ImportFromImgStr(char *str)
     }
     outstr[out_idx] = 0x00; // conversion done
 
-    DBG ("\nw x h = %d x %d = pxcount = %d, tt px-size of conversion: %d\n", 
+    DBG ("\nw[TS][ImportFromImgStr] x h = %d x %d = pxcount = %d,"
+         " tt px-size of conversion: %d\n", 
            width, height, pxcount, out_idx);
 
-    // -- now we have w, h -> we know image size and can create and fill
-    //    maps / a new frame:
+    // -- now we have w, h -> we know image size and can create and 
+    // fill maps / a new frame:
 
     TSPriteFrame *F = add_frames(1, width, height);
     F->s = strdup(outstr);
@@ -203,8 +203,6 @@ int TSprite::ImportFromFile(char *fn)
 
     free(f_contents);
     fclose(f);
-
-    DBG ("[TS][ImportFromFile] file successfully imported!\n");
 
     return 0;
 }
@@ -322,8 +320,9 @@ int TSprite::imgstr_2maps(char *str, TSPriteFrame *F)
     for(map_y = 0; map_y < (F->h/2); map_y++) {
     for(map_x = 0; map_x < F->w; map_x++) {
         // -- case 1: doublepixel
-        res = sscanf(str + pos, "\x1b[48;2;%d;%d;%dm\x1b[38;2;%d;%d;%dm\u2584",
-                    &r1, &g1, &b1,&r2, &g2, &b2);
+        res = sscanf(str + pos, 
+                     "\x1b[48;2;%d;%d;%dm\x1b[38;2;%d;%d;%dm\u2584",
+                      &r1, &g1, &b1,&r2, &g2, &b2);
         if(res == 6) {
             count++;
             while((unsigned char)str[pos] != 0x84) pos++;
