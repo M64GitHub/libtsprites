@@ -9,7 +9,6 @@
 // -- TSprite -----------------------------------------------------------------
 TSprite::TSprite()
 {
-    DBG ("[TS] TSprite\n");
 }
 
 // TSprite(char *imgstr)
@@ -17,8 +16,6 @@ TSprite::TSprite()
 // make sure imgstr is 0x00 terminated!
 TSprite::TSprite(char *imgstr)
 {
-    DBG ("[TS] TSprite(imgstr)\n");
-
     if(ImportFromImgStr(imgstr)) {
         printf("[TS] ERROR: unable to convert imgstr.\n");
     }
@@ -31,19 +28,26 @@ TSprite::~TSprite()
 
 int TSprite::ImportFromImgStr(char *str)
 {
+    if(!str) {
+        printf("[TS][ImportFromImgStr] ERROR: input str null!\n");
+        return 1;
+    }
+
     char hdr[] = { CATIMG_HDR };
-    int chk = 0;
-    int width = 0;
+    int chk    = 0;
+    int width  = 0;
     int height = 0;
-    int l = 0;
+    int l      = 0;
 
     l = strsize(str);
+    DBG ("[TS][ImportFromImgStr] Importing catimg ...strsize:\n", l);
 
     // -- check file "hdr": catimg esc seq 0x1b, 0x5b, 0x73 = "\x1b[s"
     if(l < CATIMG_HDR_LEN) {
-        printf("[TS][ImportFromImgStr] ERROR: invalid file type! 1\n");
+        printf("[TS][ImportFromImgStr] ERROR: invalid file type!\n");
         return 1;
     }
+
     chk = 1;
     for(int i=0; i < CATIMG_HDR_LEN; i++) {
         if(str[i] != hdr[i]) {
@@ -51,15 +55,14 @@ int TSprite::ImportFromImgStr(char *str)
         }
     }
     if(!chk) {
-        printf("[TS][ImportFromImgStr] ERROR: invalid file type! 3\n");
+        printf("[TS][ImportFromImgStr] ERROR: invalid file type!\n");
         return 1;
-    }
-    DBG ("[TS][ImportFromImgStr] file-header OK!\n");
+    } DBG ("[TS][ImportFromImgStr] file-header: OK!\n");
 
     // -- start conversion
     int pos = CATIMG_HDR_LEN; // start of 1st line
     int lnr = 0;
-    char *outstr = 0; // imported, ready2print char * string, with relative
+    char *outstr = 0; // result, ready2print char * string, with relative
                       // line ends
     char buf8k[8192]; // 8k buf 
 
@@ -68,59 +71,44 @@ int TSprite::ImportFromImgStr(char *str)
     if(!outstr) {
         printf("[TS][ImportFromImgStr] ERROR: unable to alloc tmp mem!\n");
         return 1;
-    } else {
-        DBG ("[TS][ImportFromImgStr] pre-allocated %d bytes for s\n", l+4096);
-    }
+    } DBG ("[TS][ImportFromImgStr] pre-allocated %d bytes for s\n", l+4096);
 
     // -- convert line by line
     int lpos    = 0; // pos in line
     int pxcount = 0;
     unsigned int out_idx = 0;
 
+    int i = 0;        
     while( pos < (l - (CATIMG_LINE_END_LEN+CATIMG_FILE_END_LEN)) ) {
-        lpos = 0;    // start of line;
-        // search end of line
+        // search end of line (0x0a)
         // s[pos] = start of line
+        lpos = 0; // pos in line
         while(str[pos + lpos + CATIMG_LINE_END_LEN-1] != 0x0a) {
             unsigned char c = str[pos + lpos];    
 
             if(c == 0x96 || c == 0x20) {
-                // 0x80 = upper half block, 0x84 = lower half block
-                if(!lnr) { width++; }// count on the 1st line only
+                if(!lnr) { width++; } // count on 1st line only
                 pxcount++;
             }
             lpos++;
         }
 
         // -- here we stand at line end, and have width: 
-        // -> add this line + go left + go down to s
+        // -> add this line + go left + go down to result
         DBG ("\nline nr #%d, pos: %d, llen: %d\n", lnr, pos, lpos);
 
-        // copy line to s
-        int i;
+        // copy line to result
         for(i=0; i<lpos; i++) outstr[out_idx++] = str[pos+i]; 
         
         // create new, relative line end
+        i=0; sprintf(buf8k, "\x1b[0m");         // clear all modes
+        while(buf8k[i]) { outstr[out_idx++] = buf8k[i++]; }
 
-        i=0;
-        sprintf(buf8k, "\x1b[0m");  // clear all modes
-        while(buf8k[i]) {
-            outstr[out_idx++] = buf8k[i++];
-        }
+        i=0; sprintf(buf8k, "\x1b[%dD", width); // cursor go left(lpos)
+        while(buf8k[i]) { outstr[out_idx++] = buf8k[i++]; }
 
-        i=0;
-        sprintf(buf8k, "\x1b[%dD", width);  // cursor go left(lpos)
-        while(buf8k[i]) {
-            outstr[out_idx++] = buf8k[i++];
-        }
-
-        i=0;
-        sprintf(buf8k, "\x1b[%dB",1);  // cursor go down(1)
-        while(buf8k[i]) {
-            outstr[out_idx++] = buf8k[i++];
-        }
-
-        // -- 
+        i=0; sprintf(buf8k, "\x1b[%dB",1);      // cursor go down(1)
+        while(buf8k[i]) { outstr[out_idx++] = buf8k[i++]; }
 
         lpos += CATIMG_LINE_END_LEN; 
         
@@ -206,7 +194,6 @@ int TSprite::ImportFromFile(char *fn)
     f_contents[f_size] = 0x00; // terminate string properly
     DBG ("[TS][ImportFromFile] successfully read file into buffer.\n");
 
-    // ImportFromImgStr... 
     if(ImportFromImgStr(f_contents)) {
             printf("[TS][ImportFromFile] ERROR: unable to convert file.\n");
             free(f_contents);
@@ -236,18 +223,18 @@ void TSprite::Print()
 {
     if(!s) return;
     printf("%s", s);
-    
     fflush(stdout);
 }
 
 void TSprite::Print(int X, int Y)
 {
+    if(!s || !s_1down) return;
     cursor_home();
     if(Y>1) cursor_down(Y/2);
     if(X)   cursor_right(X);
 
     if((Y+2)%2) printf("%s", s_1down);
-    else      printf("%s", s);
+    else        printf("%s", s);
     fflush(stdout);
 }
 
@@ -255,6 +242,7 @@ void TSprite::PrintFrame(int n)
 {
     if(frame_count < n) return;
     printf("%s", frames[n]->s);
+    fflush(stdout);
 }
 
 void TSprite::PrintDimmed(int amount) 
@@ -265,7 +253,7 @@ void TSprite::Prepare()
 {
 }
 
-void TSprite::Render() // TODO
+void TSprite::Render()
 {
 }
 
@@ -330,7 +318,6 @@ int TSprite::imgstr_2maps(char *str, TSPriteFrame *F)
     rgb_color lower_color;
 
     pos = CATIMG_HDR_LEN;
-    DBG("PARSING ...\n");
 
     for(map_y = 0; map_y < (F->h/2); map_y++) {
     for(map_x = 0; map_x < F->w; map_x++) {
@@ -339,8 +326,6 @@ int TSprite::imgstr_2maps(char *str, TSPriteFrame *F)
                     &r1, &g1, &b1,&r2, &g2, &b2);
         if(res == 6) {
             count++;
-            DBG("%d case 1: doublepixel: %d %d %d, %d %d %d\n", pos,
-                r1, g1, b1, r2, g2, b2);
             while((unsigned char)str[pos] != 0x84) pos++;
             pos++;
             // write to maps
@@ -360,14 +345,11 @@ int TSprite::imgstr_2maps(char *str, TSPriteFrame *F)
                     &r1, &g1, &b1);
         if(res == 3) {
             count++;
-            DBG ("STHG found at pos: %d\n", pos);
             int lookahead;
             int found = 0;
             for(lookahead = 14; lookahead < 25; lookahead++) {
                 if((unsigned char)str[pos + lookahead] == 0x84) {
                     found = 0x84;
-                    DBG("%d case 3: lower pixel: %d %d %d\n", pos,
-                        r1, g1, b1);
                     pos+=lookahead+1;
                     // write to maps 
                     lower_color.r = r1; 
@@ -384,8 +366,6 @@ int TSprite::imgstr_2maps(char *str, TSPriteFrame *F)
                 }
                 if((unsigned char)str[pos + lookahead] == 0x80) {
                     found = 0x80;
-                    DBG("%d case 2: upper pixel: %d %d %d\n", pos,
-                        r1, g1, b1);
                     pos+=lookahead+1;
                     // write to maps 
                     upper_color.r = r1; 
@@ -402,7 +382,7 @@ int TSprite::imgstr_2maps(char *str, TSPriteFrame *F)
                 }
             }
             if(!found) {
-                DBG("ERR at %d\n", pos); 
+                printf("[TS] error creating maps at %d\n", pos); 
                 return 1;
             }
             continue;
@@ -411,7 +391,6 @@ int TSprite::imgstr_2maps(char *str, TSPriteFrame *F)
         // -- case 4: spc
         if((unsigned char)str[pos + 3] == 0x20) {
             count++;
-            DBG("%d case 4: SPACE upper pixel and lower transparent\n", pos);
             pos+=4;
             // write to maps 
             upper_color.r = 0; 
@@ -426,10 +405,8 @@ int TSprite::imgstr_2maps(char *str, TSPriteFrame *F)
             F->shadow_map[(map_y*2+1) * F->w + map_x] = 0;
             continue;
         }
-        DBG ("%d NOT FOUND!\n", pos);
+        DBG ("[TS] no case found at pos %d!\n", pos);
     }
-    DBG ("count: %d\n", count);
-    DBG ("pos: %d\n", pos); 
     pos+=4;
     }
 
@@ -577,14 +554,10 @@ void TSprite::free_frames()
 
 SSprite::SSprite()
 {
-    DBG ("[SS] SSprite\n");
 }
 
 SSprite::SSprite(char *str)
 {
-    DBG ("[SS] SSprite(char *s)\n");
-    DBG ("[SS] strlen: %d\n", strsize(str)-1);
-
     SSPriteFrame *F = new SSPriteFrame;
     frames = new SSPriteFrame*[1];
     frames[0] = F;
@@ -601,8 +574,6 @@ SSprite::SSprite(char *str)
 
 SSprite::SSprite(char **strs, int len)
 {
-    DBG ("[SS] SSprite(char **s)\n");
-    
     frames = new SSPriteFrame*[len];
     int i=0;
 
@@ -627,10 +598,6 @@ SSprite::SSprite(char **strs, int len)
 
 SSprite::SSprite(char **strs, int len, rgb_color c)
 {
-    DBG ("[SS] SSprite(char **s, len %d, color: %d,%d,%d)\n",
-                    len, c.r, c.g, c.b
-         );
-    
     frames = new SSPriteFrame*[len];
     int i=0;
 
@@ -687,11 +654,11 @@ void SSprite::PrintUncolored()
     printf("%s", frames[frame_idx]->s);
 }
 
-void SSprite::PrintDimmed() // TODO
+void SSprite::PrintDimmed() 
 {
 }
 
-void SSprite::PrintFrame(int n) // TODO
+void SSprite::PrintFrame(int n) 
 {
 }
 
@@ -702,6 +669,4 @@ void SSprite::Render()
 void SSprite::free_frames()
 {
 }
-
-// -- helper functions --
 

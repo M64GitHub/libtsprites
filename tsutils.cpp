@@ -37,12 +37,12 @@ void cursor_off()
 
 void cursor_reset()
 {
-    printf ("\x1b[0m");   // reset all modes
+    printf ("\x1b[0m"); // reset all modes
 }
 
 void cursor_home()
 {
-    printf("\x1b[H");    // home pos
+    printf("\x1b[H");   // home pos
 }
 
 // -- color
