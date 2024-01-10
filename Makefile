@@ -9,6 +9,7 @@ LIBRARY=tsprites
 SONAME=lib$(LIBRARY).so
 SOFILE=lib/$(SONAME)
 LIBOBJFILE=lib/$(LIBRARY).o
+LIBINSTALLDIR=/usr/lib
 
 # CC=zig c++
 # CXX=zig c++
@@ -36,5 +37,11 @@ $(SOFILE): $(LIBRARY).cpp
 clean:
 	$(RM) *.o lib/*.o lib/*.so $(BINARY)
 
-.phony: clean
+install:
+	cp $(SOFILE) $(LIBINSTALLDIR)/ 
+
+uninstall:
+	$(RM) $(LIBINSTALLDIR)/$(SONAME)
+
+.phony: all clean lib install uninstall
 
