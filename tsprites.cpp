@@ -354,9 +354,9 @@ int TSprite::imgstr_2maps(char *str, TSPriteFrame *F)
                     lower_color.r = r1; 
                     lower_color.g = g1; 
                     lower_color.b = b1;
-                    upper_color.r = 0; 
-                    upper_color.g = 0; 
-                    upper_color.b = 0;
+                    upper_color.r = 0x20; 
+                    upper_color.g = 0x20; 
+                    upper_color.b = 0x20;
                     F->colormap  [(map_y*2  ) * F->w + map_x] = upper_color;
                     F->colormap  [(map_y*2+1) * F->w + map_x] = lower_color;
                     F->shadow_map[(map_y*2  ) * F->w + map_x] = 0;
@@ -370,9 +370,9 @@ int TSprite::imgstr_2maps(char *str, TSPriteFrame *F)
                     upper_color.r = r1; 
                     upper_color.g = g1; 
                     upper_color.b = b1;
-                    lower_color.r = 0; 
-                    lower_color.g = 0; 
-                    lower_color.b = 0;
+                    lower_color.r = 0x20; 
+                    lower_color.g = 0x20; 
+                    lower_color.b = 0x20;
                     F->colormap  [(map_y*2  ) * F->w + map_x] = upper_color;
                     F->colormap  [(map_y*2+1) * F->w + map_x] = lower_color;
                     F->shadow_map[(map_y*2  ) * F->w + map_x] = 1;
@@ -392,12 +392,12 @@ int TSprite::imgstr_2maps(char *str, TSPriteFrame *F)
             count++;
             pos+=4;
             // write to maps 
-            upper_color.r = 0; 
-            upper_color.g = 0; 
-            upper_color.b = 0;
-            lower_color.r = 0; 
-            lower_color.g = 0; 
-            lower_color.b = 0;
+            upper_color.r = 0x20; 
+            upper_color.g = 0x20; 
+            upper_color.b = 0x20;
+            lower_color.r = 0x20; 
+            lower_color.g = 0x20; 
+            lower_color.b = 0x20;
             F->colormap  [(map_y*2  ) * F->w + map_x] = upper_color;
             F->colormap  [(map_y*2+1) * F->w + map_x] = lower_color;
             F->shadow_map[(map_y*2  ) * F->w + map_x] = 0;
@@ -431,7 +431,7 @@ char *TSprite::create_1down_str(TSPriteFrame *F)
     /// TODO: print as SPC, when lower = 0 0 0 !
     for(int X=0; X < F->w; X++) {
         // uppest block row always transparent
-        upper = { 0xff, 0xff, 0xff }; // screen.bgcolor
+        upper = { 0x20, 0x20, 0x20 }; // screen.bgcolor
         lower = F->colormap[X];
         // printf a top transparent color of map-row 0, 
         // then line-end

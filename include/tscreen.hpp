@@ -23,7 +23,7 @@ public:
     char *bg_str   = 0;
 
     rgb_color fg_color = { 0x40, 0x40, 0x40 };
-    rgb_color bg_color = { 0x00, 0x00, 0x00 };
+    rgb_color bg_color = { 0x20, 0x20, 0x20 };
 
 private:
     int w = 0;
