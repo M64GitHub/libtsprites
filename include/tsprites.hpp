@@ -2,6 +2,7 @@
 #define TSPRITES_H
 
 #include "tscolors.hpp"
+#include "tsrender.hpp"
 
 // #define DEBUG
 
@@ -17,19 +18,26 @@ typedef struct s_TSpriteFrame {
   int            nr = 0;
   int            w  = 0;
   int            h  = 0;
-  rgb_color     *colormap   = 0;
-  unsigned char *shadow_map = 0;
-  char          *s = 0;    // copy of (lineend-converted) s
-  char          *s_1down;  // copy of (lineend-converted) s_1down
+  rgb_color     *colormap  = 0; 
+  unsigned char *shadowmap = 0;
+  char          *s = 0;    // frame 0: copy of s (free will not affect spr->s)
+  char          *s_1down;  // frame 0: copy of s_1down
 } TSPriteFrame;
 
 typedef struct s_TSpriteAnimation {
     char *name = 0;
     
-    int *animation; // array of frame indizes
+    int *animation;  // array of frame indizes
     int ani_len = 0;
-    int *rel_x  = 0; // relative x moves
-    int *rel_y  = 0; // relative y moves
+    int *rel_x  = 0; // relative x position to spr->x
+    int *rel_y  = 0; // relative y position to spr->y
+
+    int ctr1 = 0;    // convenience counters and thresholds
+    int ctr2 = 0;
+    int ctr3 = 0;
+    int thr1 = 0;
+    int thr2 = 0;
+    int thr3 = 0;
 } TSpriteAnimation;
 
 // TSprite 
@@ -53,11 +61,9 @@ public:
     void Print(int X, int Y); // move cursor, printf s or s_1down
     void PrintFrame(int n); // printf a frame
 
-    void PrintDimmed(int amount); // printf s
-
     virtual void Prepare();
-    virtual void Render(); // reassemble from maps, apply effects, 
-                           // animations, and render  into outframe
+    virtual render_surface *Render(); // reassemble from maps, apply effects, 
+                                      // animations, and render into out_surface
 
     void PrintDebugMap(TSPriteFrame *F); // colored map representation
 
@@ -79,7 +85,7 @@ public:
     TSPriteFrame **frames=0; // array of pointers
     int frame_idx = 0;       // current frame
 
-    TSPriteFrame *outframe = 0;
+    render_surface *out_surface = 0; // surface sprite will render itself to
 
     // animations (framesets)
     int ani_count = 0; 
@@ -144,7 +150,7 @@ public:
 
     void PrintFrame(int n); // printf a frame
 
-    virtual void Render(); // apply effects, anis, and render into outframe
+    virtual void Render(); // apply effects, anis, and render into out_surface
 
     int x   = 0;
     int y   = 0; // in blocks / "half characters"
@@ -155,7 +161,7 @@ public:
     SSPriteFrame **frames=0;
     int frame_idx = 0; // current frame
 
-    SSPriteFrame *outframe = 0;
+    render_surface *out_surface = 0;
 
     int counter1 = 0; // convenience counters and thresholds
     int counter2 = 0;

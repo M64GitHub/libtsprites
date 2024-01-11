@@ -243,16 +243,13 @@ void TSprite::PrintFrame(int n)
     fflush(stdout);
 }
 
-void TSprite::PrintDimmed(int amount) 
-{
-}
-
 void TSprite::Prepare()
 {
 }
 
-void TSprite::Render()
+render_surface *TSprite::Render()
 {
+    return out_surface;
 }
 
 void TSprite::PrintDebugMap(TSPriteFrame *F)
@@ -265,7 +262,7 @@ void TSprite::PrintDebugMap(TSPriteFrame *F)
     for(int Y = 0; Y < F->h; Y++) {
         colorprintf(c, "%02d, %02d ", Y, Y/2);
         for(int X=0; X < F->w; X++) {
-            if(F->shadow_map[Y*F->w+X]) {
+            if(F->shadowmap[Y*F->w+X]) {
                 printf("\x1b[0;38;2;%d;%d;%dm",
                        F->colormap[Y*F->w+X].r,
                        F->colormap[Y*F->w+X].g,
@@ -287,7 +284,7 @@ void TSprite::PrintDebugMap(TSPriteFrame *F)
     for(int Y = 0; Y < F->h; Y++) {
         printf("%02d, %02d ", Y, Y/2);
         for(int X=0; X < F->w; X++) {
-            if(F->shadow_map[Y*F->w+X]) {
+            if(F->shadowmap[Y*F->w+X]) {
                 printf("o");
             }
             else {
@@ -332,8 +329,8 @@ int TSprite::imgstr_2maps(char *str, TSPriteFrame *F)
             lower_color.r = r2; lower_color.g = g2; lower_color.b = b2;
             F->colormap  [(map_y*2  ) * F->w + map_x] = upper_color;
             F->colormap  [(map_y*2+1) * F->w + map_x] = lower_color;
-            F->shadow_map[(map_y*2  ) * F->w + map_x] = 1;
-            F->shadow_map[(map_y*2+1) * F->w + map_x] = 1;
+            F->shadowmap[(map_y*2  ) * F->w + map_x] = 1;
+            F->shadowmap[(map_y*2+1) * F->w + map_x] = 1;
             continue;
         }
 
@@ -359,8 +356,8 @@ int TSprite::imgstr_2maps(char *str, TSPriteFrame *F)
                     upper_color.b = 0x20;
                     F->colormap  [(map_y*2  ) * F->w + map_x] = upper_color;
                     F->colormap  [(map_y*2+1) * F->w + map_x] = lower_color;
-                    F->shadow_map[(map_y*2  ) * F->w + map_x] = 0;
-                    F->shadow_map[(map_y*2+1) * F->w + map_x] = 1;
+                    F->shadowmap[(map_y*2  ) * F->w + map_x] = 0;
+                    F->shadowmap[(map_y*2+1) * F->w + map_x] = 1;
                     break;
                 }
                 if((unsigned char)str[pos + lookahead] == 0x80) {
@@ -375,8 +372,8 @@ int TSprite::imgstr_2maps(char *str, TSPriteFrame *F)
                     lower_color.b = 0x20;
                     F->colormap  [(map_y*2  ) * F->w + map_x] = upper_color;
                     F->colormap  [(map_y*2+1) * F->w + map_x] = lower_color;
-                    F->shadow_map[(map_y*2  ) * F->w + map_x] = 1;
-                    F->shadow_map[(map_y*2+1) * F->w + map_x] = 0;
+                    F->shadowmap[(map_y*2  ) * F->w + map_x] = 1;
+                    F->shadowmap[(map_y*2+1) * F->w + map_x] = 0;
                     break;
                 }
             }
@@ -400,8 +397,8 @@ int TSprite::imgstr_2maps(char *str, TSPriteFrame *F)
             lower_color.b = 0x20;
             F->colormap  [(map_y*2  ) * F->w + map_x] = upper_color;
             F->colormap  [(map_y*2+1) * F->w + map_x] = lower_color;
-            F->shadow_map[(map_y*2  ) * F->w + map_x] = 0;
-            F->shadow_map[(map_y*2+1) * F->w + map_x] = 0;
+            F->shadowmap[(map_y*2  ) * F->w + map_x] = 0;
+            F->shadowmap[(map_y*2+1) * F->w + map_x] = 0;
             continue;
         }
         DBG ("[TS] no case found at pos %d!\n", pos);
@@ -526,7 +523,7 @@ TSPriteFrame *TSprite::add_frames(int n, int width, int height)
         new_frames[frame_count + i] = F;
         F->nr          = frame_count + i;
         F->colormap    = new rgb_color    [width * height];
-        F->shadow_map  = new unsigned char[width * height];
+        F->shadowmap  = new unsigned char[width * height];
         F->w           = width;
         F->h           = height;
         F->s           = 0;
