@@ -32,8 +32,11 @@ $(SOFILE): $(LIBRARY).cpp
 	$(CXX) -fPIC -c tscreen.cpp -o lib/tscreen.o 
 	$(CXX) -fPIC -c tsutils.cpp -o lib/tsutils.o 
 	$(CXX) -fPIC -c tsrender.cpp -o lib/tsrender.o 
+	$(CXX) -fPIC -c tseffects.cpp -o lib/tseffects.o 
+	$(CXX) -fPIC -c tsanimations.cpp -o lib/tsanimations.o 
 	$(CXX) -shared -Wl,-soname,$(SONAME) -o $(SOFILE) $(LIBOBJFILE) \
-		lib/tscolors.o lib/tscreen.o lib/tsutils.o lib/tsrender.o
+		lib/tscolors.o lib/tscreen.o lib/tsutils.o lib/tsrender.o \
+		lib/tseffects.o lib/tsanimations.o
 
 clean:
 	$(RM) *.o lib/*.o lib/*.so $(BINARY)
