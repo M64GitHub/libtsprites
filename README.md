@@ -97,7 +97,7 @@ Each sprite type has it's own capabilities, pro's and con's.
  - RGB-, HSV-colors and -palletes
  - Board
  - Screen
- - 2.5D Render Engine / Render-Surface
+ - 2.5D Parallax Render Engine / Render-Surface
 
 ## EXAMPLE CODE
 For getting started quickly, example code is provided in the subfolder
