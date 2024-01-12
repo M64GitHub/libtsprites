@@ -91,19 +91,13 @@ player figure for example.
 The different types of sprites exist to help in the realisation of ideas.
 Each sprite type has it's own capabilities, pro's and con's.
 
-### Classes / Structs
+### Main Classes / Structs for:
 
- - TSprite
- - LSprite
- - ASprite
- - SSprite
-
- - rgb_color
- - rgb_palette
-
+ - Sprites - TSprite, LSprite, ASprite, SSprite
+ - rgb-, hsv-colors and -palletes
  - board
-
  - screen
+ - render engine, render-surface
 
 ## EXAMPLE CODE
 For getting started quickly, example code is provided in the subfolder
