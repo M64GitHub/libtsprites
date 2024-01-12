@@ -94,10 +94,10 @@ Each sprite type has it's own capabilities, pro's and con's.
 ### Main Classes / Structs for:
 
  - Sprites - TSprite (regular), LSprite (lines), ASprite (ASCII), SSprite (string)
- - rgb-, hsv-colors and -palletes
- - board
- - screen
- - render engine / render-surface
+ - RGB-, HSV-colors and -palletes
+ - Board
+ - Screen
+ - Render Engine / Render-Surface
 
 ## EXAMPLE CODE
 For getting started quickly, example code is provided in the subfolder
