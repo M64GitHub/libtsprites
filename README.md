@@ -12,9 +12,9 @@ the max.
 It is assumed, that the terminal supports: UTF-8 unicode, 24 bit colors, and
 is set-up with a proper monospaced font. Tests so far were done on `kitty`
 on gnu/linux, the `gnome-terminal` (Ubuntu default), and `kitty` on the mac.
-Those for sure work well and fast. The `cygwin terminal` Windows (tested on 
-Windows 10) also does the job, but is a bit slow. `iTerm2` on the mac "works"
-(technically), but has shown to be very slow.  
+Those for sure work well and fast. The `cygwin terminal` on Windows (tested
+on Windows 10) also does the job, but is a bit slow. `iTerm2` on the mac 
+"works" (technically), but has shown to be very slow.  
 A note about nerd-fonts (https://www.nerdfonts.com/font-downloads)
 shall be given here as well.  
 
