@@ -35,5 +35,8 @@ void printhex(char *name, char *s);
 void ruler(int n);
 void idx_ruler(int n);
 
+float min(float a, float b);
+float max(float a, float b);
+
 #endif
 

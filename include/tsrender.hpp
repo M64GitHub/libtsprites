@@ -12,6 +12,5 @@ typedef struct s_render_surface {
     unsigned char *shadowmap;
 } render_surface;
     
-
 #endif
 

@@ -250,3 +250,14 @@ void idx_ruler(int n)
     free(l1);
     free(l2);
 }
+
+// --
+
+float min(float a, float b) {
+	return a <= b ? a : b;
+}
+
+float max(float a, float b) {
+	return a >= b ? a : b;
+}
+

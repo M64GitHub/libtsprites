@@ -57,9 +57,9 @@ public:
     int Slice(int swidth);
     int Slice(int *swidths, int numslices);
 
-    void Print();       // printf s
+    void Print();             // printf s
     void Print(int X, int Y); // move cursor, printf s or s_1down
-    void PrintFrame(int n); // printf a frame
+    void PrintFrame(int n);   // printf a frame
 
     virtual void Prepare();
     virtual render_surface *Render(); // reassemble from maps, apply effects, 
@@ -98,7 +98,7 @@ public:
     int threshhold2 = 0;
     int threshhold3 = 0;
 
-    int state       = 0; // generic type to support own concepts
+    int state = 0; // generic type to support own concepts
 
 private:
     // allocates maps, returns first new frame 
