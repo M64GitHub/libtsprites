@@ -18,8 +18,9 @@ typedef struct s_rgbcolor_palette {
     rgb_color colors[];
 } rgb_palette;
 
-void rgb2hsl(rgb_color *rgb, hsl_color *hsl);
-void hsl2rgb(hsl_color *hsl, rgb_color *rgb);
+void  rgb2hsl(rgb_color *rgb, hsl_color *hsl);
+float hue2rgb(float v1, float v2, float vH);
+void  hsl2rgb(hsl_color *hsl, rgb_color *rgb);
 
 #endif
 
