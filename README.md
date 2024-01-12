@@ -1,7 +1,7 @@
 # libtsprites
 C++ library for truecolor unicode terminal sprites, effects, and animations.
-Blazingly fast! No dependencies. Ideal for terminal games, or just more interesting user
-interfaces.  
+2.5D parallax rendering engine. Blazingly fast! No dependencies. Ideal for
+terminal games, or just more interesting user interfaces.  
 
 The intention is to create a library for visual expression on `state of the art`,
 `fast` `terminals`.
