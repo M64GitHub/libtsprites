@@ -4,4 +4,6 @@ test
 mytest*
 *.mp3
 *.wav
+.ccls-cache
+
 
