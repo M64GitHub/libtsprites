@@ -27,7 +27,7 @@ typedef struct s_TSpriteFrame {
 
 typedef struct s_TFrameSet {
     int frame_count = 0;     // 1 after Import
-    TSPriteFrame **frames=0; // array of pointers
+    TSPriteFrame **frames=0; // array of pointers to frames
     int frame_idx = 0;       // current frame
 } TFrameset;
 
