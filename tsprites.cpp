@@ -432,14 +432,18 @@ char *TSprite::create_1down_str(TSPriteFrame *F)
         lower = F->colormap[X];
         // printf a top transparent color of map-row 0, 
         // then line-end
-        sprintf(buf1k, "\x1b[38;2;%d;%d;%dm\u2584", 
-                lower.r, lower.g, lower.b);
+        // sprintf(buf1k, "\x1b[38;2;%d;%d;%dm\u2584", 
+        //         lower.r, lower.g, lower.b);
+            // printf a double color, then line-end/
+            sprintf(buf1k, "\x1b[48;2;%d;%d;%dm\x1b[38;2;%d;%d;%dm\u2584",
+                    upper.r, upper.g, upper.b,
+                    lower.r, lower.g, lower.b);
         i=0; while(buf1k[i]) tmpstr[tmpstr_idx++] = buf1k[i++];
     }
 
     // relative line end
-    i=0; sprintf(buf1k, "\x1b[0m");  // clear all modes
-    while(buf1k[i]) tmpstr[tmpstr_idx++] = buf1k[i++];
+    // i=0; sprintf(buf1k, "\x1b[0m");  // clear all modes
+    // while(buf1k[i]) tmpstr[tmpstr_idx++] = buf1k[i++];
     
     i=0; sprintf(buf1k, "\x1b[%dD", F->w);  // cursor go left(lpos)
     while(buf1k[i]) tmpstr[tmpstr_idx++] = buf1k[i++];
@@ -461,8 +465,8 @@ char *TSprite::create_1down_str(TSPriteFrame *F)
             i=0; while(buf1k[i]) tmpstr[tmpstr_idx++] = buf1k[i++];
         }
         // relative line end
-        i=0; sprintf(buf1k, "\x1b[0m");  // clear all modes
-        while(buf1k[i]) tmpstr[tmpstr_idx++] = buf1k[i++];
+        // i=0; sprintf(buf1k, "\x1b[0m");  // clear all modes
+        // while(buf1k[i]) tmpstr[tmpstr_idx++] = buf1k[i++];
         
         i=0; sprintf(buf1k, "\x1b[%dD", F->w);  // cursor go left(lpos)
         while(buf1k[i]) tmpstr[tmpstr_idx++] = buf1k[i++];
@@ -485,8 +489,8 @@ char *TSprite::create_1down_str(TSPriteFrame *F)
         i=0; while(buf1k[i]) tmpstr[tmpstr_idx++] = buf1k[i++];
     }
     // relative line end
-    i=0; sprintf(buf1k, "\x1b[0m");  // clear all modes
-    while(buf1k[i]) tmpstr[tmpstr_idx++] = buf1k[i++];
+    // i=0; sprintf(buf1k, "\x1b[0m");  // clear all modes
+    // while(buf1k[i]) tmpstr[tmpstr_idx++] = buf1k[i++];
 
     i=0; sprintf(buf1k, "\x1b[%dD", F->w);  // cursor go left(lpos)
     while(buf1k[i]) tmpstr[tmpstr_idx++] = buf1k[i++];
