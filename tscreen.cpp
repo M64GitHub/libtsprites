@@ -25,7 +25,7 @@ int TScreen::Height() const
 {
     return h;
 }
-
+   
 int TScreen::Width() const
 {
     return w;
