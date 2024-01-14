@@ -66,8 +66,8 @@ for implementing anything visually as fast and as simple as possible.
  are individual blocks. Shapes of blocks are called `regular sprites` or
  `TSprites`. You can think of them as pure pixel based sprites.
  - `regular characters`:  Shapes made of ASCII/UTF-8 characters can be built
-and are called `ascii-sprites` or `ASprite`. Of course you can include blocks
-within them, too. But you can't zoom these sprites, or rotate, etc.
+and are called `ascii-sprites` or `ASprite`. Of course you can include block
+characters within them, too. But you can't zoom these sprites, or rotate, etc.
  - `regular strings`: to work with text-strings / line-text, another sprite
 class called `SSprite` (`string sprite`) exists. This can be used to place/fade
 text onto the screen, create spinners (1 character animations), and such.
