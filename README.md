@@ -279,4 +279,4 @@ Gnu/linux systems:
 ```bash
 sudo make install
 ```
-Copies the shared lib into /usr/lib
+Copies the shared lib into `/usr/lib/`, and the include files into `/usr/include/`.
