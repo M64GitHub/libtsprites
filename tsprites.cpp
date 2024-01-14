@@ -351,12 +351,12 @@ int TSprite::imgstr_2maps(char *str, TSPriteFrame *F)
                     lower_color.r = r1; 
                     lower_color.g = g1; 
                     lower_color.b = b1;
-                    upper_color.r = 0x20; 
-                    upper_color.g = 0x20; 
-                    upper_color.b = 0x20;
+                    upper_color.r = 0xF0; // transparent
+                    upper_color.g = 0x20; // transparent
+                    upper_color.b = 0x20; // transparent
                     F->colormap  [(map_y*2  ) * F->w + map_x] = upper_color;
                     F->colormap  [(map_y*2+1) * F->w + map_x] = lower_color;
-                    F->shadowmap[(map_y*2  ) * F->w + map_x] = 0;
+                    F->shadowmap[(map_y*2  ) * F->w + map_x] = 0; // transparent
                     F->shadowmap[(map_y*2+1) * F->w + map_x] = 1;
                     break;
                 }
@@ -367,13 +367,13 @@ int TSprite::imgstr_2maps(char *str, TSPriteFrame *F)
                     upper_color.r = r1; 
                     upper_color.g = g1; 
                     upper_color.b = b1;
-                    lower_color.r = 0x20; 
-                    lower_color.g = 0x20; 
-                    lower_color.b = 0x20;
+                    lower_color.r = 0xF0; // transparent 
+                    lower_color.g = 0x20; // transparent 
+                    lower_color.b = 0x20; // transparent
                     F->colormap  [(map_y*2  ) * F->w + map_x] = upper_color;
                     F->colormap  [(map_y*2+1) * F->w + map_x] = lower_color;
                     F->shadowmap[(map_y*2  ) * F->w + map_x] = 1;
-                    F->shadowmap[(map_y*2+1) * F->w + map_x] = 0;
+                    F->shadowmap[(map_y*2+1) * F->w + map_x] = 0; // transparent
                     break;
                 }
             }
@@ -389,10 +389,10 @@ int TSprite::imgstr_2maps(char *str, TSPriteFrame *F)
             count++;
             pos+=4;
             // write to maps 
-            upper_color.r = 0x20; 
+            upper_color.r = 0xF0; 
             upper_color.g = 0x20; 
             upper_color.b = 0x20;
-            lower_color.r = 0x20; 
+            lower_color.r = 0xF0; 
             lower_color.g = 0x20; 
             lower_color.b = 0x20;
             F->colormap  [(map_y*2  ) * F->w + map_x] = upper_color;
@@ -425,25 +425,22 @@ char *TSprite::create_1down_str(TSPriteFrame *F)
     char *outstr = 0;
 
     // always print this "extra line" 
-    /// TODO: print as SPC, when lower = 0 0 0 !
     for(int X=0; X < F->w; X++) {
         // uppest block row always transparent
-        upper = { 0x20, 0x20, 0x20 }; // screen.bgcolor
         lower = F->colormap[X];
         // printf a top transparent color of map-row 0, 
         // then line-end
-        // sprintf(buf1k, "\x1b[38;2;%d;%d;%dm\u2584", 
-        //         lower.r, lower.g, lower.b);
-            // printf a double color, then line-end/
-            sprintf(buf1k, "\x1b[48;2;%d;%d;%dm\x1b[38;2;%d;%d;%dm\u2584",
-                    upper.r, upper.g, upper.b,
+        if(F->shadowmap[X]) // if there is a color
+            sprintf(buf1k, "\x1b[0;38;2;%d;%d;%dm\u2584", 
                     lower.r, lower.g, lower.b);
+        else
+            sprintf(buf1k, "\e[m ");
         i=0; while(buf1k[i]) tmpstr[tmpstr_idx++] = buf1k[i++];
     }
 
     // relative line end
-    // i=0; sprintf(buf1k, "\x1b[0m");  // clear all modes
-    // while(buf1k[i]) tmpstr[tmpstr_idx++] = buf1k[i++];
+    i=0; sprintf(buf1k, "\x1b[0m");  // clear all modes
+    while(buf1k[i]) tmpstr[tmpstr_idx++] = buf1k[i++];
     
     i=0; sprintf(buf1k, "\x1b[%dD", F->w);  // cursor go left(lpos)
     while(buf1k[i]) tmpstr[tmpstr_idx++] = buf1k[i++];
@@ -456,18 +453,28 @@ char *TSprite::create_1down_str(TSPriteFrame *F)
     for(int Y=0; Y < ((F->h - 2) >> 1); Y++) {
         // -- all else lines
         for(int X=0; X < F->w; X++) {
-            lower = F->colormap[X + ((Y+1)*2)    * F->w];
-            upper = F->colormap[X + ((Y+1)*2 -1) * F->w];
-            // printf a double color, then line-end/
-            sprintf(buf1k, "\x1b[48;2;%d;%d;%dm\x1b[38;2;%d;%d;%dm\u2584",
-                    upper.r, upper.g, upper.b,
+            lower = F->colormap [X + ((Y+1)*2)    * F->w];
+            upper = F->colormap [X + ((Y+1)*2 -1) * F->w];
+
+            if(    !F->shadowmap[X + ((Y+1)*2 -1) * F->w]) { // upper transp.
+                if(!F->shadowmap[X + ((Y+1)*2)    * F->w])   // and lower
+                    sprintf(buf1k, "\e[m ");
+                else
+                    sprintf(buf1k, "\x1b[0;38;2;%d;%d;%dm\u2584", // only upper
                     lower.r, lower.g, lower.b);
+            } else { 
+                if(!F->shadowmap[X + ((Y+1)*2)    * F->w]) // lower transparent
+                    sprintf(buf1k, "\x1b[0;38;2;%d;%d;%dm\u2580", 
+                        upper.r, upper.g, upper.b);
+                else
+                    sprintf(buf1k, 
+                        "\x1b[48;2;%d;%d;%dm\x1b[38;2;%d;%d;%dm\u2584", // none
+                        upper.r, upper.g, upper.b,
+                        lower.r, lower.g, lower.b);
+            } 
             i=0; while(buf1k[i]) tmpstr[tmpstr_idx++] = buf1k[i++];
         }
         // relative line end
-        // i=0; sprintf(buf1k, "\x1b[0m");  // clear all modes
-        // while(buf1k[i]) tmpstr[tmpstr_idx++] = buf1k[i++];
-        
         i=0; sprintf(buf1k, "\x1b[%dD", F->w);  // cursor go left(lpos)
         while(buf1k[i]) tmpstr[tmpstr_idx++] = buf1k[i++];
         
@@ -480,12 +487,16 @@ char *TSprite::create_1down_str(TSPriteFrame *F)
     // do the line with n upper pixel, and last row of 
     // colormap as upper color
     for(int X=0; X < F->w; X++) {
-        // uppest block row always transparent
+        // lowest block row always transparent
+        if(F->shadowmap[X + Y * F->w]) {
         upper = F->colormap[X + Y * F->w];
-        // printf a top transparent color of map-row 0, 
-        // then line-end
-        sprintf(buf1k, "\x1b[38;2;%d;%d;%dm\u2580", 
+            // printf a top transparent color of map-row 0, 
+            // then line-end
+            sprintf(buf1k, "\x1b[0;38;2;%d;%d;%dm\u2580", 
                 upper.r, upper.g, upper.b);
+        } else {
+            sprintf(buf1k, "\e[m ");
+        }
         i=0; while(buf1k[i]) tmpstr[tmpstr_idx++] = buf1k[i++];
     }
     // relative line end
