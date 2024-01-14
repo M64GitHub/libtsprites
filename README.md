@@ -1,8 +1,8 @@
 # libtsprites
 C++ shared library for truecolor unicode terminal sprites, effects, and animations.
 Blazingly fast 2.5D parallax rendering-, extendable effects-, and animation-engine! 
-OS independent. No dependencies. RGB and HSL color support. Ideal for terminal games, or just more interesting
-user interfaces.  
+OS independent. No code dependencies. RGB and HSL color support. Ideal for terminal
+games, or just more interesting user interfaces.  
 
 The intention is to create a library for visual expression on `state of the art`,
 `fast` `terminals`.
