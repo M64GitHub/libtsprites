@@ -64,7 +64,8 @@ for implementing anything visually as fast and as simple as possible.
 
  - `blocks`: half characters. Have a color or can be transparent: '▄' or '▀'
  are individual blocks. Shapes of blocks are called `regular sprites` or
- `TSprites`. You can think of them as pure pixel based sprites.
+ `TSprites`. You can think of them as pure "pixel" based sprites, where a
+pixel is represented by a block.
  - `regular characters`:  Shapes made of ASCII/UTF-8 characters can be built
 and are called `ascii-sprites` or `ASprite`. Of course you can include block
 characters within them, too. But you can't zoom these sprites, or rotate, etc.
