@@ -274,3 +274,9 @@ sudo cp lib/libtsprites.so /usr/lib
 You then need not set LD_PRELOAD for running your program, and are done by just
 including the header and adding `-ltsprites` to your linker flags.
 
+## INSTALL
+Gnu/linux systems:
+```bash
+sudo make install
+```
+Copies the shared lib into /usr/lib
