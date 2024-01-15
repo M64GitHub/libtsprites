@@ -189,7 +189,8 @@ The goal of this example is to show, that without further knowing any other
 concept than printing / printing of a frame of a sprite, you can manually
 add calls to a sprite's Print Routine and easily do some basic animations,
 and already import even little animations into your own terminal based
-application.
+application. Ti is at least advised to hide the cursor and restore it 
+afterwards, while printing a sprite in such cases.
 
 ```C++
 #include <math.h>   // for sin()
