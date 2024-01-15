@@ -108,7 +108,7 @@ For getting started quickly, example code is provided in the subfolder
 `examples/`. They all have their own Makefile and include the library code
 directly, without the need of compiling the library as a shared object.
 You can use them as a starter for your own ideas, and copy/extend them
-without ever compiling the library, or have the need to link against
+without ever building the shared library, or have the need to link against
 it, if you prefer.
 
 ### Basic Usage
