@@ -27,9 +27,9 @@ The whole lib is based on the concept of `blocks` ('▄' or '▀'), `sprites`
 (various sorts of), `boards` (like "windows" / for clipping), and a `screen` 
 (the full area to work on).  
 
-- Please note: all these concepts are independent, and optional to use. You need
-no board or screen or anything else than (any type of) `sprite` if you just want
-to display some graphics. (see [Basic Usage](#basic-usage))
+- Please note upfront: all the concepts are independent, and optional to use.
+You need no board or screen or anything else than (any type of) `sprite` if
+you just want to display some graphics. (see [Basic Usage](#basic-usage))
 
 "Everything is a sprite". Everything you can place on the screen and see is
 any type of a sprite. Every type of sprite has `frames`, `animations`, and
