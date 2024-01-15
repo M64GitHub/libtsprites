@@ -159,7 +159,7 @@ int main(int argc, char **argv)
 
 ![image](https://github.com/M64GitHub/libtsprites/assets/84202356/d61df269-0c09-497f-a057-0598cca94aa0)
 
-### Simple Movement
+### Simple Movement, manual Animation
 Here the convenience functions `term_init()` and `term_close()` are introduced.
 They will clear the terminal and restore the screen and cursor afterwards.
 
