@@ -185,6 +185,12 @@ For convenience, every Sprite class has 3 `counters` and 3 `thresholds` builtin.
 This can come in handy when used in some synced effects for example, and 
 can save you from defining a lot of temporary variables.
 
+The goal of this example is to show, that without further knowing any other 
+concept than printing / printing of a frame of a sprite, you can manually
+add calls to a sprite's Print Routine and easily do some basic animations,
+and already import even little animations into your own terminal based
+application.
+
 ```C++
 #include <math.h>   // for sin()
 #include <unistd.h> // for usleep()
