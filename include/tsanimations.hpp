@@ -10,6 +10,8 @@ typedef struct s_SpriteAnimation {
   int *rel_y = 0;  // array relative y position to spr->y
   int ani_len = 0; // length of arrays
 
+    int curren_idx = 0;
+
   int ctr1 = 0; // convenience counters and thresholds
   int ctr2 = 0;
   int ctr3 = 0;
