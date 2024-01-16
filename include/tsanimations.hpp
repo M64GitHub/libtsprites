@@ -1,5 +1,5 @@
-#ifndef ANIMATIONS_H
-#define ANIMATIONS_H
+#ifndef TSL_ANIMATIONS_H
+#define TSL_ANIMATIONS_H
 
 // Animation is sprite-type independent (stores only indices!)
 typedef struct s_SpriteAnimation {

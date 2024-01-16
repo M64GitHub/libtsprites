@@ -1,5 +1,5 @@
-#ifndef TS_UTILS_H
-#define TS_UTILS_H
+#ifndef TSL_UTILS_H
+#define TSL_UTILS_H
 
 #include "tscolors.hpp"
 

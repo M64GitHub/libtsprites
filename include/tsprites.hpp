@@ -1,5 +1,5 @@
-#ifndef TSPRITES_H
-#define TSPRITES_H
+#ifndef TSL_TSPRITES_H
+#define TSL_TSPRITES_H
 
 #include "tsanimations.hpp"
 #include "tscolors.hpp"
@@ -116,7 +116,6 @@ private:
 
 // -- SSprite
 
-//
 typedef struct s_SSPrite_Frame {
   char *s = 0; // frame content;
   rgb_color color;

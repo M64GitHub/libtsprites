@@ -1,5 +1,5 @@
-#ifndef TS_COLORS_H
-#define TS_COLORS_H
+#ifndef TSL_COLORS_H
+#define TSL_COLORS_H
 
 typedef struct s_rgbcolor {
     int r;

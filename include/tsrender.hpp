@@ -1,5 +1,5 @@
-#ifndef TS_RENDER_H
-#define TS_RENDER_H
+#ifndef TSL_RENDER_H
+#define TSL_RENDER_H
 
 #include "tscolors.hpp"
 

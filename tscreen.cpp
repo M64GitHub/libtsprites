@@ -10,7 +10,7 @@ TScreen::TScreen(int width, int height) {
   h = height;
 
   term_init();
-  CClear(' '); // so cursor pos is below screen
+  CClear(); // so cursor pos is below screen
 }
 
 TScreen::~TScreen() { term_close(); }
@@ -23,19 +23,28 @@ void TScreen::Clear() const {
   printf("\x1b[2J"); // erase entire screen, terminal
 }
 
-void TScreen::CClear(char c) {
-  if (!clr_line)
+void TScreen::CClear() {
+  if (!clr_line) {
     clr_line = (char *)malloc((w + 1) + 2); // ...0x0a0x00
-
-  if (clr_line[0] != c) {
-    for (int i = 0; i < w; i++) clr_line[i] = c;
+    for (int i = 0; i < w; i++)
+      clr_line[i] = ' ';
     clr_line[w] = 0x0a;
   }
+  
   cursor_home();
-  set_color(fg_color);
+  set_color(bg_color);
   set_bgcolor(bg_color);
   for (int i = 0; i < h; i++)
     printf("%s", clr_line);
+
   printf("\x1b[0m"); // reset all modes
   fflush(stdout);
+
+  if (!r) return;
+
+  // clear render_surface
+  for (int i = 0; i < w * h; i++) {
+    r->colormap[i] = bg_color;
+    r->shadowmap[i] = 0;
+  }
 }

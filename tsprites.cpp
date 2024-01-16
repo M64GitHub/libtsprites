@@ -260,7 +260,6 @@ void TSprite::PauseAnimation(int n){}
 
 void TSprite::StopAnimation(int n){}
 
-
 void TSprite::PrintDebugMap(TSPriteFrame *F) {
   rgb_color c = {0x80, 0x88, 0x88};
 
@@ -558,7 +557,7 @@ TSPriteFrame *TSprite::add_frames(int n, int width, int height) {
   for (int i = 0; i < fs.frame_count; i++)
     new_frames[i] = fs.frames[i];
 
-  // add new frames
+  // append new frames to frameset
   for (int i = 0; i < n; i++) {
     TSPriteFrame *F = new TSPriteFrame;
     new_frames[fs.frame_count + i] = F;
