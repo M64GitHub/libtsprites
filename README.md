@@ -27,9 +27,9 @@ The whole lib is based on the concept of `blocks` ('▄' or '▀'), `sprites`
 (various sorts of), `boards` (like "windows" / for clipping), and a `screen` 
 (the full area to work on).  
 
-- Please note: all these concepts are independent, and optional to use. You need
-no board or screen or anything else than (any type of) `sprite` if you just want
-to display some graphics. (see [Basic Usage](#basic-usage))
+- Please note upfront: all the concepts are independent, and optional to use.
+You need no board or screen or anything else than (any type of) `sprite` if
+you just want to display some graphics. (see [Basic Usage](#basic-usage))
 
 "Everything is a sprite". Everything you can place on the screen and see is
 any type of a sprite. Every type of sprite has `frames`, `animations`, and
@@ -108,7 +108,7 @@ For getting started quickly, example code is provided in the subfolder
 `examples/`. They all have their own Makefile and include the library code
 directly, without the need of compiling the library as a shared object.
 You can use them as a starter for your own ideas, and copy/extend them
-without ever compiling the library, or have the need to link against
+without ever building the shared library, or have the need to link against
 it, if you prefer.
 
 ### Basic Usage
@@ -127,7 +127,7 @@ movement on screen, and for applying effects to the graphic data more
 efficiently.
 
 `Print()`: please note: the Print() method is the fastest one to print a
-sprite directly on the screen. It does not handle transparency and it is
+sprite directly on the terminal. It does not handle transparency and it is
 comletely unaware of any coordinates, layers and other elements we will
 see used in later examples. 
 
@@ -159,7 +159,7 @@ int main(int argc, char **argv)
 
 ![image](https://github.com/M64GitHub/libtsprites/assets/84202356/d61df269-0c09-497f-a057-0598cca94aa0)
 
-### Simple Movement
+### Simple Movement, manual Animation
 Here the convenience functions `term_init()` and `term_close()` are introduced.
 They will clear the terminal and restore the screen and cursor afterwards.
 
@@ -184,6 +184,14 @@ nice effect you can see in the video below.
 For convenience, every Sprite class has 3 `counters` and 3 `thresholds` builtin.
 This can come in handy when used in some synced effects for example, and 
 can save you from defining a lot of temporary variables.
+
+The goal of this example is to show, that without further knowing any other 
+concept than printing / printing of a frame of a sprite, you can manually
+add calls to a sprite's Print Routine and easily do some basic animations,
+and already import even little animations into your own terminal based
+application. It is at least advised to hide the cursor and restore it 
+afterwards, while printing a sprite in such cases. Convenience functions
+`cursor_off()` and `cursor_on()` are therefor provided, too.
 
 ```C++
 #include <math.h>   // for sin()
