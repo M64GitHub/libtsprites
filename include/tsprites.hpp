@@ -2,8 +2,7 @@
 #define TSL_TSPRITES_H
 
 #include "tsanimations.hpp"
-#include "tscolors.hpp"
-#include "tsrender.hpp"
+#include "tsrendersurface.hpp"
 
 // #define DEBUG
 
@@ -13,7 +12,7 @@
 #define DBG(...)
 #endif
 
-// -- TSprite
+// -- TSprite --
 
 typedef struct s_TSpriteFrame {
   int nr = 0;
@@ -47,23 +46,24 @@ public:
   TFrameset *Slice(int swidth); // creates a new Frameset containing the slices
   TFrameset *Slice(int *swidths, int numslices);
 
+  // String Output
   void Print();             // printf string representation s of first frame
   void Print(int X, int Y); // move cursor, printf s or s_1down
   void PrintFrame(int n);   // printf a specific frame
 
-  virtual void Prepare(); // setup internal animations structures, overlays, etc
-                          // 1 time at start / after creation
+  virtual void Prepare(); // setup internal animations structures, overlays,
+                          // etc, 1 time at start / after creation
 
-// apply internal animations, etc and render into out_surface
-// return the surface to calling rendering engine
-  virtual render_surface *Render();   
+  // apply internal animations, etc and render into out_surface
+  // return the surface to calling rendering engine
+  render_surface *Render();
 
   virtual void tick(); // receive global tick(). to handle internal anis, etc
 
   // control internal animations
-  void StartAnimation(int n);
+  void StartAnimation(int n, int loop);
   void PauseAnimation(int n);
-  void StopAnimation (int n);
+  void StopAnimation(int n);
 
   void PrintDebugMap(TSPriteFrame *F); // colored map representation
 
@@ -76,7 +76,7 @@ public:
   TFrameset fs; // frames for slicing, animations, ...
 
   // animations
-  SpriteAnimation *animations = 0; // array of pointers
+  SpriteAnimation **animations = 0; // array of pointers
 
   // convenience counters and thresholds
   int counter1 = 0;
@@ -100,12 +100,12 @@ private:
   char *create_1down_str(TSPriteFrame *F);      // part of import
 
   char *s = 0; // for fast Print() / printf()
-  char *s_1down =
-      0; // for convenience, created on import:
-         // pre-rendered string-representation, having the sprite
-         // moved 1 block down. For fast Print(x, y) ( using only printf() ),
-         // if you don't want to deal with frames / rendering at all.
-         // -> Makes smooth Y-movements possible with fast printf();
+  // for convenience, created on import:
+  // pre-rendered string-representation, having the sprite
+  // moved 1 block down. For fast Print(x, y) ( using only printf() ),
+  // if you don't want to deal with frames / rendering at all.
+  // -> Makes smooth Y-movements possible with fast printf();
+  char *s_1down = 0;
 
   rgb_color *background = 0; // for rendering
 };
@@ -114,7 +114,7 @@ private:
 
 // class ASprite; // ASCII Sprite
 
-// -- SSprite
+// -- SSprite --
 
 typedef struct s_SSPrite_Frame {
   char *s = 0; // frame content;
@@ -147,7 +147,7 @@ public:
 
   void PrintFrame(int n); // printf a frame
 
-  virtual void Render(); // 
+  virtual void Render(); //
 
   int x = 0;
   int y = 0; // in blocks / "half characters"

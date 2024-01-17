@@ -17,7 +17,25 @@ TScreen::~TScreen() { term_close(); }
 
 int TScreen::Height() const { return h; }
 
-int TScreen::Width() const { return w; }
+int TScreen::Width() const { return w; };
+
+int TScreen::Y() const { return y; }
+
+void TScreen::SetParent(TScreen *s) { parent = s; }
+
+void TScreen::SetParent(TScreen *s, int px, int py) {
+  parent = s;
+  x = px;
+  y = py;
+}
+
+void TScreen::SetPos(int px, int py) {
+  x = px;
+  y = py;
+}
+
+void TScreen::AddSprite(TSprite *s) {}
+void TScreen::AddSprite(SSprite *s) {}
 
 void TScreen::Clear() const {
   printf("\x1b[2J"); // erase entire screen, terminal
@@ -30,7 +48,7 @@ void TScreen::CClear() {
       clr_line[i] = ' ';
     clr_line[w] = 0x0a;
   }
-  
+
   cursor_home();
   set_color(bg_color);
   set_bgcolor(bg_color);
@@ -40,7 +58,8 @@ void TScreen::CClear() {
   printf("\x1b[0m"); // reset all modes
   fflush(stdout);
 
-  if (!r) return;
+  if (!r)
+    return;
 
   // clear render_surface
   for (int i = 0; i < w * h; i++) {

@@ -252,13 +252,13 @@ void TSprite::Prepare() {}
 
 render_surface *TSprite::Render() { return out_surface; }
 
-void TSprite::tick(){}
+void TSprite::tick() {}
 
-void TSprite::StartAnimation(int n){}
+void TSprite::StartAnimation(int n, int loop) {}
 
-void TSprite::PauseAnimation(int n){}
+void TSprite::PauseAnimation(int n) {}
 
-void TSprite::StopAnimation(int n){}
+void TSprite::StopAnimation(int n) {}
 
 void TSprite::PrintDebugMap(TSPriteFrame *F) {
   rgb_color c = {0x80, 0x88, 0x88};
@@ -684,6 +684,6 @@ void SSprite::PrintDimmed() {}
 
 void SSprite::PrintFrame(int n) {}
 
-void SSprite::Render() {}
+void SSprite::Render() { return; }
 
 void SSprite::free_frames() {}

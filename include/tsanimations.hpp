@@ -10,7 +10,7 @@ typedef struct s_SpriteAnimation {
   int *rel_y = 0;  // array relative y position to spr->y
   int ani_len = 0; // length of arrays
 
-    int curren_idx = 0;
+  int curren_idx = 0;
 
   int ctr1 = 0; // convenience counters and thresholds
   int ctr2 = 0;
@@ -18,6 +18,10 @@ typedef struct s_SpriteAnimation {
   int thr1 = 0;
   int thr2 = 0;
   int thr3 = 0;
+
+  int loop = 0;
+  int loop_idx = 0;
+  int loop_threshold = 0;
 } SpriteAnimation;
 
 #endif
