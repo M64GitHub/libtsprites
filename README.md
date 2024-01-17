@@ -25,7 +25,7 @@ Work in progress ...
 
 The whole lib is based on the concept of `blocks` ('▄' or '▀') forming
 `sprites` (various sorts of), `screens` (support clipping, screens inside 
-of screens / multiple screens next to eachother, etc ...), and a 
+of screens ("windows") / multiple screens next to eachother, etc ...), and a 
 `rendering engine` to glue all together.
 
 - Please note upfront: all the components are independent, and optional to
