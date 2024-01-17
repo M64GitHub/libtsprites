@@ -23,10 +23,10 @@ Work in progress ...
 
 ## MAIN CONCEPT
 
-The whole lib is based on the concept of `blocks` ('▄' or '▀'), `sprites`
-(various sorts of), `screens` (support clipping, screens inside of 
-screens / next to eachother, etc ...), and a rendering engine to glue 
-all together.
+The whole lib is based on the concept of `blocks` ('▄' or '▀'), forming
+`sprites` (various sorts of), `screens` (support clipping, screens inside 
+of screens / multiple screens next to eachother, etc ...), and a 
+`rendering engine` to glue all together.
 
 - Please note upfront: all the concepts are independent, and optional to use.
 You no screen screen, or anything else than (any type of) `sprite` if
