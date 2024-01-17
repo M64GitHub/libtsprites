@@ -23,14 +23,14 @@ Work in progress ...
 
 ## MAIN CONCEPT
 
-The whole lib is based on the concept of `blocks` ('▄' or '▀'), forming
+The whole lib is based on the concept of `blocks` ('▄' or '▀') forming
 `sprites` (various sorts of), `screens` (support clipping, screens inside 
 of screens / multiple screens next to eachother, etc ...), and a 
 `rendering engine` to glue all together.
 
-- Please note upfront: all the concepts are independent, and optional to use.
-You no screen screen, or anything else than (any type of) `sprite` if
-you just want to display some graphics. (see [Basic Usage](#basic-usage))
+- Please note upfront: all the components are independent, and optional to
+use.You need no screen screen, or anything else than (any type of) `sprite`
+if you just want to display some graphics. (see [Basic Usage](#basic-usage))
 
 "Everything is a sprite". Everything you can place on the screen and see is
 any type of a sprite. Every type of sprite has `frames`, `animations`, 
