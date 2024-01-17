@@ -102,7 +102,6 @@ Each sprite type has it's own capabilities, pro's and con's.
 
  - Sprites - TSprite (pixel), LSprite (lines), ASprite (ASCII), SSprite (string)
  - RGB-, HSV-colors and -palletes
- - Board
  - Screen
  - Effects
  - Animations
