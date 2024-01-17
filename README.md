@@ -93,8 +93,7 @@ animations, slices, specific color-fading, or different rotations of a moving
 player figure for example.
  - `animations` - set of frames combined with relative (movement) coordinates
  - `layers` - Z-coordinate
- - `boards` - windows (clipping)
- - `screen` - full work area (clipping)
+ - `screen` - the full work area (clipping) or used as (sub-) windows
 
 The different types of sprites exist to help in the realisation of ideas.
 Each sprite type has it's own capabilities, pro's and con's.
