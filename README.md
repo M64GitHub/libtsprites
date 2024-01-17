@@ -24,9 +24,8 @@ Work in progress ...
 ## MAIN CONCEPT
 
 The whole lib is based on the concept of `blocks` ('▄' or '▀') forming
-`sprites` (various sorts of), `screens` (support clipping, screens inside 
-of screens ("windows") / multiple screens next to eachother, etc ...), and a 
-`rendering engine` to glue all together.
+`sprites` (various sorts of) placed on `screens`, and a `rendering engine`
+to glue everything together.
 
 - Please note upfront: all the components are independent, and optional to
 use.You need no screen screen, or anything else than (any type of) `sprite`
@@ -35,6 +34,12 @@ if you just want to display some graphics. (see [Basic Usage](#basic-usage))
 "Everything is a sprite". Everything you can place on the screen and see is
 any type of a sprite. Every type of sprite has `frames`, `animations`, 
 `effects`, and is moveable.
+
+`screens` support clipping, effects, screens inside of screens ("windows"), 
+multiple screens next to eachother, and can be moved, too.
+
+The `rendering engine` glues all together, and the main screen(s) can be
+displayed by the terminal.
 
 The coordinate-system by default uses measurements in blocks. Shapes formed
 of `blocks` are called `regular sprites` - the code representation would be
