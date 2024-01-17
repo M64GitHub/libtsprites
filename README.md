@@ -24,16 +24,17 @@ Work in progress ...
 ## MAIN CONCEPT
 
 The whole lib is based on the concept of `blocks` ('▄' or '▀'), `sprites`
-(various sorts of), `boards` (like "windows" / for clipping), and a `screen` 
-(the full area to work on).  
+(various sorts of), `screens` (support clipping, screens inside of 
+screens / next to eachother, etc ...), and a rendering engine to glue 
+all together.
 
 - Please note upfront: all the concepts are independent, and optional to use.
-You need no board or screen or anything else than (any type of) `sprite` if
+You no screen screen, or anything else than (any type of) `sprite` if
 you just want to display some graphics. (see [Basic Usage](#basic-usage))
 
 "Everything is a sprite". Everything you can place on the screen and see is
-any type of a sprite. Every type of sprite has `frames`, `animations`, and
-is moveable.
+any type of a sprite. Every type of sprite has `frames`, `animations`, 
+`effects`, and is moveable.
 
 The coordinate-system by default uses measurements in blocks. Shapes formed
 of `blocks` are called `regular sprites` - the code representation would be
