@@ -1,3 +1,5 @@
+// tsrendersurface.cpp - libtsprites, 2023-24 M64 
+
 #ifndef TSL_RENDER_SURFACE_H
 #define TSL_RENDER_SURFACE_H
 

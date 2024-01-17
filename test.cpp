@@ -1,3 +1,5 @@
+// test.cpp - libtsprites, 2023-24 M64
+
 #include "include/tsprites.hpp"
 #include "include/tsutils.hpp"
 #include <math.h>   // for sin()

@@ -1,3 +1,5 @@
+// tscreen.cpp - libtsprites, 2023-24 M64
+
 #include "include/tscreen.hpp"
 #include "include/tsutils.hpp"
 #include <stdio.h>

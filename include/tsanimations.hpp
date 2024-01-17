@@ -1,3 +1,5 @@
+// tsanimations.hpp - libtsprites, 2023-24 M64
+
 #ifndef TSL_ANIMATIONS_H
 #define TSL_ANIMATIONS_H
 

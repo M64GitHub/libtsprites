@@ -1,3 +1,5 @@
+// tsutils.hpp - libtsprites, 2023-24 M64
+
 #ifndef TSL_UTILS_H
 #define TSL_UTILS_H
 

@@ -1,3 +1,5 @@
+// tsprites.hpp - libtsprites, 2023-24 M64
+
 #ifndef TSL_TSPRITES_H
 #define TSL_TSPRITES_H
 
@@ -55,7 +57,7 @@ public:
                           // etc, 1 time at start / after creation
 
   // apply internal animations, etc and render into out_surface
-  // return the surface to calling rendering engine
+  // return the surface to calling screen
   render_surface *Render();
 
   virtual void tick(); // receive global tick(). to handle internal anis, etc

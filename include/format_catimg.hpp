@@ -1,3 +1,4 @@
+// format_catimg.hpp - libtsprites, 2023-24 M64
 
 #ifndef TSL_FORMAT_CATIMG_H
 #define TSL_FORMAT_CATIMG_H

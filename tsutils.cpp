@@ -1,3 +1,5 @@
+// tsutils.cpp - libtsprites, 2023-24 M64
+
 #include "include/tsutils.hpp"
 #include <stdarg.h>
 #include <stdio.h>
@@ -101,8 +103,8 @@ char *strdup(char *src) {
 
 void printhex(char *s) {
   int i = 0;
-  rgb_color c{0x80, 0x80, 0x80};
-  rgb_color ce{0xff, 0x80, 0x80};
+  rgb_color c = {0x80, 0x80, 0x80};
+  rgb_color ce = {0xff, 0x80, 0x80};
 
   if (!s) {
     colorprintf(ce, "(null!)");

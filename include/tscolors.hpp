@@ -1,3 +1,5 @@
+// tscolors.hpp - libtsprites, 2023-24 M64
+
 #ifndef TSL_COLORS_H
 #define TSL_COLORS_H
 

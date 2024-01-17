@@ -1,3 +1,5 @@
+// tscreen.hpp - libtsprites, 2023-24 M64
+
 #ifndef TSL_SCREEN_H
 #define TSL_SCREEN_H
 

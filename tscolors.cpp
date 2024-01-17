@@ -1,3 +1,5 @@
+// tscolors.cpp - libtsprites, 2023-24 M64
+
 #include "include/tscolors.hpp"
 #include "include/tsutils.hpp"
 #include <stdio.h>
@@ -17,9 +19,8 @@ void rgb2hsl(rgb_color *rgb, hsl_color *hsl) {
     hsl->h = 0;    // H
     hsl->s = 0.0f; // S
   } else {
-    hsl->s = (hsl->l <= 0.5) ? 
-                 (delta / (Max + Min))
-                             : (delta / (2 - Max - Min));
+    hsl->s =
+        (hsl->l <= 0.5) ? (delta / (Max + Min)) : (delta / (2 - Max - Min));
 
     float hue;
 

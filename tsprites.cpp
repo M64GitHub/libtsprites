@@ -1,4 +1,4 @@
-// tsprites.cpp, 2023 M64
+// tsprites.cpp - libtsprites, 2023-24 M64
 
 #include "include/tsprites.hpp"
 #include "include/format_catimg.hpp"
