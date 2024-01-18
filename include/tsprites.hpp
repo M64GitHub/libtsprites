@@ -90,7 +90,7 @@ public:
 
   int state = 0; // generic type to support own concepts
 
-  render_surface *out_surface; // last render
+  render_surface *out_surface; // last render, direct access for speed
 
 private:
   // allocates maps, returns first new frame

@@ -16,15 +16,24 @@
 render_surface *TSRenderEngineTopDown::Render(render_surface **surfaces_in,
                                               int n,
                                               render_surface *surface_out) {
+return 0;
+  if (!n)
+    return 0;
+
   render_surface **surfaces_sorted = new render_surface *[n];
   int *tmp = new int[n];
-  
-  for(int i=0; i<n; i++) tmp[i] = 0;
+  for (int i = 0; i < n; i++)
+    tmp[i] = 0;
 
+  // -- sort / prepare
   for (int i = 0; i < n; i++)
     for (int j = 0; j < n; j++) {
       ;
     }
+
+  // -- render
+
+  // -- cleanup
 
   delete[] tmp;
   delete[] surfaces_sorted;
