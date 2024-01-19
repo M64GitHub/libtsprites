@@ -181,10 +181,7 @@ void TScreen::Render() {
       while (buf1k[i])
         out_s[tmpstr_idx++] = buf1k[i++];
     }
-<<<<<<< HEAD
-=======
     // relative line end
->>>>>>> b5da09f1edbbeac47279342f4b1bb6f1dfe3829f
     i = 0;
     sprintf(buf1k, "\x1b[%dD", out_surface->w); // cursor go left(lpos)
     while (buf1k[i])
