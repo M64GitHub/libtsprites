@@ -137,8 +137,8 @@ void TScreen::Render() {
 
   // -- OUTPUT --
   cursor_home();
-  //  cursor_down(y / 2); // TODO: move screen to it's pos
-  //  cursor_right(x);
+  if(x > 0) cursor_right(x);
+  if((y/2) >= 1) cursor_down(y/2);
 
   // -- create output string
   //
@@ -181,17 +181,15 @@ void TScreen::Render() {
       while (buf1k[i])
         out_s[tmpstr_idx++] = buf1k[i++];
     }
-    // relative line end
-    // i = 0;
-    // sprintf(buf1k, "\x1b[%dD", out_surface->w); // cursor go left(lpos)
-    // while (buf1k[i])
-    //   out_s[tmpstr_idx++] = buf1k[i++];
-    //
-    // i = 0;
-    // sprintf(buf1k, "\x1b[%dB", 1); // cursor go down(1)
-    // while (buf1k[i])
-    //   out_s[tmpstr_idx++] = buf1k[i++];
-    out_s[tmpstr_idx++] = 0x0a;
+    i = 0;
+    sprintf(buf1k, "\x1b[%dD", out_surface->w); // cursor go left(lpos)
+    while (buf1k[i])
+      out_s[tmpstr_idx++] = buf1k[i++];
+
+    i = 0;
+    sprintf(buf1k, "\x1b[%dB", 1); // cursor go down(1)
+    while (buf1k[i])
+      out_s[tmpstr_idx++] = buf1k[i++];
     out_s[tmpstr_idx] = 0x00; // terminator
   }
 

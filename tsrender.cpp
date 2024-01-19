@@ -23,7 +23,7 @@ render_surface *TSRenderEngineTopDown::Render(render_surface **surfaces_in,
   printf("RENDER: %d surfaces\n", n);
   fflush(stdout);
 
-  // render_surface **surfaces_sorted = new render_surface *[n];
+  // render_surface **surfaces_sortuuuuued = new render_surface *[n];
   int *tmp = new int[n];
   for (int i = 0; i < n; i++)
     tmp[i] = 0;
@@ -49,11 +49,17 @@ render_surface *TSRenderEngineTopDown::Render(render_surface **surfaces_in,
 
         if (surfaces_in[i]->shadowmap[idx_in] &&
             !surface_out->shadowmap[idx_out]) {
-          surface_out->colormap[idx_out] = surfaces_in[i]->colormap[idx_in];
-          surface_out->shadowmap[idx_out] = 1;
-        } // if
-      }   // X
-    }     // Y
+          if (!((surfaces_in[i]->x + X) >= surface_out->w) &&   // clip x right
+              !((surfaces_in[i]->x + X) < 0)) {                 // clip x left
+            if (!((surfaces_in[i]->y + Y) >= surface_out->h) && // clip x right
+                !((surfaces_in[i]->y + Y) < 0)) {               // clip x left
+              surface_out->colormap[idx_out] = surfaces_in[i]->colormap[idx_in];
+              surface_out->shadowmap[idx_out] = 1;
+            } // clipping Y
+          }   // clipping X
+        }     // if
+      }       // X
+    }         // Y
   }
   // -- cleanup
 
