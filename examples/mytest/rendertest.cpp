@@ -74,7 +74,11 @@ int main(int argc, char **argv) {
 
   TSRenderEngineTopDown engine;
   TScreen Screen(120, 46);
+<<<<<<< HEAD
   Screen.SetPos(1, 2);
+=======
+  Screen.SetPos(3,2);
+>>>>>>> b5da09f1edbbeac47279342f4b1bb6f1dfe3829f
 
   ruler(120);
   fflush(stdout);
@@ -124,7 +128,11 @@ int main(int argc, char **argv) {
     x3 = 46 + 40 * (sin((((SpcShip.counter1+50) % 100) / 100.0) * 6.28)) - 1;
     y3 = 30 + 8 * (cos((((SpcShip.counter1+50) % 100) / 100.0 * 3) * 6.28));
 
+<<<<<<< HEAD
     x2 = 5 + 25 * (sin(((SpcShip.counter1 % 100) / 100.0) * 6.28)) + 10;
+=======
+    x2 = 5 + 25 * (sin(((SpcShip.counter1 % 100) / 100.0) * 6.28)) - 1 +10;
+>>>>>>> b5da09f1edbbeac47279342f4b1bb6f1dfe3829f
     y2 = 20 + 10 * (cos(((SpcShip.counter1 % 100) / 100.0) * 6.28));
 
     x4 = 12 + 12 * (sin((((SpcShip.counter1) % 100) / 100.0) * 6.28)) - 2;
@@ -133,7 +141,11 @@ int main(int argc, char **argv) {
     SpcShip.SetXY(x, y);
     SpcShip2.SetXY(x3, y3);
     SprDemo.SetXY(x2, y2);
+<<<<<<< HEAD
     SprDemo2.SetXY(x4, y4 - 50);
+=======
+    SprDemo2.SetXY(x4, y4 +30);
+>>>>>>> b5da09f1edbbeac47279342f4b1bb6f1dfe3829f
 
     Screen.Render();
 
