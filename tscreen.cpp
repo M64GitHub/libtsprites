@@ -137,13 +137,8 @@ void TScreen::Render() {
 
   // -- OUTPUT --
   cursor_home();
-<<<<<<< HEAD
   if(x > 0) cursor_right(x);
   if((y/2) >= 1) cursor_down(y/2);
-=======
-  if(y>1) cursor_down(y / 2); // TODO: move screen to it's pos
-  if(x>0) cursor_right(x);
->>>>>>> b5da09f1edbbeac47279342f4b1bb6f1dfe3829f
 
   // -- create output string
   //
