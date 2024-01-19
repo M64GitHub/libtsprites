@@ -49,11 +49,14 @@ render_surface *TSRenderEngineTopDown::Render(render_surface **surfaces_in,
 
         if (surfaces_in[i]->shadowmap[idx_in] &&
             !surface_out->shadowmap[idx_out]) {
-          surface_out->colormap[idx_out] = surfaces_in[i]->colormap[idx_in];
-          surface_out->shadowmap[idx_out] = 1;
-        } // if
-      }   // X
-    }     // Y
+          if( !((surfaces_in[i]->x + X) >= surface_out->w) && // clip x right
+              !((surfaces_in[i]->x + X) < 0)) { // clip x left
+            surface_out->colormap[idx_out] = surfaces_in[i]->colormap[idx_in];
+            surface_out->shadowmap[idx_out] = 1;
+          } // clipping
+        }   // if
+      }     // X
+    }       // Y
   }
   // -- cleanup
 

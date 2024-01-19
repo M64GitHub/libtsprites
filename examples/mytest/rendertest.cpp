@@ -126,7 +126,7 @@ int main(int argc, char **argv) {
     x3 = 46 + 40 * (sin((((SpcShip.counter1+50) % 100) / 100.0) * 6.28)) - 1;
     y3 = 30 + 8 * (cos((((SpcShip.counter1+50) % 100) / 100.0 * 3) * 6.28));
 
-    x2 = 15 + 13 * (sin(((SpcShip.counter1 % 100) / 100.0) * 6.28)) - 1;
+    x2 = 5 + 25 * (sin(((SpcShip.counter1 % 100) / 100.0) * 6.28)) - 1 +10;
     y2 = 20 + 10 * (cos(((SpcShip.counter1 % 100) / 100.0) * 6.28));
 
     x4 = 12 + 12 * (sin((((SpcShip.counter1) % 100) / 100.0) * 6.28)) - 2;
