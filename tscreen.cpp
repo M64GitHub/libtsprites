@@ -182,16 +182,16 @@ void TScreen::Render() {
         out_s[tmpstr_idx++] = buf1k[i++];
     }
     // relative line end
-    // i = 0;
-    // sprintf(buf1k, "\x1b[%dD", out_surface->w); // cursor go left(lpos)
-    // while (buf1k[i])
-    //   out_s[tmpstr_idx++] = buf1k[i++];
-    //
-    // i = 0;
-    // sprintf(buf1k, "\x1b[%dB", 1); // cursor go down(1)
-    // while (buf1k[i])
-    //   out_s[tmpstr_idx++] = buf1k[i++];
-    out_s[tmpstr_idx++] = 0x0a;
+    i = 0;
+    sprintf(buf1k, "\x1b[%dD", out_surface->w); // cursor go left(lpos)
+    while (buf1k[i])
+      out_s[tmpstr_idx++] = buf1k[i++];
+
+    i = 0;
+    sprintf(buf1k, "\x1b[%dB", 1); // cursor go down(1)
+    while (buf1k[i])
+      out_s[tmpstr_idx++] = buf1k[i++];
+//    out_s[tmpstr_idx++] = 0x0a;
     out_s[tmpstr_idx] = 0x00; // terminator
   }
 
