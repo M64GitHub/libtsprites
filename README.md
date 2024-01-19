@@ -5,7 +5,7 @@ OS independent. No code dependencies. RGB and HSL color support. Ideal for termi
 games, or just more interesting user interfaces.  
 
 
-https://github.com/M64GitHub/libtsprites/assets/84202356/c68cb538-99cb-46ae-a072-cd7a4fa3fe87
+https://github.com/M64GitHub/libtsprites/assets/84202356/8d281a64-be9f-454e-84dd-e91902bc5ed4
 
 
 The intention is to create a library for visual expression on `state of the art`,
