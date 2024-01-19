@@ -5,6 +5,7 @@
 
 #include "tscolors.hpp"
 #include "tsprites.hpp"
+#include "tsrendersurface.hpp"
 
 class TSRenderEngineTopDown {
 public:

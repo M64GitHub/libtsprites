@@ -59,6 +59,7 @@ public:
   // apply internal animations, etc and render into out_surface
   // return the surface to calling screen
   render_surface *Render();
+  void SetXY(int xx, int yy);
 
   virtual void tick(); // receive global tick(). to handle internal anis, etc
 
@@ -90,7 +91,7 @@ public:
 
   int state = 0; // generic type to support own concepts
 
-  render_surface *out_surface; // last render, direct access for speed
+  render_surface *out_surface = 0; // last render, direct access for speed
 
 private:
   // allocates maps, returns first new frame

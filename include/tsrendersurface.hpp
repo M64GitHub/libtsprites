@@ -1,4 +1,4 @@
-// tsrendersurface.cpp - libtsprites, 2023-24 M64 
+// tsrendersurface.cpp - libtsprites, 2023-24 M64
 
 #ifndef TSL_RENDER_SURFACE_H
 #define TSL_RENDER_SURFACE_H
@@ -7,7 +7,7 @@
 
 typedef struct s_render_surface {
   int w; // measured in blocks, 1 ASCI char has width 1
-  int h; // measured in blocks, 1 ASCII char has height 2, 1 block height 
+  int h; // measured in blocks, 1 ASCII char has height 2, 1 block height
 
   int x;
   int y;
@@ -22,5 +22,10 @@ typedef struct s_render_surface {
                       // if 0, sprite doesn't re-render itself
                       // just waisting time
 } render_surface;
+
+void init_surface(render_surface *s, int w, int h, rgb_color r);
+
+void clear_surface_bgcolor(render_surface *s, rgb_color c);
+void clear_surface_transparent(render_surface *s);
 
 #endif

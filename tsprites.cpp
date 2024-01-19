@@ -250,7 +250,32 @@ void TSprite::PrintFrame(int n) {
 
 void TSprite::Prepare() {}
 
-render_surface *TSprite::Render() { return out_surface; }
+void TSprite::SetXY(int xx, int yy) {
+  x = xx;
+  y = yy;
+  if (out_surface) {
+    out_surface->x = xx;
+    out_surface->y = yy;
+  }
+}
+
+// renders current frame
+render_surface *TSprite::Render() {
+  if (!out_surface)
+    return 0;
+
+  TSPriteFrame *F = fs.frames[fs.frame_idx];
+
+  for (int i = 0; i < (F->w * F->h); i++) {
+    out_surface->colormap[i] = F->colormap[i];
+    out_surface->shadowmap[i] = F->shadowmap[i];
+  }
+
+  out_surface->x = x;
+  out_surface->y = y;
+
+  return out_surface;
+}
 
 void TSprite::tick() {}
 
@@ -415,6 +440,14 @@ int TSprite::imgstr_2maps(char *str, TSPriteFrame *F) {
       DBG("[TS] no case found at pos %d!\n", pos);
     }
     pos += 4;
+  }
+
+  // Initialize out_surface here, so it is not 0, and
+  // Screen.AddSprite can be called
+  if (!out_surface) {
+    rgb_color c = {0x00, 0x00, 0x00};
+    out_surface = new render_surface;
+    init_surface(out_surface, F->w, F->h, c);
   }
 
   return 0;
@@ -684,6 +717,7 @@ void SSprite::PrintDimmed() {}
 
 void SSprite::PrintFrame(int n) {}
 
-void SSprite::Render() { return; }
-
+// Renders current Frame + animations, etc to out_surface
 void SSprite::free_frames() {}
+
+void SSprite::Render() {}

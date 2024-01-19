@@ -1,6 +1,7 @@
 // tsrender.cpp - libtsprites 2023-24, M64
 
 #include "include/tsrender.hpp"
+#include <stdio.h>
 
 // RenderEngine1:
 // renders all input surfaces onto the output surface (and returns it)
@@ -16,27 +17,48 @@
 render_surface *TSRenderEngineTopDown::Render(render_surface **surfaces_in,
                                               int n,
                                               render_surface *surface_out) {
-return 0;
   if (!n)
     return 0;
 
-  render_surface **surfaces_sorted = new render_surface *[n];
+  printf("RENDER: %d surfaces\n", n);
+  fflush(stdout);
+
+  // render_surface **surfaces_sorted = new render_surface *[n];
   int *tmp = new int[n];
   for (int i = 0; i < n; i++)
     tmp[i] = 0;
 
   // -- sort / prepare
-  for (int i = 0; i < n; i++)
+  for (int i = 0; i < n; i++) {
     for (int j = 0; j < n; j++) {
       ;
     }
+  }
 
   // -- render
 
+  int idx_in = 0;
+  int idx_out = 0;
+  for (int i = 0; i < n; i++) {
+    for (int Y = 0; Y < surfaces_in[i]->h; Y++) {
+      for (int X = 0; X < surfaces_in[i]->w; X++) {
+
+        idx_in = surfaces_in[i]->w * Y + X;
+        idx_out =
+            surface_out->w * (Y + surfaces_in[i]->y) + X + surfaces_in[i]->x;
+
+        if (surfaces_in[i]->shadowmap[idx_in] &&
+            !surface_out->shadowmap[idx_out]) {
+          surface_out->colormap[idx_out] = surfaces_in[i]->colormap[idx_in];
+          surface_out->shadowmap[idx_out] = 1;
+        } // if
+      }   // X
+    }     // Y
+  }
   // -- cleanup
 
   delete[] tmp;
-  delete[] surfaces_sorted;
+  // delete[] surfaces_sorted;
 
   return surface_out;
 }

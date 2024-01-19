@@ -35,7 +35,7 @@ public:
   rgb_color bg_color = {0x20, 0x20, 0x20};
 
   render_surface *out_surface = 0; // last render of screen, direct access for speed
-
+  char *out_s = 0;
 private:
   void add_out_surface(render_surface *rs);
 
