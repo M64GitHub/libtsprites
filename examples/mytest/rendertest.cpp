@@ -135,7 +135,7 @@ int main(int argc, char **argv) {
     SpcShip.SetXY(x, y);
     SpcShip2.SetXY(x3, y3);
     SprDemo.SetXY(x2, y2);
-    SprDemo2.SetXY(x4, y4);
+    SprDemo2.SetXY(x4, y4 +30);
 
     Screen.Render();
 
