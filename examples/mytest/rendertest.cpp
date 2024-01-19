@@ -74,6 +74,8 @@ int main(int argc, char **argv) {
 
   TSRenderEngineTopDown engine;
   TScreen Screen(120, 46);
+  Screen.SetPos(3,2);
+
   ruler(120);
   fflush(stdout);
 
