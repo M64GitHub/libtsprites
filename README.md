@@ -4,6 +4,12 @@ Blazingly fast 2.5D parallax rendering-, extendable effects-, and animation-engi
 OS independent. No code dependencies. RGB and HSL color support. Ideal for terminal
 games, or just more interesting user interfaces.  
 
+
+
+https://github.com/M64GitHub/libtsprites/assets/84202356/df1eb0c2-82d1-40eb-8d40-65a8c15530b8
+
+
+
 The intention is to create a library for visual expression on `state of the art`,
 `fast` `terminals`.
 A well setup terminal today allows for very interesting visual experiences
