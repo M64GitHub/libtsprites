@@ -40,7 +40,6 @@ void TScreen::Clear() const {
 void TScreen::CClear() {
   // if not yet done: prepare a line full of spaces followed by "\n"
   // it will be printed h/2 times, to clear screen line by line
-  // -> TODO: make relative line ends! (for multiple screens)
   if (!clr_line) {
     clr_line = (char *)malloc((w) + 2); // ...0x0a0x00
     for (int i = 0; i < w; i++)

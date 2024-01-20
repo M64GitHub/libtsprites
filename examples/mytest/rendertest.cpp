@@ -74,7 +74,7 @@ int main(int argc, char **argv) {
 
   TSRenderEngineTopDown engine;
   TScreen Screen(120, 46);
-  Screen.SetPos(3,2);
+  // Screen.SetPos(3,2);
 
   ruler(120);
   fflush(stdout);
@@ -133,7 +133,7 @@ int main(int argc, char **argv) {
     SpcShip.SetXY(x, y);
     SpcShip2.SetXY(x3, y3);
     SprDemo.SetXY(x2, y2);
-    SprDemo2.SetXY(x4, y4 +30);
+    SprDemo2.SetXY(x4, y4);
 
     Screen.Render();
 
