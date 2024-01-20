@@ -28,7 +28,7 @@ int TScreen::Width() const { return w; };
 
 int TScreen::Y() const { return y; }
 
-void TScreen::SetPos(int px, int py) {
+void TScreen::SetXY(int px, int py) {
   x = px;
   y = py;
 }

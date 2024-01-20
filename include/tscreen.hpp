@@ -24,7 +24,7 @@ public:
 
   int X() const;
   int Y() const;
-  void SetPos(int px, int py);
+  void SetXY(int px, int py);
 
   void Clear() const;
   void CClear();

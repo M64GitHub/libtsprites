@@ -20,8 +20,6 @@ render_surface *TSRenderEngineTopDown::Render(render_surface **surfaces_in,
   if (!n)
     return 0;
 
-  printf("RENDER: %d surfaces\n", n);
-  fflush(stdout);
 
   // render_surface **surfaces_sortuuuuued = new render_surface *[n];
   int *tmp = new int[n];
@@ -49,7 +47,7 @@ render_surface *TSRenderEngineTopDown::Render(render_surface **surfaces_in,
             surface_out->w * (Y + surfaces_in[i]->y) + X + surfaces_in[i]->x;
 
         if (surfaces_in[i]->shadowmap[idx_in] &&
-            surface_out->shadowmap[idx_out] != 1) {
+            surface_out->shadowmap[idx_out] != 1) {  // 0 = transp, 2 = bg
           if (!((surfaces_in[i]->x + X) >= surface_out->w) &&   // clip x right
               !((surfaces_in[i]->x + X) < 0)) {                 // clip x left
             if (!((surfaces_in[i]->y + Y) >= surface_out->h) && // clip x right

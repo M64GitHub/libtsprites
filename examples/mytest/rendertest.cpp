@@ -74,10 +74,6 @@ int main(int argc, char **argv) {
 
   TSRenderEngineTopDown engine;
   TScreen Screen(120, 46);
-  // Screen.SetPos(3,2);
-
-  ruler(120);
-  fflush(stdout);
 
   TSprite SprDemo;
   TSprite SprDemo2;
@@ -100,10 +96,10 @@ int main(int argc, char **argv) {
   SprDemo2.Render();
   SpcShip.Render();
   SpcShip2.Render();
- 
-  Screen.SetRenderEngine(&engine);
 
+  Screen.SetRenderEngine(&engine);
   Screen.screen_mode = SCREEN_BGCOLOR; // default is SCREEN_TRANSPARENT
+  Screen.SetXY(1, 2);
 
   // --
 
@@ -115,6 +111,8 @@ int main(int argc, char **argv) {
   int y3 = 0;
   int x4 = 0;
   int y4 = 0;
+  term_clear();
+
   while (1) {
     ts1 = get_timestamp(&tv);
     SpcShip.counter1++;
@@ -122,14 +120,14 @@ int main(int argc, char **argv) {
     x = 53 + 50 * (sin(((SpcShip.counter1 % 100) / 100.0) * 6.28)) - 1;
     y = 30 + 10 * (cos(((SpcShip.counter1 % 100) / 100.0 * 3) * 6.28));
 
-    x3 = 46 + 40 * (sin((((SpcShip.counter1+50) % 100) / 100.0) * 6.28)) - 1;
-    y3 = 30 + 8 * (cos((((SpcShip.counter1+50) % 100) / 100.0 * 3) * 6.28));
+    x3 = 46 + 40 * (sin((((SpcShip.counter1 + 50) % 100) / 100.0) * 6.28)) - 1;
+    y3 = 30 + 8 * (cos((((SpcShip.counter1 + 50) % 100) / 100.0 * 3) * 6.28));
 
     x2 = 5 + 25 * (sin(((SpcShip.counter1 % 100) / 100.0) * 6.28)) + 10;
     y2 = 20 + 10 * (cos(((SpcShip.counter1 % 100) / 100.0) * 6.28));
 
     x4 = 12 + 12 * (sin((((SpcShip.counter1) % 100) / 100.0) * 6.28)) - 2;
-    y4 = y3 +15;
+    y4 = y3 + 15;
 
     SpcShip.SetXY(x, y);
     SpcShip2.SetXY(x3, y3);
