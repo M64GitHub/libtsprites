@@ -32,6 +32,7 @@ public:
   void AddSprite(TSprite *s);
   void AddSprite(SSprite *s);
 
+  void SetScreenMode(TSSCREEN_MODE m);
   void SetRenderEngine(TSRenderEngineTopDown *engine);
 
   void Update();
@@ -42,7 +43,6 @@ public:
   render_surface *out_surface = 0; // last render of screen, direct access for speed
   char *out_s = 0;
 
-  TSSCREEN_MODE screen_mode = SCREEN_TRANSPARENT;
     
 private:
   void add_out_surface(render_surface *rs);
@@ -64,6 +64,7 @@ private:
 
   render_surface **surfaces_out = 0;
   int num_surfaces_out = 0;
+  TSSCREEN_MODE screen_mode = SCREEN_TRANSPARENT;
 
   TSRenderEngineTopDown *e = 0;
 };

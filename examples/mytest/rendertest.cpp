@@ -98,8 +98,7 @@ int main(int argc, char **argv) {
   SpcShip2.Render();
 
   Screen.SetRenderEngine(&engine);
-  Screen.screen_mode = SCREEN_BGCOLOR; // default is SCREEN_TRANSPARENT
-  Screen.SetXY(1, 2);
+  Screen.SetScreenMode(SCREEN_BGCOLOR); // was SCREEN_TRANSPARENT
 
   // --
 
@@ -111,7 +110,6 @@ int main(int argc, char **argv) {
   int y3 = 0;
   int x4 = 0;
   int y4 = 0;
-  term_clear();
 
   while (1) {
     ts1 = get_timestamp(&tv);
@@ -132,7 +130,7 @@ int main(int argc, char **argv) {
     SpcShip.SetXY(x, y);
     SpcShip2.SetXY(x3, y3);
     SprDemo.SetXY(x2, y2);
-    SprDemo2.SetXY(x4, y4 - y / 2);
+    SprDemo2.SetXY(x4, y4);
 
     Screen.Render();
 

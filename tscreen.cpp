@@ -202,4 +202,9 @@ void TScreen::Render() {
   printf("%s", out_s);
 }
 
+
+void TScreen::SetScreenMode(TSSCREEN_MODE m){
+  screen_mode = m;
+}
+
 void TScreen::SetRenderEngine(TSRenderEngineTopDown *engine) { e = engine; }
