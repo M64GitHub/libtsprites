@@ -126,13 +126,13 @@ int main(int argc, char **argv) {
     x2 = 5 + 25 * (sin(((SpcShip.counter1 % 100) / 100.0) * 6.28)) + 10;
     y2 = 20 + 10 * (cos(((SpcShip.counter1 % 100) / 100.0) * 6.28));
 
-    x4 = 12 + 12 * (sin((((SpcShip.counter1) % 100) / 100.0) * 6.28)) - 2;
+    x4 = 12 + 14 * (sin((((SpcShip.counter1) % 100) / 100.0) * 6.28)) - 2;
     y4 = y3 + 15;
 
     SpcShip.SetXY(x, y);
     SpcShip2.SetXY(x3, y3);
     SprDemo.SetXY(x2, y2);
-    SprDemo2.SetXY(x4, y4);
+    SprDemo2.SetXY(x4, y4 - y / 2);
 
     Screen.Render();
 
