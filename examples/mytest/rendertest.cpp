@@ -145,8 +145,8 @@ int main(int argc, char **argv) {
     //
     // -- wait until full frame time reached
     ts3 = get_timestamp(&tv);
-    printf("framesleeping: %lu\n", fps_in_us - (ts3 - ts1));
-    usleep(fps_in_us - (ts3 - ts1));
+    printf("framesleeping: %lu                   \n", fps_in_us - (ts3 - ts1));
+      usleep(fps_in_us - (ts3 - ts1) < fps_in_us ? fps_in_us - (ts3 - ts1): 1);
   }
 
   // --

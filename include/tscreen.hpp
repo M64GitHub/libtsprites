@@ -67,6 +67,7 @@ private:
   TSSCREEN_MODE screen_mode = SCREEN_TRANSPARENT;
 
   TSRenderEngineTopDown *e = 0;
+
 };
 
 #endif
