@@ -15,10 +15,9 @@ void clear_surface_bgcolor(render_surface *s, rgb_color c) {
     return;
   for (int i = 0; i < s->w * s->h; i++) {
     s->colormap[i] = c;
-    s->shadowmap[i] = 0;
+    s->shadowmap[i] = 2;
   }
 }
-
 
 void clear_surface_transparent(render_surface *s) {
   if (!s || !s->colormap || !s->shadowmap)

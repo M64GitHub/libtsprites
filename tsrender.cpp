@@ -39,6 +39,7 @@ render_surface *TSRenderEngineTopDown::Render(render_surface **surfaces_in,
 
   int idx_in = 0;
   int idx_out = 0;
+
   for (int i = 0; i < n; i++) {
     for (int Y = 0; Y < surfaces_in[i]->h; Y++) {
       for (int X = 0; X < surfaces_in[i]->w; X++) {
@@ -48,7 +49,7 @@ render_surface *TSRenderEngineTopDown::Render(render_surface **surfaces_in,
             surface_out->w * (Y + surfaces_in[i]->y) + X + surfaces_in[i]->x;
 
         if (surfaces_in[i]->shadowmap[idx_in] &&
-            !surface_out->shadowmap[idx_out]) {
+            surface_out->shadowmap[idx_out] != 1) {
           if (!((surfaces_in[i]->x + X) >= surface_out->w) &&   // clip x right
               !((surfaces_in[i]->x + X) < 0)) {                 // clip x left
             if (!((surfaces_in[i]->y + Y) >= surface_out->h) && // clip x right

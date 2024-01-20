@@ -6,6 +6,11 @@
 #include "tsprites.hpp"
 #include "tsrender.hpp"
 
+typedef enum {
+    SCREEN_TRANSPARENT,
+    SCREEN_BGCOLOR
+} TSSCREEN_MODE;
+
 class TScreen {
 public:
   TScreen();
@@ -36,6 +41,9 @@ public:
 
   render_surface *out_surface = 0; // last render of screen, direct access for speed
   char *out_s = 0;
+
+  TSSCREEN_MODE screen_mode = SCREEN_TRANSPARENT;
+    
 private:
   void add_out_surface(render_surface *rs);
 

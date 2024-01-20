@@ -129,15 +129,21 @@ void TScreen::Render() {
   if (!num_surfaces_out)
     return;
 
-  clear_surface_transparent(out_surface);
+  if (screen_mode == SCREEN_TRANSPARENT) {
+    clear_surface_transparent(out_surface);
+  } else {
+    clear_surface_bgcolor(out_surface, bg_color);
+  }
 
   // render out_surface
   e->Render(surfaces_out, num_surfaces_out, out_surface);
 
   // -- OUTPUT --
   cursor_home();
-  if(x > 0) cursor_right(x);
-  if((y/2) >= 1) cursor_down(y/2);
+  if (x > 0)
+    cursor_right(x);
+  if ((y / 2) >= 1)
+    cursor_down(y / 2);
 
   // -- create output string
   //

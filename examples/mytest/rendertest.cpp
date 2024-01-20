@@ -100,9 +100,10 @@ int main(int argc, char **argv) {
   SprDemo2.Render();
   SpcShip.Render();
   SpcShip2.Render();
-
-  //
+ 
   Screen.SetRenderEngine(&engine);
+
+  Screen.screen_mode = SCREEN_BGCOLOR; // default is SCREEN_TRANSPARENT
 
   // --
 

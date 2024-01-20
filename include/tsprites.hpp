@@ -93,6 +93,8 @@ public:
 
   render_surface *out_surface = 0; // last render, direct access for speed
 
+  render_surface *restore_surface = 0; // can be manually used ie to store
+                                       // before effect
 private:
   // allocates maps, returns first new frame
   TSPriteFrame *add_frames(int n, int width, int height);

@@ -7,6 +7,7 @@
 #include "tsprites.hpp"
 #include "tsrendersurface.hpp"
 
+
 class TSRenderEngineTopDown {
 public:
   render_surface *Render(render_surface *surfaces_in[], int n,
