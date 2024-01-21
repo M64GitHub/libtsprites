@@ -31,6 +31,7 @@ public:
 
   void AddSprite(TSprite *s);
   void AddSprite(SSprite *s);
+  void AddSubScreen(TScreen *s);
 
   void SetScreenMode(TSSCREEN_MODE m);
   void SetRenderEngine(TSRenderEngineTopDown *engine);
@@ -42,7 +43,7 @@ public:
 
   render_surface *out_surface = 0; // last render of screen, direct access for speed
   char *out_s = 0;
-
+  int is_subscreen = 0;
     
 private:
   void add_out_surface(render_surface *rs);
@@ -61,13 +62,14 @@ private:
   int num_tsprites = 0;
   SSprite **s_sprites = 0;
   int num_ssprites = 0;
+  TScreen **sub_screens = 0;
+  int num_screens = 0;
 
   render_surface **surfaces_out = 0;
   int num_surfaces_out = 0;
   TSSCREEN_MODE screen_mode = SCREEN_TRANSPARENT;
 
   TSRenderEngineTopDown *e = 0;
-
 };
 
 #endif

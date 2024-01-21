@@ -31,6 +31,10 @@ int TScreen::Y() const { return y; }
 void TScreen::SetXY(int px, int py) {
   x = px;
   y = py;
+  if(is_subscreen) {
+    out_surface->x = px;
+    out_surface->y = py;
+  }
 }
 
 void TScreen::Clear() const {
@@ -107,6 +111,23 @@ void TScreen::AddSprite(SSprite *spr) {
   // Add surface out
 }
 
+void TScreen::AddSubScreen(TScreen *scr) {
+  TScreen **new_arr = new TScreen *[num_tsprites + 1];
+
+  // copy current
+  for (int i = 0; i < num_screens; i++) {
+    new_arr[i] = sub_screens[i];
+  }
+  num_screens++;
+
+  new_arr[num_screens - 1] = scr; // new last one
+
+  delete[] sub_screens;
+  sub_screens = new_arr;
+
+  add_out_surface(scr->out_surface);
+}
+
 // called on each sprite-> add,
 // surfaces out holds input array for rendering engine
 void TScreen::add_out_surface(render_surface *rs) {
@@ -137,6 +158,8 @@ void TScreen::Render() {
 
   // render out_surface
   e->Render(surfaces_out, num_surfaces_out, out_surface);
+  if (is_subscreen)
+    return;
 
   // -- OUTPUT --
   cursor_home();
@@ -202,9 +225,6 @@ void TScreen::Render() {
   printf("%s", out_s);
 }
 
-
-void TScreen::SetScreenMode(TSSCREEN_MODE m){
-  screen_mode = m;
-}
+void TScreen::SetScreenMode(TSSCREEN_MODE m) { screen_mode = m; }
 
 void TScreen::SetRenderEngine(TSRenderEngineTopDown *engine) { e = engine; }
