@@ -31,7 +31,7 @@ int TScreen::Y() const { return y; }
 void TScreen::SetXY(int px, int py) {
   x = px;
   y = py;
-  if(is_subscreen) {
+  if (is_subscreen) {
     out_surface->x = px;
     out_surface->y = py;
   }
@@ -223,6 +223,20 @@ void TScreen::Render() {
   }
 
   printf("%s", out_s);
+
+  for (int i = 0; i < num_ssprites; i++) {
+    SSprite *ss = s_sprites[i];
+    ss->Print(x + ss->x, y + ss->y);
+  }
+
+  for (int j = 0; j < num_screens; j++) {
+    TScreen *scr = sub_screens[j];
+
+    for (int i = 0; i <  scr->num_ssprites; i++) {
+      SSprite *ss = scr->s_sprites[i];
+      ss->Print(x + scr->x + ss->x, y + scr->y + ss->y);
+    }
+  }
 }
 
 void TScreen::SetScreenMode(TSSCREEN_MODE m) { screen_mode = m; }

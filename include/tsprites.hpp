@@ -170,12 +170,12 @@ public:
   int threshhold2 = 0;
   int threshhold3 = 0;
 
+  rgb_color *background = 0;        // for rendering
   int state = 0; // generic type to support own concepts
 private:
   void free_frames();
   unsigned char color_override = 0; // if frame color is unsed,
                                     // or overriden by effect.
-  rgb_color *background = 0;        // for rendering
 };
 
 #endif
