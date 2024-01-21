@@ -275,9 +275,8 @@ This is the example in the root dir. Here we use the (first quick and dirty) ren
 #include <sys/time.h>
 #include <unistd.h> // for usleep()
 
-int FPS = 60;
-
-unsigned long fps_in_us = 0;
+int FPS = 60;                // set stable FPS
+unsigned long fps_in_us = 0; // will be calculated
 
 unsigned long get_timestamp(struct timeval *tv) {
   gettimeofday(tv, NULL);
@@ -393,7 +392,7 @@ int main(int argc, char **argv) {
     if (!(S2.counter1++ % 4))
       S2.frame_idx = (S2.counter2++ % 8);
 
-    // -- wait until full frame time reached
+    // -- wait until full frame time reached (stable FPS)
     ts2 = get_timestamp(&tv);
     usleep(fps_in_us - (ts2 - ts1) < fps_in_us ? fps_in_us - (ts2 - ts1) : 1);
   }
