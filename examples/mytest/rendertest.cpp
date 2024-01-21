@@ -13,6 +13,7 @@
 
 int FPS = 60;
 
+// -- stats
 unsigned long duration = 0;
 unsigned long maxtime = 0;
 unsigned long mintime = 1000000;
@@ -72,6 +73,21 @@ int main(int argc, char **argv) {
   unsigned long ts3 = 0;
   fps_in_us = fps_to_us(FPS);
 
+  rgb_color S1Color = {0xdf, 0xdf, 0xdf}; // R, G, B
+  SSprite S1((char *)"SubScreen");
+  S1.frames[0]->color = S1Color;
+
+  char *spinners[] = {
+      // array of strings for the spinner sprite below
+      (char *)" - ▁   SSprite ", (char *)" \\ ▂ ░ SSprite ",
+      (char *)" | ▃ ▒ SSprite ", (char *)" / ▄ ▓ SSprite ",
+      (char *)" - ▅ █ SSprite ", (char *)" \\ ▆ ▓ SSprite ",
+      (char *)" | ▇ ▒ SSprite ", (char *)" / █ ░ SSprite ",
+  };
+
+  rgb_color spinners_color = {0x9C, 0x41, 0xdE}; // R, G, B
+  SSprite S2(spinners, 8, spinners_color);       // create a string sprite,
+
   TSRenderEngineTopDown engine;
   TScreen Screen(120, 46);
 
@@ -89,9 +105,6 @@ int main(int argc, char **argv) {
   Screen.AddSprite(&SpcShip2);
   Screen.AddSprite(&SprDemo2);
 
-  // SprDemo.Render(); // prepares out_surface to be rendered on screen,
-  // and we don't need to re-render it again as long as there is no frame
-  // change or anything in this example
   SprDemo.Render();
   SprDemo2.Render();
   SpcShip.Render();
@@ -109,13 +122,14 @@ int main(int argc, char **argv) {
   SubScreen.is_subscreen = 1;
   Screen.AddSubScreen(&SubScreen);
   SubScreen.SetScreenMode(SCREEN_BGCOLOR);
-  SubScreen.bg_color = { 0x30, 0x38, 0x40 };
-  SubScreen.SetXY(98, 46*2 - 3 - 40);
+  Screen.bg_color = {0x10, 0x10, 0x10};
+  SubScreen.bg_color = {0x20, 0x28, 0x30};
+  SubScreen.SetXY(98, 46 * 2 - 2 - 40);
   SubScreen.AddSprite(&SpcShip3);
   SubScreen.AddSprite(&SprDemo);
   SubScreen.Render();
 
-  // --
+  // -- main loop
 
   int x = 0;
   int y = 0;
@@ -146,10 +160,18 @@ int main(int argc, char **argv) {
     SpcShip2.SetXY(x3, y3);
     SprDemo.SetXY(x2, y2);
     SprDemo2.SetXY(x4, y4);
-
     SubScreen.Render();
 
     Screen.Render();
+
+    cursor_home();
+    cursor_down(44);
+    cursor_right(4);
+    if (!(S2.counter1++ % 4))
+      S2.frame_idx = (S2.counter2++ % 8);
+    S2.Print(); // print it
+    cursor_right(90);
+    S1.Print();
 
     ts2 = get_timestamp(&tv);
 
@@ -163,7 +185,7 @@ int main(int argc, char **argv) {
     // -- wait until full frame time reached
     ts3 = get_timestamp(&tv);
     printf("framesleeping: %lu                   \n", fps_in_us - (ts3 - ts1));
-      usleep(fps_in_us - (ts3 - ts1) < fps_in_us ? fps_in_us - (ts3 - ts1): 1);
+    usleep(fps_in_us - (ts3 - ts1) < fps_in_us ? fps_in_us - (ts3 - ts1) : 1);
   }
 
   // --
