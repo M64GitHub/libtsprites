@@ -73,6 +73,8 @@ int main(int argc, char **argv) {
   unsigned long ts3 = 0;
   fps_in_us = fps_to_us(FPS);
 
+  TSRenderEngineTopDown engine;
+
   rgb_color S1Color = {0xdf, 0xdf, 0xdf}; // R, G, B
   SSprite S1((char *)"SubScreen");
   S1.frames[0]->color = S1Color;
@@ -88,8 +90,10 @@ int main(int argc, char **argv) {
   rgb_color spinners_color = {0x9C, 0x41, 0xdE}; // R, G, B
   SSprite S2(spinners, 8, spinners_color);       // create a string sprite,
 
-  TSRenderEngineTopDown engine;
   TScreen Screen(120, 46);
+  Screen.bg_color = {0x10, 0x10, 0x10};
+  Screen.SetRenderEngine(&engine);
+  Screen.SetScreenMode(SCREEN_BGCOLOR); // was SCREEN_TRANSPARENT
 
   TSprite SprDemo;
   TSprite SprDemo2;
@@ -110,9 +114,6 @@ int main(int argc, char **argv) {
   SpcShip.Render();
   SpcShip2.Render();
 
-  Screen.SetRenderEngine(&engine);
-  Screen.SetScreenMode(SCREEN_BGCOLOR); // was SCREEN_TRANSPARENT
-
   // -- SubScreen
   TSprite SpcShip3;
   TScreen SubScreen(20, 20);
@@ -122,7 +123,6 @@ int main(int argc, char **argv) {
   SubScreen.is_subscreen = 1;
   Screen.AddSubScreen(&SubScreen);
   SubScreen.SetScreenMode(SCREEN_BGCOLOR);
-  Screen.bg_color = {0x10, 0x10, 0x10};
   SubScreen.bg_color = {0x20, 0x28, 0x30};
   SubScreen.SetXY(98, 46 * 2 - 2 - 40);
   SubScreen.AddSprite(&SpcShip3);
@@ -160,8 +160,8 @@ int main(int argc, char **argv) {
     SpcShip2.SetXY(x3, y3);
     SprDemo.SetXY(x2, y2);
     SprDemo2.SetXY(x4, y4);
-    SubScreen.Render();
 
+    SubScreen.Render();
     Screen.Render();
 
     cursor_home();
