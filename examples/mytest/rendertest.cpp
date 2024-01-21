@@ -169,14 +169,8 @@ int main(int argc, char **argv) {
     fflush(stdout);
 
     ts2 = get_timestamp(&tv);
-
-    // --
-    // time for user stuff
-    //
     // print_stats(ts1, ts2);
-    // --
 
-    //
     // -- wait until full frame time reached
     ts3 = get_timestamp(&tv);
     usleep(fps_in_us - (ts3 - ts1) < fps_in_us ? fps_in_us - (ts3 - ts1) : 1);
