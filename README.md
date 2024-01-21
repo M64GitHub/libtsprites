@@ -261,9 +261,9 @@ int main(int argc, char **argv)
 https://github.com/M64GitHub/libtsprites/assets/84202356/90d4a9d3-815f-405c-beaa-802bda05cc45
 
 ### Render Test
-
+This is the example in the root dir. Here we use the render engine. Needs documentation.
 ```C++
-// rendertest.cpp - libtsprites, 2023, M64
+// test.cpp - libtsprites, 2023, M64
 
 #include "include/tscolors.hpp"
 #include "include/tscreen.hpp"
