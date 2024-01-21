@@ -114,7 +114,6 @@ int main(int argc, char **argv) {
   TSprite SpcShip3;
   TScreen SubScreen(20, 20);
   SpcShip3.ImportFromFile((char *)"resources/spc.unicode");
-  SpcShip3.Render();
   SpcShip3.SetXY(3, 2);
   SubScreen.is_subscreen = 1;
   Screen.AddSubScreen(&SubScreen);
@@ -123,7 +122,6 @@ int main(int argc, char **argv) {
   SubScreen.SetXY(98, 46 * 2 - 2 - 40);
   SubScreen.AddSprite(&SpcShip3);
   SubScreen.AddSprite(&SprDemo);
-  SubScreen.Render();
 
   // -- main loop
 
