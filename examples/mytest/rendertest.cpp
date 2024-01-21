@@ -100,18 +100,19 @@ int main(int argc, char **argv) {
   Screen.SetRenderEngine(&engine);
   Screen.SetScreenMode(SCREEN_BGCOLOR); // was SCREEN_TRANSPARENT
 
-  // SubScreen
+  // -- SubScreen
   TSprite SpcShip3;
+  TScreen SubScreen(20, 20);
   SpcShip3.ImportFromFile((char *)"resources/spc.unicode");
   SpcShip3.Render();
-  TScreen SubScreen(20, 40);
+  SpcShip3.SetXY(3, 2);
   SubScreen.is_subscreen = 1;
   Screen.AddSubScreen(&SubScreen);
   SubScreen.SetScreenMode(SCREEN_BGCOLOR);
   SubScreen.bg_color = { 0x30, 0x38, 0x40 };
-  SubScreen.SetXY(98, 3);
+  SubScreen.SetXY(98, 46*2 - 3 - 40);
   SubScreen.AddSprite(&SpcShip3);
-  SubScreen.AddSprite(&SprDemo2);
+  SubScreen.AddSprite(&SprDemo);
   SubScreen.Render();
 
   // --
@@ -147,6 +148,7 @@ int main(int argc, char **argv) {
     SprDemo2.SetXY(x4, y4);
 
     SubScreen.Render();
+
     Screen.Render();
 
     ts2 = get_timestamp(&tv);
