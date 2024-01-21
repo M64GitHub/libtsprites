@@ -148,6 +148,17 @@ int TSprite::ImportFromImgStr(char *str) {
     h = height;
     w = width;
     s_1down = strdup(F->s_1down);
+
+    // Initialize out_surface here, so it is not 0, and
+    // Screen.AddSprite can be called
+    rgb_color c = {0x00, 0x00, 0x00};
+    out_surface = new render_surface;
+    restore_surface = new render_surface;
+    DBG("Initializing surface with w: %d, h:%d\n", w, h);
+    init_surface(out_surface, w, h, c);
+    init_surface(restore_surface, w, h, c);
+    Render();
+    copy_surface_contents(out_surface, restore_surface);
   }
 
   return 0;
@@ -440,14 +451,6 @@ int TSprite::imgstr_2maps(char *str, TSPriteFrame *F) {
       DBG("[TS] no case found at pos %d!\n", pos);
     }
     pos += 4;
-  }
-
-  // Initialize out_surface here, so it is not 0, and
-  // Screen.AddSprite can be called
-  if (!out_surface) {
-    rgb_color c = {0x00, 0x00, 0x00};
-    out_surface = new render_surface;
-    init_surface(out_surface, F->w, F->h, c);
   }
 
   return 0;

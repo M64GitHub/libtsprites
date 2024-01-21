@@ -28,4 +28,6 @@ void init_surface(render_surface *s, int w, int h, rgb_color r);
 void clear_surface_bgcolor(render_surface *s, rgb_color c);
 void clear_surface_transparent(render_surface *s);
 
+int copy_surface_contents(render_surface *in, render_surface *out);
+
 #endif

@@ -28,3 +28,22 @@ void clear_surface_transparent(render_surface *s) {
     s->shadowmap[i] = 0;
   }
 }
+
+int copy_surface_contents(render_surface *in, render_surface *out) {
+  if(!in) return 1;
+  if(!out) return 2;
+  if(!in->colormap || !in->shadowmap) return 3;
+  if(!in->w || !in->h) return 4;
+
+  for (int i = 0; i < (in->w * in->h); i++) {
+    out->colormap[i] = in->colormap[i];
+    out->shadowmap[i] = in->shadowmap[i];
+  }
+
+  out->w = in->w;
+  out->h = in->h;
+  out->x = in->x;
+  out->y = in->y;
+
+  return 0;
+}

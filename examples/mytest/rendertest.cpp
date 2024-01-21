@@ -62,6 +62,7 @@ void print_stats(unsigned long ts1, unsigned long ts2) {
   printf("Min duration in us: %lu    \n", mintime);
   printf("Max FPS: %lu    \n", maxfps);
   printf("Min FPS: %lu    \n", minfps);
+  printf("framesleeping: %lu                   \n", fps_in_us - (ts2 - ts1));
 }
 
 // --
@@ -108,11 +109,6 @@ int main(int argc, char **argv) {
   Screen.AddSprite(&SprDemo);
   Screen.AddSprite(&SpcShip2);
   Screen.AddSprite(&SprDemo2);
-
-  SprDemo.Render();
-  SprDemo2.Render();
-  SpcShip.Render();
-  SpcShip2.Render();
 
   // -- SubScreen
   TSprite SpcShip3;
@@ -172,19 +168,19 @@ int main(int argc, char **argv) {
     S2.Print(); // print it
     cursor_right(90);
     S1.Print();
+    fflush(stdout);
 
     ts2 = get_timestamp(&tv);
 
-    print_stats(ts1, ts2);
-
     // --
     // time for user stuff
+    //
+    // print_stats(ts1, ts2);
     // --
 
     //
     // -- wait until full frame time reached
     ts3 = get_timestamp(&tv);
-    printf("framesleeping: %lu                   \n", fps_in_us - (ts3 - ts1));
     usleep(fps_in_us - (ts3 - ts1) < fps_in_us ? fps_in_us - (ts3 - ts1) : 1);
   }
 
