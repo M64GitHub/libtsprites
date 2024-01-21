@@ -271,7 +271,6 @@ This is the example in the root dir. Here we use the (first quick and dirty) ren
 #include "include/tsrender.hpp"
 #include "include/tsutils.hpp"
 #include <math.h> // for sin()
-#include <stdio.h>
 #include <sys/time.h>
 #include <unistd.h> // for usleep()
 
