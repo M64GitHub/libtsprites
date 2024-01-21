@@ -260,8 +260,8 @@ int main(int argc, char **argv)
 
 https://github.com/M64GitHub/libtsprites/assets/84202356/90d4a9d3-815f-405c-beaa-802bda05cc45
 
-### Render Test
-This is the example in the root dir. Here we use the render engine. Needs documentation.
+### Render Test / "Feature Test"
+This is the example in the root dir. Here we use the (first quick and dirty) render engine. It places objects in Z-order following their creation time. Will be updated with every new (main) feature of the lib. Needs documentation.
 ```C++
 // test.cpp - libtsprites, 2023, M64
 
