@@ -275,7 +275,7 @@ This is the example in the root dir. Here we use the (first quick and dirty) ren
 #include <sys/time.h>
 #include <unistd.h> // for usleep()
 
-int FPS = 60; // set stable FPS
+int FPS = 60;                // set stable FPS
 unsigned long fps_in_us = 0; // will be calculated
 
 unsigned long get_timestamp(struct timeval *tv) {
