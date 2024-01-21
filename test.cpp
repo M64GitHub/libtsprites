@@ -6,13 +6,11 @@
 #include "include/tsrender.hpp"
 #include "include/tsutils.hpp"
 #include <math.h> // for sin()
-#include <stdio.h>
 #include <sys/time.h>
 #include <unistd.h> // for usleep()
 
-int FPS = 60;
-
-unsigned long fps_in_us = 0;
+int FPS = 60;                // set stable FPS
+unsigned long fps_in_us = 0; // will be calculated
 
 unsigned long get_timestamp(struct timeval *tv) {
   gettimeofday(tv, NULL);
