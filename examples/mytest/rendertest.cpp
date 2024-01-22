@@ -6,10 +6,10 @@
 #include "../../include/tsprites.hpp"
 #include "../../include/tsrender.hpp"
 #include "../../include/tsutils.hpp"
-#include <math.h> // for sin()
-#include <stdio.h>
-#include <sys/time.h>
-#include <unistd.h> // for usleep()
+#include <math.h>     // for sin()
+#include <stdio.h>    // for printf
+#include <sys/time.h> // for gettimeofday
+#include <unistd.h>   // for usleep()
 
 int FPS = 60;
 
@@ -65,8 +65,6 @@ void print_stats(unsigned long ts1, unsigned long ts2) {
   printf("framesleeping: %lu                   \n", fps_in_us - (ts2 - ts1));
 }
 
-// --
-
 int main(int argc, char **argv) {
   struct timeval tv;
   unsigned long ts1 = 0;
@@ -74,62 +72,62 @@ int main(int argc, char **argv) {
   unsigned long ts3 = 0;
   fps_in_us = fps_to_us(FPS);
 
-  TSRenderEngineTopDown engine;
-
-  SSprite S1((char *)"SubScreen");
-
   char *spinners[] = {
-      // array of strings for the spinner sprite below
       (char *)" - ▁   SSprite ", (char *)" \\ ▂ ░ SSprite ",
       (char *)" | ▃ ▒ SSprite ", (char *)" / ▄ ▓ SSprite ",
       (char *)" - ▅ █ SSprite ", (char *)" \\ ▆ ▓ SSprite ",
       (char *)" | ▇ ▒ SSprite ", (char *)" / █ ░ SSprite ",
   };
-
   rgb_color spinners_color = {0x9C, 0x41, 0xdE}; // R, G, B
+
+  TSRenderEngineTopDown engine;
 
   TScreen Screen(120, 46);
   Screen.bg_color = {0x10, 0x10, 0x10};
   Screen.SetRenderEngine(&engine);
-  Screen.SetScreenMode(SCREEN_BGCOLOR); // was SCREEN_TRANSPARENT
+  Screen.SetScreenMode(SCREEN_BGCOLOR);
 
   TSprite SprDemo;
-  TSprite SprDemo2;
-  TSprite SpcShip;
+  TSprite SprTSprites;
+  TSprite SpcShip1;
   TSprite SpcShip2;
   SprDemo.ImportFromFile((char *)"resources/demo7t_188.unicode");
-  SprDemo2.ImportFromFile((char *)"resources/demo1.unicode");
-  SpcShip.ImportFromFile((char *)"resources/spc.unicode");
+  SprTSprites.ImportFromFile((char *)"resources/demo1.unicode");
+  SpcShip1.ImportFromFile((char *)"resources/spc.unicode");
   SpcShip2.ImportFromFile((char *)"resources/spc.unicode");
 
-  Screen.AddSprite(&SpcShip);
+  Screen.AddSprite(&SpcShip1);
   Screen.AddSprite(&SprDemo);
   Screen.AddSprite(&SpcShip2);
-  Screen.AddSprite(&SprDemo2);
+  Screen.AddSprite(&SprTSprites);
 
-  SSprite S2(spinners, 8, spinners_color); // create a string sprite,
-  Screen.AddSprite(&S2);
-  S2.x = 1;
-  S2.y = 44 * 2;
+  SSprite Spinner(spinners, 8, spinners_color);
+  Screen.AddSprite(&Spinner);
+  Spinner.x = 1;
+  Spinner.y = 44 * 2;
 
   // -- SubScreen
-  TSprite SpcShip3;
   TScreen SubScreen(20, 20); // height in lines
-  SpcShip3.ImportFromFile((char *)"resources/spc.unicode");
-  SpcShip3.SetXY(3, 2);
   SubScreen.is_subscreen = 1;
-  Screen.AddSubScreen(&SubScreen);
   SubScreen.SetScreenMode(SCREEN_BGCOLOR);
   SubScreen.bg_color = {0x20, 0x28, 0x30};
   SubScreen.SetXY(98, 46 * 2 - 2 - 40);
-  SubScreen.AddSprite(&SpcShip3);
-  SubScreen.AddSprite(&SprDemo);
-  SubScreen.AddSprite(&S1);
-  rgb_color S1Color = {0xdf, 0xdf, 0xdf}; // R, G, B
+
+  TSprite SpcShip3;
+  SpcShip3.ImportFromFile((char *)"resources/spc.unicode");
+  SpcShip3.SetXY(3, 2);
+
+  SSprite S1((char *)"SubScreen");
+  rgb_color S1Color = {0xdf, 0xdf, 0xdf};
   S1.x = 11;
   S1.y = 19 * 2;
   S1.frames[0]->color = S1Color;
   S1.background = &SubScreen.bg_color; // textcolor changes with scrn color
+
+  SubScreen.AddSprite(&S1);
+  SubScreen.AddSprite(&SprDemo);
+
+  Screen.AddSubScreen(&SubScreen);
 
   // -- main loop
   int x = 0;
@@ -140,32 +138,33 @@ int main(int argc, char **argv) {
   int y3 = 0;
   int x4 = 0;
   int y4 = 0;
+  rgb_color s1bgcolor = {0x00, 0x00, 0x00};
   while (1) {
     ts1 = get_timestamp(&tv);
-    SpcShip.counter1++;
+    SpcShip1.counter1++;
 
-    x = 53 + 50 * (sin(((SpcShip.counter1 % 100) / 100.0) * 6.28)) - 1;
-    y = 30 + 10 * (cos(((SpcShip.counter1 % 100) / 100.0 * 3) * 6.28));
+    x = 53 + 50 * (sin(((SpcShip1.counter1 % 100) / 100.0) * 6.28)) - 1;
+    y = 30 + 10 * (cos(((SpcShip1.counter1 % 100) / 100.0 * 3) * 6.28));
 
-    x3 = 46 + 40 * (sin((((SpcShip.counter1 + 50) % 100) / 100.0) * 6.28)) - 1;
-    y3 = 30 + 8 * (cos((((SpcShip.counter1 + 50) % 100) / 100.0 * 3) * 6.28));
+    x3 = 46 + 40 * (sin((((SpcShip1.counter1 + 50) % 100) / 100.0) * 6.28)) - 1;
+    y3 = 30 + 8 * (cos((((SpcShip1.counter1 + 50) % 100) / 100.0 * 3) * 6.28));
 
-    x2 = 5 + 25 * (sin(((SpcShip.counter1 % 100) / 100.0) * 6.28)) + 10;
-    y2 = 20 + 10 * (cos(((SpcShip.counter1 % 100) / 100.0) * 6.28));
+    x2 = 5 + 25 * (sin(((SpcShip1.counter1 % 100) / 100.0) * 6.28)) + 10;
+    y2 = 20 + 10 * (cos(((SpcShip1.counter1 % 100) / 100.0) * 6.28));
 
-    x4 = 12 + 14 * (sin((((SpcShip.counter1) % 100) / 100.0) * 6.28)) - 2;
+    x4 = 12 + 14 * (sin((((SpcShip1.counter1) % 100) / 100.0) * 6.28)) - 2;
     y4 = y3 + 15;
 
-    SpcShip.SetXY(x, y);
+    SpcShip1.SetXY(x, y);
     SpcShip2.SetXY(x3, y3);
     SprDemo.SetXY(x2, y2);
-    SprDemo2.SetXY(x4, y4);
+    SprTSprites.SetXY(x4, y4);
 
     SubScreen.Render();
     Screen.Render();
 
-    if (!(S2.counter1++ % 4))
-      S2.frame_idx = (S2.counter2++ % 8);
+    if (!(Spinner.counter1++ % 4))
+      Spinner.frame_idx = (Spinner.counter2++ % 8);
 
     ts2 = get_timestamp(&tv);
     print_stats(ts1, ts2);

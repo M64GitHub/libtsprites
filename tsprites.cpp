@@ -290,11 +290,27 @@ render_surface *TSprite::Render() {
 
 void TSprite::tick() {}
 
-void TSprite::StartAnimation(int n, int loop) {}
+// control sprite internal animations
+void AddAnimation(SpriteAnimation *a){};
 
-void TSprite::PauseAnimation(int n) {}
+void StartAnimation(int n, int loop){};
 
-void TSprite::StopAnimation(int n) {}
+void PauseAnimation(int n){};
+
+void StopAnimation(int n){};
+
+void AnimationTick(int n){};
+
+// control single frame animations 
+void AddFrameAnimation(SpriteAnimation *a, TSPriteFrame *f){};
+
+void StartFrameAnimation(TSPriteFrame *f, int loop){};
+
+void PauseFrameAnimation(TSPriteFrame *f){};
+
+void StopFrameAnimation(int n){};
+
+void FrameAnimationTick(TSPriteFrame *f){};
 
 void TSprite::PrintDebugMap(TSPriteFrame *F) {
   rgb_color c = {0x80, 0x88, 0x88};

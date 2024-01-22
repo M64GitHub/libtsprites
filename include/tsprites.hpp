@@ -63,10 +63,19 @@ public:
 
   virtual void tick(); // receive global tick(). to handle internal anis, etc
 
-  // control internal animations
-  void StartAnimation(int n, int loop);
+  // control sprite internal animations
+  void AddAnimation(SpriteAnimation *a);
+  void StartAnimation(int n, int loop);  
   void PauseAnimation(int n);
   void StopAnimation(int n);
+  void AnimationTick(int n);
+
+  // control single frame animations 
+  void AddFrameAnimation(SpriteAnimation *a, TSPriteFrame *f);
+  void StartFrameAnimation(TSPriteFrame *f, int loop);
+  void PauseFrameAnimation(TSPriteFrame *f);
+  void StopFrameAnimation(int n);
+  void FrameAnimationTick(TSPriteFrame *f);
 
   void PrintDebugMap(TSPriteFrame *F); // colored map representation
 
@@ -91,8 +100,7 @@ public:
 
   int state = 0; // generic type to support own concepts
 
-  render_surface *out_surface = 0; // last render, direct access for speed
-
+  render_surface *out_surface = 0;     // last render, direct access for speed
   render_surface *restore_surface = 0; // can be manually used ie to store
                                        // before effect
 private:
@@ -170,8 +178,8 @@ public:
   int threshhold2 = 0;
   int threshhold3 = 0;
 
-  rgb_color *background = 0;        // for rendering
-  int state = 0; // generic type to support own concepts
+  rgb_color *background = 0; // for rendering
+  int state = 0;             // generic type to support own concepts
 private:
   void free_frames();
   unsigned char color_override = 0; // if frame color is unsed,
