@@ -120,7 +120,7 @@ You can use them as a starter for your own ideas, and copy/extend them
 without ever building the shared library, or have the need to link against
 it, if you prefer.
 
-### Basic Usage
+## Basic Usage - Part I: The print(f) interface of libtsprites
 How to use the the `TSprite` object. How to get some graphics onto the screen.
 
 Getting started is simple. The two most basic methods of `TSprite` are used
@@ -263,6 +263,7 @@ int main(int argc, char **argv)
 ```
 https://github.com/M64GitHub/libtsprites/assets/84202356/90d4a9d3-815f-405c-beaa-802bda05cc45
 
+## Basic Usage - Part II: The rendering interface of libtsprites
 
 ### Render Test / "Feature Test"
 This is the example in the root dir. Here we use the (first quick and dirty) render engine. It places objects in Z-order following their creation time. Will be updated with every new (main) feature of the lib. Needs documentation.
