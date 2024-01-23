@@ -4,6 +4,10 @@ Blazingly fast 2.5D parallax rendering-, extendable effects-, and animation-engi
 OS independent. No code dependencies. RGB and HSL color support. Ideal for terminal
 games, or just more interesting user interfaces.  
 
+
+https://github.com/M64GitHub/libtsprites/assets/84202356/af7e6610-4399-49b4-ab3e-7ef804118000
+
+
 The intention is to create a library for visual expression on `state of the art`,
 `fast` `terminals`.
 A well setup terminal today allows for very interesting visual experiences
@@ -116,7 +120,7 @@ You can use them as a starter for your own ideas, and copy/extend them
 without ever building the shared library, or have the need to link against
 it, if you prefer.
 
-### Basic Usage
+## Basic Usage - Part I: The print(f) interface of libtsprites
 How to use the the `TSprite` object. How to get some graphics onto the screen.
 
 Getting started is simple. The two most basic methods of `TSprite` are used
@@ -259,6 +263,7 @@ int main(int argc, char **argv)
 ```
 https://github.com/M64GitHub/libtsprites/assets/84202356/90d4a9d3-815f-405c-beaa-802bda05cc45
 
+## Basic Usage - Part II: The rendering interface of libtsprites
 
 ### Render Test / "Feature Test"
 This is the example in the root dir. Here we use the (first quick and dirty) render engine. It places objects in Z-order following their creation time. Will be updated with every new (main) feature of the lib. Needs documentation.
