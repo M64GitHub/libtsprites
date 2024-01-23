@@ -45,8 +45,11 @@ public:
   int ImportFromFile(char *fn);
   int ImportFromImgStr(char *s); // catimg format
 
-  TFrameset *Slice(int swidth); // creates a new Frameset containing the slices
-  TFrameset *Slice(int *swidths, int numslices);
+  TFrameset *Split(int swidth, int sheight); // split by width / height
+  TFrameset *VSplit(int swidth);             // create a new Frameset
+                                             // containing the slices
+  // variable widths
+  TFrameset *VSplit(int *swidths, int numslices);
 
   // String Output
   void Print();             // printf string representation s of first frame
@@ -65,12 +68,12 @@ public:
 
   // control sprite internal animations
   void AddAnimation(SpriteAnimation *a);
-  void StartAnimation(int n, int loop);  
+  void StartAnimation(int n, int loop);
   void PauseAnimation(int n);
   void StopAnimation(int n);
   void AnimationTick(int n);
 
-  // control single frame animations 
+  // control single frame animations
   void AddFrameAnimation(SpriteAnimation *a, TSPriteFrame *f);
   void StartFrameAnimation(TSPriteFrame *f, int loop);
   void PauseFrameAnimation(TSPriteFrame *f);
