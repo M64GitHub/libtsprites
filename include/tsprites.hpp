@@ -45,11 +45,15 @@ public:
   int ImportFromFile(char *fn);
   int ImportFromImgStr(char *s); // catimg format
 
-  TFrameset *Split(int swidth, int sheight); // split by width / height
-  TFrameset *VSplit(int swidth);             // create a new Frameset
-                                             // containing the slices
-  // variable widths
-  TFrameset *VSplit(int *swidths, int numslices);
+  // split and append to frameset, return start idx
+  int Split(TSPriteFrame *F, int swidth, int sheight); 
+  int VSplit(TSPriteFrame *F, int swidth);             
+  int VSplit(TSPriteFrame *F, int *swidths, int numslices); 
+
+  // split and return as new animation
+  SpriteAnimation *Split2Ani(TSPriteFrame *F, int swidth, int sheight); 
+  SpriteAnimation *VSplit2Ani(TSPriteFrame *F, int swidth);
+  SpriteAnimation *VSplit2Ani(TSPriteFrame *F, int *swidths, int numslices);
 
   // String Output
   void Print();             // printf string representation s of first frame

@@ -225,9 +225,44 @@ int TSprite::ImportFromFile(char *fn) {
   return 0;
 }
 
-TFrameset *TSprite::Slice(int swidth) { return 0; }
+// split and append to frameset, return start index
+int Split(TSPriteFrame *F, int swidth, int sheight) {
+  if(!F) return 0;
+  
+  return 0;
+}
 
-TFrameset *TSprite::Slice(int *swidths, int numslices) { return 0; }
+int VSplit(TSPriteFrame *F, int swidth) {
+  if(!F) return 0;
+
+  return 0;
+}
+
+// variable widths
+int VSplit(TSPriteFrame *F, int *swidths, int numslices) {
+  if(!F) return 0;
+
+  return 0;
+}
+
+  // split and return as new animation
+SpriteAnimation *Split2Ani(TSPriteFrame *F, int swidth, int sheight) {
+  if(!F) return 0;
+  
+  return 0;
+}
+
+SpriteAnimation *VSplit2Ani(TSPriteFrame *F, int swidth) {
+  if(!F) return 0;
+  
+  return 0;
+}
+
+SpriteAnimation *VSplit2Ani(TSPriteFrame *F, int *swidths, int numslices) {
+  if(!F) return 0;
+  
+  return 0;
+}
 
 void TSprite::Print() {
   if (!s)
