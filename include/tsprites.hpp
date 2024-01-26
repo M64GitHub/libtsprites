@@ -32,8 +32,10 @@ typedef struct s_TFrameSet {
   int frame_idx = 0;         // current frame
 } TFrameset;
 
-// TSprite
-// True-Color (24bit RGB) unicode block character based pixel sprite.
+//! True-Color (24bit RGB) unicode block character based pixel sprite.
+
+//! Detailed description
+//! starts here.
 class TSprite {
 public:
   TSprite();
