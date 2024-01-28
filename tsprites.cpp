@@ -225,7 +225,11 @@ int TSprite::ImportFromFile(char *fn) {
   return 0;
 }
 
-// split and append to frameset, return start index
+// Split F, and append created frames to fs. Vertical cut line.
+// Fixed width/height raster.
+// Starts at x=0 / y=0.
+// Returns intex into fs of first new frame, or -1 on error.
+// Use to cut spritesheet animations for example.
 int TSprite::Split(TSPriteFrame *F, int swidth, int sheight) {
   if (!F)
     return 0;
@@ -233,28 +237,87 @@ int TSprite::Split(TSPriteFrame *F, int swidth, int sheight) {
   return 0;
 }
 
+// Split F, and append created frames to fs. Vertical cut line. Fixed width.
+// Starts at x=0.
+// Returns intex into fs of first new frame, or -1 on error.
+// fs.frame_count - returned index = number of added frames.
 int TSprite::VSplit(TSPriteFrame *F, int swidth) {
-  if (!F)
-    return 0;
+  if (!F || (swidth < 1))
+    return -1;
 
-  return 0;
+  int numslices = F->w / swidth + 1;
+
+  int old_num_frames = fs.frame_count;
+
+  TSPriteFrame *new_frame = 0;
+
+  int xoffset = 0;
+  for (int i = 0; i < numslices; i++) {
+    int new_width = swidth;
+    new_frame = add_frames(1, new_width, h);
+
+    // fill colormap and shadow map
+    for (int fy = 0; fy < F->h; fy++) {
+      int new_x = 0;
+      for (int fx = 0; fx < new_width; fx++) {
+        if ((fx + xoffset) >= F->w)
+          break; // skip if out of bounds
+
+        new_frame->colormap[new_width * fy + new_x] =
+            F->colormap[F->w * fy + fx + xoffset];
+        new_frame->shadowmap[new_width * fy + new_x] =
+            F->shadowmap[F->w * fy + fx + xoffset];
+        new_x++;
+      } // fx (width)
+    }   // fy (height)
+    xoffset += swidth;
+  } // i
+
+  return old_num_frames;
 }
 
-// Split vertical cut line. Variable widths. Starts at x=0.
-// Returns intex into fs of first new frame.
-int TSprite::VSplit(TSPriteFrame *F, int *swidths, int numslices) {
-  if (!F)
-    return 0;
+// Split F, and append created frames to fs. Vertical cut line. Variable widths.
+// Starts at x=0.
+// Returns intex into fs of first new frame, or -1 on error.
+int TSprite::VSplit(TSPriteFrame *F, int *widths, int numslices) {
+  if (!F || (numslices < 1) || !widths)
+    return -1;
 
-  return 0;
+  int old_num_frames = fs.frame_count;
+
+  TSPriteFrame *new_frame = 0;
+
+  int xoffset = 0;
+  for (int i = 0; i < numslices; i++) {
+    int new_width = widths[i];
+    new_frame = add_frames(1, new_width, h);
+
+    // fill colormap and shadow map
+    for (int fy = 0; fy < F->h; fy++) {
+      int new_x = 0;
+      for (int fx = 0; fx < new_width; fx++) {
+        if ((fx + xoffset) >= F->w)
+          break; // skip if out of bounds
+
+        new_frame->colormap[new_width * fy + new_x] =
+            F->colormap[F->w * fy + fx + xoffset];
+        new_frame->shadowmap[new_width * fy + new_x] =
+            F->shadowmap[F->w * fy + fx + xoffset];
+        new_x++;
+      } // fx (width)
+    }   // fy (height)
+    xoffset += widths[i];
+  } // i
+
+  return old_num_frames;
 }
 
-// Split and append created frames to fs. Vertical cut line. Variable widths.
-// Starts at x=xoffsets[0]. Returns index into fs of first new frame.
-// Use to split word-logo into single letters for example.
+// Split F and append created frames to fs. Vertical cut line. Variable widths.
+// Starts at x=xoffsets[0]. Returns index into fs of first new frame, or -1 on
+// Error. Use to split word-logo into single letters for example.
 int TSprite::VSplit(TSPriteFrame *F, int *xoffsets, int *widths,
                     int numslices) {
-  if (!F || !numslices)
+  if (!F || (numslices < 1) || !xoffsets || !widths)
     return -1;
 
   int old_num_frames = fs.frame_count;
@@ -269,16 +332,17 @@ int TSprite::VSplit(TSPriteFrame *F, int *xoffsets, int *widths,
     for (int fy = 0; fy < F->h; fy++) {
       int new_x = 0;
       for (int fx = 0; fx < new_width; fx++) {
-        if((fx  + xoffsets[i]) >= F->w) break; // skip if out of bounds
+        if ((fx + xoffsets[i]) >= F->w)
+          break; // skip if out of bounds
 
         new_frame->colormap[new_width * fy + new_x] =
             F->colormap[F->w * fy + fx + xoffsets[i]];
         new_frame->shadowmap[new_width * fy + new_x] =
             F->shadowmap[F->w * fy + fx + xoffsets[i]];
         new_x++;
-      } // fx
-    }   // fh
-  }
+      } // fx (width)
+    }   // fy (height)
+  }     // i
 
   return old_num_frames;
 }
