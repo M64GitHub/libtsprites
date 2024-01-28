@@ -226,41 +226,92 @@ int TSprite::ImportFromFile(char *fn) {
 }
 
 // split and append to frameset, return start index
-int Split(TSPriteFrame *F, int swidth, int sheight) {
-  if(!F) return 0;
-  
-  return 0;
-}
-
-int VSplit(TSPriteFrame *F, int swidth) {
-  if(!F) return 0;
+int TSprite::Split(TSPriteFrame *F, int swidth, int sheight) {
+  if (!F)
+    return 0;
 
   return 0;
 }
 
-// variable widths
-int VSplit(TSPriteFrame *F, int *swidths, int numslices) {
-  if(!F) return 0;
+int TSprite::VSplit(TSPriteFrame *F, int swidth) {
+  if (!F)
+    return 0;
 
   return 0;
 }
 
-  // split and return as new animation
-SpriteAnimation *Split2Ani(TSPriteFrame *F, int swidth, int sheight) {
-  if(!F) return 0;
-  
+// Split vertical cut line. Variable widths. Starts at x=0.
+// Returns intex into fs of first new frame.
+int TSprite::VSplit(TSPriteFrame *F, int *swidths, int numslices) {
+  if (!F)
+    return 0;
+
   return 0;
 }
 
-SpriteAnimation *VSplit2Ani(TSPriteFrame *F, int swidth) {
-  if(!F) return 0;
-  
+// Split and append created frames to fs. Vertical cut line. Variable widths.
+// Starts at x=xoffsets[0]. Returns index into fs of first new frame.
+// Use to split word-logo into single letters for example.
+int TSprite::VSplit(TSPriteFrame *F, int *xoffsets, int *widths,
+                    int numslices) {
+  if (!F || !numslices)
+    return -1;
+
+  int old_num_frames = fs.frame_count;
+
+  TSPriteFrame *new_frame = 0;
+
+  for (int i = 0; i < numslices; i++) {
+    int new_width = widths[i];
+    new_frame = add_frames(1, new_width, h);
+
+    // fill colormap and shadow map
+    for (int fy = 0; fy < F->h; fy++) {
+      int new_x = 0;
+      for (int fx = 0; fx < new_width; fx++) {
+        if((fx  + xoffsets[i]) >= F->w) break; // skip if out of bounds
+
+        new_frame->colormap[new_width * fy + new_x] =
+            F->colormap[F->w * fy + fx + xoffsets[i]];
+        new_frame->shadowmap[new_width * fy + new_x] =
+            F->shadowmap[F->w * fy + fx + xoffsets[i]];
+        new_x++;
+      } // fx
+    }   // fh
+  }
+
+  return old_num_frames;
+}
+
+// Split and return array of newly created TSprite ptrs. Vertical cut line.
+// Variable widths.
+// Starts at x=xoffsets[0].
+// Use to split word-logo into single letters for example.
+TSprite **TSprite::VSplit2Sprites(TSPriteFrame *F, int *xoffsets, int *widths,
+                                  int numslices) {
   return 0;
 }
 
-SpriteAnimation *VSplit2Ani(TSPriteFrame *F, int *swidths, int numslices) {
-  if(!F) return 0;
-  
+// split and return as new animation
+SpriteAnimation TSprite::*Split2Ani(TSPriteFrame *F, int swidth, int sheight) {
+  if (!F)
+    return 0;
+
+  return 0;
+}
+
+SpriteAnimation TSprite::*VSplit2Ani(TSPriteFrame *F, int swidth) {
+  if (!F)
+    return 0;
+
+  return 0;
+}
+
+SpriteAnimation TSprite::*VSplit2Ani(TSPriteFrame *F, int *swidths,
+                                     int numslices) {
+  if (!F)
+    return 0;
+
   return 0;
 }
 
@@ -336,7 +387,7 @@ void StopAnimation(int n){};
 
 void AnimationTick(int n){};
 
-// control single frame animations 
+// control single frame animations
 void AddFrameAnimation(SpriteAnimation *a, TSPriteFrame *f){};
 
 void StartFrameAnimation(TSPriteFrame *f, int loop){};
@@ -757,15 +808,13 @@ void SSprite::Print(int X, int Y) {
   if (X)
     cursor_right(X);
 
-  if(background)
-  printf("\x1b[48;2;%d;%d;%dm\x1b[38;2;%d;%d;%dm", 
-         background->r, background->b, background->b,
-         frames[frame_idx]->color.r,
-         frames[frame_idx]->color.g, frames[frame_idx]->color.b);
+  if (background)
+    printf("\x1b[48;2;%d;%d;%dm\x1b[38;2;%d;%d;%dm", background->r,
+           background->b, background->b, frames[frame_idx]->color.r,
+           frames[frame_idx]->color.g, frames[frame_idx]->color.b);
   else
-  printf("\x1b[38;2;%d;%d;%dm", 
-         frames[frame_idx]->color.r,
-         frames[frame_idx]->color.g, frames[frame_idx]->color.b);
+    printf("\x1b[38;2;%d;%d;%dm", frames[frame_idx]->color.r,
+           frames[frame_idx]->color.g, frames[frame_idx]->color.b);
   printf("%s", frames[frame_idx]->s);
   // printf("%s", s);
   fflush(stdout);

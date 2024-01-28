@@ -3,6 +3,7 @@
 #include "include/tscreen.hpp"
 #include "include/tsrender.hpp"
 #include "include/tsutils.hpp"
+#include "include/tsrendersurface.hpp"
 #include <stdio.h>
 #include <stdlib.h>
 

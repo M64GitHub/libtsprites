@@ -13,10 +13,14 @@ CFLAGS+=-O3 -Wall --debug  -lm
 CXXFLAGS+=$(CFLAGS)
 
 $(BINARY): test.o ../../tsprites.o \
-../../tsprites.o \
-../../tsutils.o \
-../../tscreen.o
-
+	../../tsanimations.o \
+	../../tscolors.o \
+	../../tscreen.o \
+	../../tseffects.o \
+	../../tseffects.o \
+	../../tsrender.o \
+	../../tsrendersurface.o \
+	../../tsutils.o
 	$(CXX) -o $@ $^ 
 
 clean:

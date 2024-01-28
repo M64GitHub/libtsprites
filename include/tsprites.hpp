@@ -30,7 +30,7 @@ typedef struct s_TFrameSet {
   int frame_count = 0;       // 1 after Import
   TSPriteFrame **frames = 0; // array of pointers to frames
   int frame_idx = 0;         // current frame
-} TFrameset;
+} TFrameSet;
 
 //! True-Color (24bit RGB) unicode block character based pixel sprite.
 
@@ -48,12 +48,25 @@ public:
   int ImportFromImgStr(char *s); // catimg format
 
   // split and append to frameset, return start idx
-  int Split(TSPriteFrame *F, int swidth, int sheight); 
-  int VSplit(TSPriteFrame *F, int swidth);             
-  int VSplit(TSPriteFrame *F, int *swidths, int numslices); 
+  int Split(TSPriteFrame *F, int swidth, int sheight);
+  int VSplit(TSPriteFrame *F, int swidth);
+  // Split and append to fs. Vertical cut line. Variable widths. Starts at
+  // x=0. Returns index into fs of first new frame.
+  int VSplit(TSPriteFrame *F, int *swidths, int numslices);
+  // Split and append created frames to fs. Vertical cut line. Variable widths.
+  // Starts at x=xoffsets[0]. Returns index into fs of first new frame.
+  // Use to split word-logo into single letters for example.
+  int VSplit(TSPriteFrame *F, int *xoffsets, int *widths, int numslices);
+
+  // Split and return array of newly created TSprite ptrs. Vertical cut line.
+  // Variable widths.
+  // Starts at x=xoffsets[0].
+  // Use to split word-logo into single letters for example.
+  TSprite **VSplit2Sprites(TSPriteFrame *F, int *xoffsets, int *widths,
+                           int numslices);
 
   // split and return as new animation
-  SpriteAnimation *Split2Ani(TSPriteFrame *F, int swidth, int sheight); 
+  SpriteAnimation *Split2Ani(TSPriteFrame *F, int swidth, int sheight);
   SpriteAnimation *VSplit2Ani(TSPriteFrame *F, int swidth);
   SpriteAnimation *VSplit2Ani(TSPriteFrame *F, int *swidths, int numslices);
 
@@ -94,7 +107,7 @@ public:
   int x = 0;
   int y = 0; // in blocks / "half characters"
   int z = 0;
-  TFrameset fs; // frames for slicing, animations, ...
+  TFrameSet fs; // frames for slicing, animations, ...
 
   // animations
   SpriteAnimation **animations = 0; // array of pointers
