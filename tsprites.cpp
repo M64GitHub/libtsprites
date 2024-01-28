@@ -19,6 +19,8 @@ TSprite::TSprite(char *imgstr) {
 
 TSprite::~TSprite() { free_frames(); }
 
+// -- Import Functions --------
+
 int TSprite::ImportFromImgStr(char *str) {
   if (!str) {
     printf("[TS][ImportFromImgStr] ERROR: input str null!\n");
@@ -137,6 +139,11 @@ int TSprite::ImportFromImgStr(char *str) {
 
   // -- fill maps from input string
   imgstr_2maps(str, F);
+  // copy to frame output surface
+  for (int i = 0; i < (F->w * F->h); i++) {
+    F->out_surface->colormap[i] = F->colormap[i];
+    F->out_surface->shadowmap[i] = F->shadowmap[i];
+  }
 
   // -- create 1down representation, store in frame
   create_1down_str(F);
@@ -157,7 +164,7 @@ int TSprite::ImportFromImgStr(char *str) {
     DBG("Initializing surface with w: %d, h:%d\n", w, h);
     init_surface(out_surface, w, h, c);
     init_surface(restore_surface, w, h, c);
-    Render();
+    copy_surface_contents(F->out_surface, out_surface);
     copy_surface_contents(out_surface, restore_surface);
   }
 
@@ -225,6 +232,8 @@ int TSprite::ImportFromFile(char *fn) {
   return 0;
 }
 
+// -- Split Functions --------
+
 // Split F, and append created frames to fs. Vertical cut line.
 // Fixed width/height raster.
 // Starts at x=0 / y=0.
@@ -252,7 +261,7 @@ int TSprite::VSplit(TSPriteFrame *F, int swidth) {
   TSPriteFrame *new_frame = 0;
 
   int xoffset = 0;
-  for (int i = 0; i < numslices; i++) {
+  for (int n = 0; n < numslices; n++) {
     int new_width = swidth;
     new_frame = add_frames(1, new_width, h);
 
@@ -270,8 +279,14 @@ int TSprite::VSplit(TSPriteFrame *F, int swidth) {
         new_x++;
       } // fx (width)
     }   // fy (height)
+
+    // copy to frame output surface
+    for (int i = 0; i < (new_frame->w * new_frame->h); i++) {
+      new_frame->out_surface->colormap[i] = new_frame->colormap[i];
+      new_frame->out_surface->shadowmap[i] = new_frame->shadowmap[i];
+    }
     xoffset += swidth;
-  } // i
+  } // n
 
   return old_num_frames;
 }
@@ -288,8 +303,8 @@ int TSprite::VSplit(TSPriteFrame *F, int *widths, int numslices) {
   TSPriteFrame *new_frame = 0;
 
   int xoffset = 0;
-  for (int i = 0; i < numslices; i++) {
-    int new_width = widths[i];
+  for (int n = 0; n < numslices; n++) {
+    int new_width = widths[n];
     new_frame = add_frames(1, new_width, h);
 
     // fill colormap and shadow map
@@ -306,8 +321,14 @@ int TSprite::VSplit(TSPriteFrame *F, int *widths, int numslices) {
         new_x++;
       } // fx (width)
     }   // fy (height)
-    xoffset += widths[i];
-  } // i
+
+    // copy to frame output surface
+    for (int i = 0; i < (new_frame->w * new_frame->h); i++) {
+      new_frame->out_surface->colormap[i] = new_frame->colormap[i];
+      new_frame->out_surface->shadowmap[i] = new_frame->shadowmap[i];
+    }
+    xoffset += widths[n];
+  } // n
 
   return old_num_frames;
 }
@@ -324,25 +345,30 @@ int TSprite::VSplit(TSPriteFrame *F, int *xoffsets, int *widths,
 
   TSPriteFrame *new_frame = 0;
 
-  for (int i = 0; i < numslices; i++) {
-    int new_width = widths[i];
+  for (int n = 0; n < numslices; n++) {
+    int new_width = widths[n];
     new_frame = add_frames(1, new_width, h);
 
     // fill colormap and shadow map
     for (int fy = 0; fy < F->h; fy++) {
       int new_x = 0;
       for (int fx = 0; fx < new_width; fx++) {
-        if ((fx + xoffsets[i]) >= F->w)
+        if ((fx + xoffsets[n]) >= F->w)
           break; // skip if out of bounds
 
         new_frame->colormap[new_width * fy + new_x] =
-            F->colormap[F->w * fy + fx + xoffsets[i]];
+            F->colormap[F->w * fy + fx + xoffsets[n]];
         new_frame->shadowmap[new_width * fy + new_x] =
-            F->shadowmap[F->w * fy + fx + xoffsets[i]];
+            F->shadowmap[F->w * fy + fx + xoffsets[n]];
         new_x++;
       } // fx (width)
     }   // fy (height)
-  }     // i
+    // copy to frame output surface
+    for (int i = 0; i < (new_frame->w * new_frame->h); i++) {
+      new_frame->out_surface->colormap[i] = new_frame->colormap[i];
+      new_frame->out_surface->shadowmap[i] = new_frame->shadowmap[i];
+    }
+  } // n
 
   return old_num_frames;
 }
@@ -420,18 +446,17 @@ void TSprite::SetXY(int xx, int yy) {
   }
 }
 
-// renders current frame
+// Render()
+// Set current frame's out_surface as sprite's out_surface
+// and sprite coordinates to the surface.
+// (original spr out_surface in restore_surface)
 render_surface *TSprite::Render() {
-  if (!out_surface)
-    return 0;
-
+  if(!fs.frames) return 0;
   TSPriteFrame *F = fs.frames[fs.frame_idx];
+  if(!F) return 0;
+  if(!F->out_surface) return 0;
 
-  for (int i = 0; i < (F->w * F->h); i++) {
-    out_surface->colormap[i] = F->colormap[i];
-    out_surface->shadowmap[i] = F->shadowmap[i];
-  }
-
+  out_surface = F->out_surface;
   out_surface->x = x;
   out_surface->y = y;
 
@@ -770,6 +795,12 @@ TSPriteFrame *TSprite::add_frames(int n, int width, int height) {
     F->h = height;
     F->s = 0;
     F->s_1down = 0;
+
+    F->out_surface = new render_surface;
+    init_surface(F->out_surface, F->w, F->h, {0, 0, 0});
+
+    F->out_surface->x = x;
+    F->out_surface->y = y;
   }
   // delete old array if one
   if (fs.frames)

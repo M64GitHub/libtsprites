@@ -1,5 +1,6 @@
 #include "include/tsrendersurface.hpp"
 
+
 void init_surface(render_surface *s, int w, int h, rgb_color c) {
   if (!s)
     return;
@@ -44,6 +45,7 @@ int copy_surface_contents(render_surface *in, render_surface *out) {
   out->h = in->h;
   out->x = in->x;
   out->y = in->y;
+  out->z = in->z;
 
   return 0;
 }

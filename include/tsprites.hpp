@@ -20,10 +20,13 @@ typedef struct s_TSpriteFrame {
   int nr = 0;
   int w = 0;
   int h = 0;
-  rgb_color *colormap = 0;
-  unsigned char *shadowmap = 0;
+  rgb_color *colormap = 0; // should stay, to restore b4 effects
+  unsigned char *shadowmap = 0; // (apply  to out_surface)
   char *s = 0;   // frame 0: copy of s (free will not affect spr->s)
   char *s_1down; // frame 0: copy of s_1down
+
+  render_surface *out_surface = 0; // will be set as sprite's 
+  // out_surface on TSprite::Render()
 } TSPriteFrame;
 
 typedef struct s_TFrameSet {
@@ -123,7 +126,7 @@ public:
   int state = 0; // generic type to support own concepts
 
   render_surface *out_surface = 0;     // last render, direct access for speed
-  render_surface *restore_surface = 0; // can be manually used ie to store
+  render_surface *restore_surface = 0; // original out_surface copy
                                        // before effect
 private:
   // allocates maps, returns first new frame
