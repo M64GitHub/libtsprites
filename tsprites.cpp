@@ -228,7 +228,7 @@ int TSprite::ImportFromFile(char *fn) {
 // Split F, and append created frames to fs. Vertical cut line.
 // Fixed width/height raster.
 // Starts at x=0 / y=0.
-// Returns intex into fs of first new frame, or -1 on error.
+// Returns index into fs of first new frame, or -1 on error.
 // Use to cut spritesheet animations for example.
 int TSprite::Split(TSPriteFrame *F, int swidth, int sheight) {
   if (!F)
@@ -239,7 +239,7 @@ int TSprite::Split(TSPriteFrame *F, int swidth, int sheight) {
 
 // Split F, and append created frames to fs. Vertical cut line. Fixed width.
 // Starts at x=0.
-// Returns intex into fs of first new frame, or -1 on error.
+// Returns index into fs of first new frame, or -1 on error.
 // fs.frame_count - returned index = number of added frames.
 int TSprite::VSplit(TSPriteFrame *F, int swidth) {
   if (!F || (swidth < 1))
@@ -278,7 +278,7 @@ int TSprite::VSplit(TSPriteFrame *F, int swidth) {
 
 // Split F, and append created frames to fs. Vertical cut line. Variable widths.
 // Starts at x=0.
-// Returns intex into fs of first new frame, or -1 on error.
+// Returns index into fs of first new frame, or -1 on error.
 int TSprite::VSplit(TSPriteFrame *F, int *widths, int numslices) {
   if (!F || (numslices < 1) || !widths)
     return -1;
