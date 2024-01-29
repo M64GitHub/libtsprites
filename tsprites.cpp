@@ -451,10 +451,13 @@ void TSprite::SetXY(int xx, int yy) {
 // and sprite coordinates to the surface.
 // (original spr out_surface in restore_surface)
 render_surface *TSprite::Render() {
-  if(!fs.frames) return 0;
+  if (!fs.frames)
+    return 0;
   TSPriteFrame *F = fs.frames[fs.frame_idx];
-  if(!F) return 0;
-  if(!F->out_surface) return 0;
+  if (!F)
+    return 0;
+  if (!F->out_surface)
+    return 0;
 
   out_surface = F->out_surface;
   out_surface->x = x;
