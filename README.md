@@ -41,7 +41,7 @@ engine at all. You can simply `printf()` the strings.
 
 "Everything is a sprite". Everything you can place on the screen and see is
 any type of a sprite. Even text, or shapes of ASCII characters. Every type 
-of sprite has `frames`, `animations`, `effects`, and is moveable.
+of sprite has `frames`, `animations`, `effects`, and is moveable and more.
 
 `screens` support clipping, effects, screens inside of screens ("windows"), 
 multiple screens next to eachother, and can be moved, too.
