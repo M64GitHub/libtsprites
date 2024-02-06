@@ -644,7 +644,7 @@ int TSprite::imgstr_2maps(char *str, TSPriteFrame *F) {
       }
       DBG("[TS] no case found at pos %d!\n", pos);
     }
-    pos += 4;
+    pos += CATIMG_LINE_END_LEN;
   }
 
   return 0;
@@ -815,6 +815,200 @@ TSPriteFrame *TSprite::add_frames(int n, int width, int height) {
   return fs.frames[fs.frame_count - n];
 }
 
+int TSprite::UTF8_2_maps(char *str, TSPriteFrame *F) {
+  // TODO: quick adaption from imgstr_2maps, needs error checking
+  // anyways, the function should never be needed.
+  if (!str || !F)
+    return 1;
+  if (!F->colormap || !F->shadowmap)
+    return 1;
+  if (!F->h || !F->w)
+    return 1;
+
+  unsigned int pos;
+  int map_x, map_y;
+  int res, r1, g1, b1, r2, g2, b2;
+  r1 = 0;
+  g1 = 0;
+  b1 = 0;
+  r2 = 0;
+  g2 = 0;
+  b2 = 0;
+  int count = 0;
+  rgb_color upper_color;
+  rgb_color lower_color;
+
+  pos = CATIMG_HDR_LEN;
+
+  for (map_y = 0; map_y < (F->h / 2); map_y++) {
+    for (map_x = 0; map_x < F->w; map_x++) {
+      // -- case 1: doublepixel
+      res = sscanf(str + pos, "\x1b[48;2;%d;%d;%dm\x1b[38;2;%d;%d;%dm\u2584",
+                   &r1, &g1, &b1, &r2, &g2, &b2);
+      if (res == 6) {
+        count++;
+        while ((unsigned char)str[pos] != 0x84)
+          pos++;
+        pos++;
+        // write to maps
+        upper_color.r = r1;
+        upper_color.g = g1;
+        upper_color.b = b1;
+        lower_color.r = r2;
+        lower_color.g = g2;
+        lower_color.b = b2;
+        F->colormap[(map_y * 2) * F->w + map_x] = upper_color;
+        F->colormap[(map_y * 2 + 1) * F->w + map_x] = lower_color;
+        F->shadowmap[(map_y * 2) * F->w + map_x] = 1;
+        F->shadowmap[(map_y * 2 + 1) * F->w + map_x] = 1;
+        continue;
+      }
+
+      // -- case 2 or 3:
+      //    2: upper pixel, lower transparent: 0x80
+      //    3: lower pixel, upper transparent: 0x84
+      res = sscanf(str + pos, "\x1b[0;38;2;%d;%d;%dm", &r1, &g1, &b1);
+      if (res == 3) {
+        count++;
+        int lookahead;
+        int found = 0;
+        for (lookahead = 14; lookahead < 25; lookahead++) {
+          if ((unsigned char)str[pos + lookahead] == 0x84) {
+            found = 0x84;
+            pos += lookahead + 1;
+            // write to maps
+            lower_color.r = r1;
+            lower_color.g = g1;
+            lower_color.b = b1;
+            upper_color.r = 0xF0; // transparent
+            upper_color.g = 0x20; // transparent
+            upper_color.b = 0x20; // transparent
+            F->colormap[(map_y * 2) * F->w + map_x] = upper_color;
+            F->colormap[(map_y * 2 + 1) * F->w + map_x] = lower_color;
+            F->shadowmap[(map_y * 2) * F->w + map_x] = 0; // transparent
+            F->shadowmap[(map_y * 2 + 1) * F->w + map_x] = 1;
+            break;
+          }
+          if ((unsigned char)str[pos + lookahead] == 0x80) {
+            found = 0x80;
+            pos += lookahead + 1;
+            // write to maps
+            upper_color.r = r1;
+            upper_color.g = g1;
+            upper_color.b = b1;
+            lower_color.r = 0xF0; // transparent
+            lower_color.g = 0x20; // transparent
+            lower_color.b = 0x20; // transparent
+            F->colormap[(map_y * 2) * F->w + map_x] = upper_color;
+            F->colormap[(map_y * 2 + 1) * F->w + map_x] = lower_color;
+            F->shadowmap[(map_y * 2) * F->w + map_x] = 1;
+            F->shadowmap[(map_y * 2 + 1) * F->w + map_x] = 0; // transparent
+            break;
+          }
+        }
+        if (!found) {
+          printf("[TS] error creating maps at %d\n", pos);
+          return 1;
+        }
+        continue;
+      }
+
+      // -- case 4: spc
+      if ((unsigned char)str[pos + 3] == 0x20) {
+        count++;
+        pos += 4;
+        // write to maps
+        upper_color.r = 0xF0;
+        upper_color.g = 0x20;
+        upper_color.b = 0x20;
+        lower_color.r = 0xF0;
+        lower_color.g = 0x20;
+        lower_color.b = 0x20;
+        F->colormap[(map_y * 2) * F->w + map_x] = upper_color;
+        F->colormap[(map_y * 2 + 1) * F->w + map_x] = lower_color;
+        F->shadowmap[(map_y * 2) * F->w + map_x] = 0;
+        F->shadowmap[(map_y * 2 + 1) * F->w + map_x] = 0;
+        continue;
+      }
+      DBG("[TS] no case found at pos %d!\n", pos);
+    }
+    // pos += 4;
+    while (((unsigned char)str[pos] != 'B') && str[pos])
+      pos++;
+    if (str[pos])
+      pos++; // for case 'B'
+  }          // X
+
+  return 0;
+}
+
+unsigned char *TSprite::Maps_2_UTF8(TSPriteFrame *F) {
+  if (!F)
+    return 0;
+  if (!F->colormap)
+    return 0;
+  char buf1k[1024];
+  int tmpstr_idx = 0;
+  int i = 0;
+
+  rgb_color upper;
+  rgb_color lower;
+
+  unsigned char *out_s;
+
+  out_s = new unsigned char[F->w * F->h * 20 + F->h + 1024];
+
+  out_s[0] = 0x00; // terminator
+
+  for (int Y = 0; Y < F->h; Y += 2) {
+    // -- all else lines
+    for (int X = 0; X < F->w; X++) {
+      upper = F->colormap[X + (Y + 0) * F->w];
+      lower = F->colormap[X + (Y + 1) * F->w];
+
+      // upper transp.
+      if (!F->shadowmap[X + (Y + 0) * F->w]) {
+        if (!F->shadowmap[X + (Y + 1) * F->w]) // and lower
+          sprintf(buf1k, "\e[m ");
+        else
+          sprintf(buf1k, "\x1b[0;38;2;%d;%d;%dm\u2584", // only upper
+                  lower.r, lower.g, lower.b);
+      } else {
+        if (!F->shadowmap[X + (Y + 1) * F->w]) // lower transparent
+          sprintf(buf1k, "\x1b[0;38;2;%d;%d;%dm\u2580", upper.r, upper.g,
+                  upper.b);
+        else
+          sprintf(buf1k,
+                  "\x1b[48;2;%d;%d;%dm\x1b[38;2;%d;%d;%dm\u2584", // none
+                  upper.r, upper.g, upper.b, lower.r, lower.g, lower.b);
+      }
+      i = 0;
+      while (buf1k[i])
+        out_s[tmpstr_idx++] = buf1k[i++];
+    }
+    // relative line end
+    i = 0;
+    sprintf(buf1k, "\x1b[%dD", F->w); // cursor go left(lpos)
+    while (buf1k[i])
+      out_s[tmpstr_idx++] = buf1k[i++];
+
+    i = 0;
+    sprintf(buf1k, "\x1b[%dB", 1); // cursor go down(1)
+    while (buf1k[i])
+      out_s[tmpstr_idx++] = buf1k[i++];
+    out_s[tmpstr_idx] = 0x00; // terminator
+  }
+
+  unsigned char *ret_str;
+  ret_str = (unsigned char *)strdup((char *)out_s);
+  delete[] out_s;
+
+  F->s = (char *)ret_str;
+  create_1down_str(F);
+
+  return ret_str;
+}
+
 void TSprite::free_frames() {}
 
 // -- LSprite -----------------------------------------------------------------
@@ -925,10 +1119,6 @@ void SSprite::PrintUncolored() {
 }
 
 void SSprite::PrintDimmed() {}
-
-void SSprite::PrintFrame(int n) {}
-
-// Renders current Frame + animations, etc to out_surface
 void SSprite::free_frames() {}
 
 void SSprite::Render() {}

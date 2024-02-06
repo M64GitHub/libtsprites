@@ -20,13 +20,13 @@ typedef struct s_TSpriteFrame {
   int nr = 0;
   int w = 0;
   int h = 0;
-  rgb_color *colormap = 0; // should stay, to restore b4 effects
-  unsigned char *shadowmap = 0; // (apply  to out_surface)
+  rgb_color *colormap = 0;      // should stay, to restore b4 effects
+  unsigned char *shadowmap = 0; // (apply effects, etc to out_surface)
   char *s = 0;   // frame 0: copy of s (free will not affect spr->s)
   char *s_1down; // frame 0: copy of s_1down
 
-  render_surface *out_surface = 0; // will be set as sprite's 
-  // out_surface on TSprite::Render()
+  render_surface *out_surface = 0; // active frame's out_surface will be
+  // sprite's out_surface on TSprite::Render()
 } TSPriteFrame;
 
 typedef struct s_TFrameSet {
@@ -37,29 +37,37 @@ typedef struct s_TFrameSet {
 
 //! True-Color (24bit RGB) unicode block character based pixel sprite.
 
-//! Detailed description
+//! Supports printf() style api and rendering based api.
 //! starts here.
 class TSprite {
 public:
   TSprite();
-  TSprite(int ww, int hh);
-  TSprite(char *imgstr); // catimg format
+  TSprite(int ww, int hh); // prepares all datastructures
+  TSprite(char *imgstr);   // import from catimg format UTF8 string
 
   ~TSprite();
 
   int ImportFromFile(char *fn);
   int ImportFromImgStr(char *s); // catimg format
 
-  // split and append to frameset, return start idx
-  int Split(TSPriteFrame *F, int swidth, int sheight);
+  // -- Split Functions
+
+  int Split(TSPriteFrame *F, int swidth, int sheight); // Split in a fixed
+  // vertically  and horizontally raster of cut lines, append created frames to
+  // to sprite's fs. Returns index of 1st created new frame.
   int VSplit(TSPriteFrame *F, int swidth);
-  // Split and append to fs. Vertical cut line. Variable widths. Starts at
-  // x=0. Returns index into fs of first new frame.
-  int VSplit(TSPriteFrame *F, int *swidths, int numslices);
-  // Split and append created frames to fs. Vertical cut line. Variable widths.
-  // Starts at x=xoffsets[0]. Returns index into fs of first new frame.
+  // Split and append to sprite's fs. Vertical cut lines, fixed  width. Starts
+  // at x=0. Returns index into sprite's fs of first created new frame.
+  int VSplit(TSPriteFrame *F, int *swidths, int numslices); // Split and append
+  // created frames to sprite's fs. Vertical cut line. You need to specify the
+  // size of the "swidths" array in numslices. Variable widths. Starts at
+  // x=xoffsets[0]. Returns index into sprite's fs of first new frame.
   // Use to split word-logo into single letters for example.
-  int VSplit(TSPriteFrame *F, int *xoffsets, int *widths, int numslices);
+  int VSplit(TSPriteFrame *F, int *xoffsets, int *widths, int numslices); //
+  // Split and append created frames to sprite's fs. Vertical cut line.
+  // You need to specify the size of the "swidths" array in numslices. Variable
+  // widths. Starts at x=xoffsets[0]. Returns index into sprite's fs of first
+  // new frame. Use to split word-logo into single letters for example.
 
   // Split and return array of newly created TSprite ptrs. Vertical cut line.
   // Variable widths.
@@ -102,6 +110,10 @@ public:
   void StopFrameAnimation(int n);
   void FrameAnimationTick(TSPriteFrame *f);
 
+  // Convert between string and map representation
+  int UTF8_2_maps(char *str, TSPriteFrame *F); //
+  unsigned char *Maps_2_UTF8(TSPriteFrame *F); //
+
   void PrintDebugMap(TSPriteFrame *F); // colored map representation
 
   // main attributes w/o getters for fastest access
@@ -125,17 +137,19 @@ public:
 
   int state = 0; // generic type to support own concepts
 
-  render_surface *out_surface = 0;     // last render, direct access for speed
+  render_surface *out_surface = 0; // last render, direct access for speed.
+  // This points to either the sprite's own render_surface, or is being
+  // replaced by ptr to a frame's out_surface.
   render_surface *restore_surface = 0; // original out_surface copy
-                                       // before effect
+                                       // before effect, or any manipulation.
 private:
   // allocates maps, returns first new frame
   TSPriteFrame *add_frames(int n, int width, int height);
   void free_frames();
 
   // import helpers
-  int imgstr_2maps(char *str, TSPriteFrame *F); // part of import
   char *create_1down_str(TSPriteFrame *F);      // part of import
+  int imgstr_2maps(char *str, TSPriteFrame *F); // part of import
 
   char *s = 0; // for fast Print() / printf()
   // for convenience, created on import:
