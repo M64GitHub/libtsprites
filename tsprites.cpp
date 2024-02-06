@@ -286,6 +286,8 @@ int TSprite::VSplit(TSPriteFrame *F, int swidth) {
       new_frame->out_surface->shadowmap[i] = new_frame->shadowmap[i];
     }
     xoffset += swidth;
+
+    Maps_2_UTF8(F);
   } // n
 
   return old_num_frames;
@@ -328,6 +330,8 @@ int TSprite::VSplit(TSPriteFrame *F, int *widths, int numslices) {
       new_frame->out_surface->shadowmap[i] = new_frame->shadowmap[i];
     }
     xoffset += widths[n];
+
+    Maps_2_UTF8(F);
   } // n
 
   return old_num_frames;
@@ -368,6 +372,8 @@ int TSprite::VSplit(TSPriteFrame *F, int *xoffsets, int *widths,
       new_frame->out_surface->colormap[i] = new_frame->colormap[i];
       new_frame->out_surface->shadowmap[i] = new_frame->shadowmap[i];
     }
+
+    Maps_2_UTF8(F);
   } // n
 
   return old_num_frames;
