@@ -32,8 +32,12 @@ The whole lib is based on the concept of `blocks` ('▄' or '▀') forming
 to glue everything together.
 
 - Please note upfront: all the components are independent, and optional to
-use.You need no screen screen, or anything else than (any type of) `sprite`
+use. You need no screen screen, or anything else than (any type of) `sprite`
 if you just want to display some graphics. (see [Basic Usage](#basic-usage))
+For having a really simple method to integrate sprites into your application,
+the api offers a simplified, but reduced api - giving you access to a string
+representation of most of libtsprites objects. This bypasses the rendering
+engine at all.
 
 "Everything is a sprite". Everything you can place on the screen and see is
 any type of a sprite. Even text, or shapes of ASCII characters. Every type 
