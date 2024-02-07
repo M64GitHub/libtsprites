@@ -1,8 +1,9 @@
 # libtsprites
 C++ shared library for truecolor unicode terminal sprites, effects, and animations.
 Blazingly fast 2.5D parallax rendering-, extendable effects-, and animation-engine! 
-OS independent. No code dependencies. RGB and HSL color support. Ideal for terminal
-games, or just more interesting user interfaces.  
+OS independent. No code dependencies. Constant framerate (FPS) support. No flickering
+smooth rendering engine. RGB and HSL color support. Ideal for terminal games, or just 
+more interesting user interfaces.  
 
 
 https://github.com/M64GitHub/libtsprites/assets/84202356/af7e6610-4399-49b4-ab3e-7ef804118000
@@ -32,12 +33,16 @@ The whole lib is based on the concept of `blocks` ('▄' or '▀') forming
 to glue everything together.
 
 - Please note upfront: all the components are independent, and optional to
-use.You need no screen screen, or anything else than (any type of) `sprite`
-if you just want to display some graphics. (see [Basic Usage](#basic-usage))
+use. You need no screen screen, or anything else than (any type of) `sprite`
+if you just want to display some graphics (see [Basic Usage](#basic-usage)).
+  For having a really simple method to integrate sprites into your application,
+the api offers a simplified, but reduced api - giving you access to a string
+representation of most of libtsprites objects. This bypasses the rendering
+engine at all. You can simply `printf()` the strings.
 
 "Everything is a sprite". Everything you can place on the screen and see is
 any type of a sprite. Even text, or shapes of ASCII characters. Every type 
-of sprite has `frames`, `animations`, `effects`, and is moveable.
+of sprite has `frames`, `animations`, `effects`, and is moveable and more.
 
 `screens` support clipping, effects, screens inside of screens ("windows"), 
 multiple screens next to eachother, and can be moved, too.
