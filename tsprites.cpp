@@ -822,7 +822,7 @@ TSPriteFrame *TSprite::add_frames(int n, int width, int height) {
 }
 
 int TSprite::UTF8_2_maps(char *str, TSPriteFrame *F) {
-  // TODO: quick adaption from imgstr_2maps, needs error checking
+  // quick adaption from imgstr_2maps, first error checking OK
   // anyways, the function should never be needed.
   if (!str || !F)
     return 1;
