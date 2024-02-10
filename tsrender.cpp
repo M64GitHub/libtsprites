@@ -56,9 +56,9 @@ render_surface *TSRenderEngineTopDown::Render(render_surface **surfaces_in,
               surface_out->shadowmap[idx_out] = 1;
             } // clipping Y
           }   // clipping X
-        }     // if
-      }       // X
-    }         // Y
+        }     // if shadowmap
+      }       // loop X
+    }         // loop Y
   }
   // -- cleanup
 

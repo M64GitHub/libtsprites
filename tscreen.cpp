@@ -2,8 +2,8 @@
 
 #include "include/tscreen.hpp"
 #include "include/tsrender.hpp"
-#include "include/tsutils.hpp"
 #include "include/tsrendersurface.hpp"
+#include "include/tsutils.hpp"
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -21,7 +21,7 @@ TScreen::TScreen(int width, int height) {
   CClear(); // so cursor pos is below screen
 }
 
-TScreen::~TScreen() { term_close(); }
+TScreen::~TScreen() { term_close(); if(clr_line) free(clr_line);}
 
 int TScreen::Height() const { return h; }
 
@@ -45,6 +45,7 @@ void TScreen::Clear() const {
 void TScreen::CClear() {
   // if not yet done: prepare a line full of spaces followed by "\n"
   // it will be printed h/2 times, to clear screen line by line
+  // clr_line will be reused, so don't free!
   if (!clr_line) {
     clr_line = (char *)malloc((w) + 2); // ...0x0a0x00
     for (int i = 0; i < w; i++)
@@ -233,7 +234,7 @@ void TScreen::Render() {
   for (int j = 0; j < num_screens; j++) {
     TScreen *scr = sub_screens[j];
 
-    for (int i = 0; i <  scr->num_ssprites; i++) {
+    for (int i = 0; i < scr->num_ssprites; i++) {
       SSprite *ss = scr->s_sprites[i];
       ss->Print(x + scr->x + ss->x, y + scr->y + ss->y);
     }

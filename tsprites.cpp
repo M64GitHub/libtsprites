@@ -151,7 +151,7 @@ int TSprite::ImportFromImgStr(char *str) {
   // Skip, when called for further frames:
   // Sprite gets initialized only from 1st frame (frame 0)
   if (fs.frame_count == 1) {
-    s = outstr;
+    s = strdup(outstr);
     h = height;
     w = width;
     s_1down = strdup(F->s_1down);
@@ -167,6 +167,8 @@ int TSprite::ImportFromImgStr(char *str) {
     copy_surface_contents(F->out_surface, out_surface);
     copy_surface_contents(out_surface, restore_surface);
   }
+
+  free(outstr); // was allocated with surplus, uncertainity of exact len
 
   return 0;
 }

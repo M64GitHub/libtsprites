@@ -38,7 +38,6 @@ typedef struct s_TFrameSet {
 //! True-Color (24bit RGB) unicode block character based pixel sprite.
 
 //! Supports printf() style api and rendering based api.
-//! starts here.
 class TSprite {
 public:
   TSprite();
@@ -110,6 +109,7 @@ public:
   void StopFrameAnimation(int n);
   void FrameAnimationTick(TSPriteFrame *f);
 
+  // -- utility functions
   // Convert between string and map representation
   int UTF8_2_maps(char *str, TSPriteFrame *F); //
   unsigned char *Maps_2_UTF8(TSPriteFrame *F); //
