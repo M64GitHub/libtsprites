@@ -35,49 +35,62 @@ typedef struct s_TFrameSet {
   int frame_idx = 0;         // current frame
 } TFrameSet;
 
-//! True-Color (24bit RGB) unicode block character based pixel sprite.
+/// True-Color (24bit RGB) unicode block character based pixel sprite.
+//
+// More documentation
+// needs to  be provided
 
-//! Supports printf() style api and rendering based api.
 class TSprite {
 public:
   TSprite();
-  TSprite(int ww, int hh); // prepares all datastructures
-  TSprite(char *imgstr);   // import from catimg format UTF8 string
+  TSprite(int ww, int hh); ///< prepares all datastructures
+  TSprite(char *imgstr);   ///< import from catimg format UTF8 string
 
   ~TSprite();
 
   int ImportFromFile(char *fn);
-  int ImportFromImgStr(char *s); // catimg format
+
+  /// catimg format
+  int ImportFromImgStr(char *s); 
 
   // -- Split Functions
 
-  int Split(TSPriteFrame *F, int swidth, int sheight); // Split in a fixed
+  /// Split in a fixed
   // vertically  and horizontally raster of cut lines, append created frames to
   // to sprite's fs. Returns index of 1st created new frame.
-  int VSplit(TSPriteFrame *F, int swidth);
-  // Split and append to sprite's fs. Vertical cut lines, fixed  width. Starts
+  int Split(TSPriteFrame *F, int swidth, int sheight);
+
+  /// Split and append to sprite's fs. Vertical cut lines, fixed  width. Starts
   // at x=0. Returns index into sprite's fs of first created new frame.
-  int VSplit(TSPriteFrame *F, int *swidths, int numslices); // Split and append
+  int VSplit(TSPriteFrame *F, int swidth);
+
+  /// Split and append
   // created frames to sprite's fs. Vertical cut line. You need to specify the
   // size of the "swidths" array in numslices. Variable widths. Starts at
   // x=xoffsets[0]. Returns index into sprite's fs of first new frame.
   // Use to split word-logo into single letters for example.
-  int VSplit(TSPriteFrame *F, int *xoffsets, int *widths, int numslices); //
-  // Split and append created frames to sprite's fs. Vertical cut line.
+  int VSplit(TSPriteFrame *F, int *swidths, int numslices);
+
+  /// Split and append created frames to sprite's fs. Vertical cut line.
   // You need to specify the size of the "swidths" array in numslices. Variable
   // widths. Starts at x=xoffsets[0]. Returns index into sprite's fs of first
   // new frame. Use to split word-logo into single letters for example.
+  int VSplit(TSPriteFrame *F, int *xoffsets, int *widths, int numslices); 
 
-  // Split and return array of newly created TSprite ptrs. Vertical cut line.
+  /// Split and return array of newly created TSprite ptrs. Vertical cut line.
   // Variable widths.
   // Starts at x=xoffsets[0].
   // Use to split word-logo into single letters for example.
   TSprite **VSplit2Sprites(TSPriteFrame *F, int *xoffsets, int *widths,
                            int numslices);
 
-  // split and return as new animation
+  /// split and return as new animation
   SpriteAnimation *Split2Ani(TSPriteFrame *F, int swidth, int sheight);
+
+  /// split and return as new animation
   SpriteAnimation *VSplit2Ani(TSPriteFrame *F, int swidth);
+
+  /// split and return as new animation
   SpriteAnimation *VSplit2Ani(TSPriteFrame *F, int *swidths, int numslices);
 
   // String Output
