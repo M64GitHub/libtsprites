@@ -4,8 +4,43 @@
 #include <stdarg.h>
 #include <stdio.h>
 #include <stdlib.h>
+#ifdef WINDOWS
+#include <fcntl.h>
+#include <io.h>
+#include <windows.h>
+#define fileno _fileno
+#define read _read
+#else
+#include <sys/ioctl.h>
+#include <unistd.h>
+#endif
 
 // -- cursor
+int term_columns() {
+#ifdef WINDOWS
+  CONSOLE_SCREEN_BUFFER_INFO csbi;
+  int ret;
+  ret = GetConsoleScreenBufferInfo(GetStdHandle(STD_OUTPUT_HANDLE), &csbi);
+  return ret ? csbi.dwSize.X : 0;
+#else
+  struct winsize win;
+  ioctl(1, TIOCGWINSZ, &win);
+  return win.ws_col;
+#endif
+}
+
+int term_rows() {
+#ifdef WINDOWS
+  CONSOLE_SCREEN_BUFFER_INFO csbi;
+  int ret;
+  ret = GetConsoleScreenBufferInfo(GetStdHandle(STD_OUTPUT_HANDLE), &csbi);
+  return ret ? csbi.dwSize.Y : 0;
+#else
+  struct winsize win;
+  ioctl(1, TIOCGWINSZ, &win);
+  return win.ws_row;
+#endif
+}
 
 void cursor_up(int n) { printf("\x1b[%dA", n); }
 
@@ -120,9 +155,9 @@ void printhex(char *s) {
 
 void printhex(char *name, char *s) {
   int i = 0;
-  rgb_color c = { 0x80, 0x80, 0x80 };
-  rgb_color ce = { 0xff, 0x80, 0x80 };
-  rgb_color cn = { 0xb0, 0xb0, 0xb0 };
+  rgb_color c = {0x80, 0x80, 0x80};
+  rgb_color ce = {0xff, 0x80, 0x80};
+  rgb_color cn = {0xb0, 0xb0, 0xb0};
 
   colorprintf(cn, "%s ", name);
 
@@ -166,7 +201,8 @@ void ruler(int n) {
 
   int len = n;
 
-  if (len > 359) len = 359;
+  if (len > 359)
+    len = 359;
 
   char *l1 = strdup(line1);
   char *l2 = strdup(line2);

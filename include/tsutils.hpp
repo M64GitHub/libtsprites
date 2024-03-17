@@ -3,6 +3,10 @@
 #ifndef TSL_UTILS_H
 #define TSL_UTILS_H
 
+#if defined(WIN32) || defined(_WIN32) || defined(__WIN32) && !defined(__CYGWIN__)
+#define WINDOWS
+#endif
+
 #include "tscolors.hpp"
 
 // -- cursor
@@ -25,6 +29,8 @@ void colorprintf(rgb_color c, const char *f, ...);
 void term_init();
 void term_close();
 void term_clear();
+int term_columns();
+int term_rows();
 
 // -- string
 int strsize(char *s);
@@ -41,4 +47,3 @@ float min(float a, float b);
 float max(float a, float b);
 
 #endif
-
