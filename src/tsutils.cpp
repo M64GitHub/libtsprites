@@ -16,32 +16,6 @@
 #endif
 
 // -- cursor
-int term_columns() {
-#ifdef WINDOWS
-  CONSOLE_SCREEN_BUFFER_INFO csbi;
-  int ret;
-  ret = GetConsoleScreenBufferInfo(GetStdHandle(STD_OUTPUT_HANDLE), &csbi);
-  return ret ? csbi.dwSize.X : 0;
-#else
-  struct winsize win;
-  ioctl(1, TIOCGWINSZ, &win);
-  return win.ws_col;
-#endif
-}
-
-int term_rows() {
-#ifdef WINDOWS
-  CONSOLE_SCREEN_BUFFER_INFO csbi;
-  int ret;
-  ret = GetConsoleScreenBufferInfo(GetStdHandle(STD_OUTPUT_HANDLE), &csbi);
-  return ret ? csbi.dwSize.Y : 0;
-#else
-  struct winsize win;
-  ioctl(1, TIOCGWINSZ, &win);
-  return win.ws_row;
-#endif
-}
-
 void cursor_up(int n) { printf("\x1b[%dA", n); }
 
 void cursor_down(int n) { printf("\x1b[%dB", n); }
@@ -97,6 +71,32 @@ void term_close() {
   cursor_on();
 }
 
+int term_columns() {
+#ifdef WINDOWS
+  CONSOLE_SCREEN_BUFFER_INFO csbi;
+  int ret;
+  ret = GetConsoleScreenBufferInfo(GetStdHandle(STD_OUTPUT_HANDLE), &csbi);
+  return ret ? csbi.dwSize.X : 0;
+#else
+  struct winsize win;
+  ioctl(1, TIOCGWINSZ, &win);
+  return win.ws_col;
+#endif
+}
+
+int term_rows() {
+#ifdef WINDOWS
+  CONSOLE_SCREEN_BUFFER_INFO csbi;
+  int ret;
+  ret = GetConsoleScreenBufferInfo(GetStdHandle(STD_OUTPUT_HANDLE), &csbi);
+  return ret ? csbi.dwSize.Y : 0;
+#else
+  struct winsize win;
+  ioctl(1, TIOCGWINSZ, &win);
+  return win.ws_row;
+#endif
+}
+
 // -- string
 
 // returns size of string, includes 0x00 !
@@ -136,6 +136,8 @@ char *strdup(char *src) {
   return tmpstr;
 }
 
+// -- utils
+
 void printhex(char *s) {
   int i = 0;
   rgb_color c = {0x80, 0x80, 0x80};
@@ -173,8 +175,6 @@ void printhex(char *name, char *s) {
   colorprintf(ce, "00 ");
 }
 
-// -- utils
-
 void ruler(int n) {
   char *line1 = (char *)"|   '    |    '    |    '    |    '    "
                         "|    '    |    '    |    '    |    '    "
@@ -198,7 +198,6 @@ void ruler(int n) {
                         "0       290       300       310       32"
                         "0       330       340       350       "
                         "         ";
-
   int len = n;
 
   if (len > 359)
@@ -263,5 +262,5 @@ void idx_ruler(int n) {
 // --
 
 float min(float a, float b) { return a <= b ? a : b; }
-
 float max(float a, float b) { return a >= b ? a : b; }
+

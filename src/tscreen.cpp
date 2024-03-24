@@ -18,7 +18,7 @@ TScreen::TScreen(int width, int height) {
   out_surface = new render_surface;
 
   init_surface(out_surface, w, h, bg_color);
-  CClear(); // so cursor pos is below screen
+  CClear(); // cursor pos is below screen
 }
 
 TScreen::~TScreen() { term_close(); if(clr_line) free(clr_line);}
@@ -43,8 +43,6 @@ void TScreen::Clear() const {
 }
 
 void TScreen::CClear() {
-  // if not yet done: prepare a line full of spaces followed by "\n"
-  // it will be printed h/2 times, to clear screen line by line
   // clr_line will be reused, so don't free!
   if (!clr_line) {
     clr_line = (char *)malloc((w) + 2); // ...0x0a0x00

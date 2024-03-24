@@ -68,7 +68,7 @@ int main(int argc, char **argv) {
   // -- SubScreen
   TScreen SubScreen(20, 20); // height in lines
   TSprite SpcShip3;
-  SpcShip3.ImportFromFile((char *)"resources/spc.unicode");
+  SpcShip3.ImportFromFile((char *)"../resources/spc.unicode");
   SpcShip3.SetXY(3, 2);
   SubScreen.is_subscreen = 1;
   Screen.AddSubScreen(&SubScreen);

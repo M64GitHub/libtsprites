@@ -13,11 +13,11 @@ void rgb2hsl(rgb_color *rgb, hsl_color *hsl) {
   float Max = max(max(r, g), b);
   float delta = Max - Min;
 
-  hsl->l = (Max + Min) / 2; // L
+  hsl->l = (Max + Min) / 2; 
 
   if (delta == 0) {
-    hsl->h = 0;    // H
-    hsl->s = 0.0f; // S
+    hsl->h = 0;    
+    hsl->s = 0.0f; 
   } else {
     hsl->s =
         (hsl->l <= 0.5) ? (delta / (Max + Min)) : (delta / (2 - Max - Min));
@@ -37,7 +37,7 @@ void rgb2hsl(rgb_color *rgb, hsl_color *hsl) {
     if (hue > 1)
       hue -= 1;
 
-    hsl->h = (int)(hue * 360); // H
+    hsl->h = (int)(hue * 360);
   }
 }
 
