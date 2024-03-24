@@ -168,7 +168,7 @@ int main(int argc, char **argv)
 }
 ```
 ```bash
-./test ../../resources/demo7_188.unicode
+./test ../resources/demo7_188.unicode
 ```
 
 ![image](https://github.com/M64GitHub/libtsprites/assets/84202356/d61df269-0c09-497f-a057-0598cca94aa0)
@@ -230,7 +230,7 @@ int main(int argc, char **argv)
     rgb_color spinners_color = { 0x9C, 0x41, 0xdE }; // R, G, B
 
     TSprite TS; // create TSprite and load the graphics data
-    TS.ImportFromFile((char*)"../../resources/demo7_188.unicode");
+    TS.ImportFromFile((char*)"../resources/demo7_188.unicode");
 
     SSprite S1( (char *)"_.:[M64]:._" );       // create a string-sprite
     SSprite S2( spinners, 8, spinners_color ); // create a string sprite,
@@ -331,10 +331,10 @@ int main(int argc, char **argv) {
   TSprite SprDemo2;
   TSprite SpcShip;
   TSprite SpcShip2;
-  SprDemo.ImportFromFile((char *)"resources/demo7t_188.unicode");
-  SprDemo2.ImportFromFile((char *)"resources/demo1.unicode");
-  SpcShip.ImportFromFile((char *)"resources/spc.unicode");
-  SpcShip2.ImportFromFile((char *)"resources/spc.unicode");
+  SprDemo.ImportFromFile((char *)"../resources/demo7t_188.unicode");
+  SprDemo2.ImportFromFile((char *)"../resources/demo1.unicode");
+  SpcShip.ImportFromFile((char *)"../resources/spc.unicode");
+  SpcShip2.ImportFromFile((char *)"../resources/spc.unicode");
 
   Screen.AddSprite(&SpcShip);
   Screen.AddSprite(&SprDemo);
@@ -349,7 +349,7 @@ int main(int argc, char **argv) {
   // -- SubScreen
   TSprite SpcShip3;
   TScreen SubScreen(20, 20); // height in lines
-  SpcShip3.ImportFromFile((char *)"resources/spc.unicode");
+  SpcShip3.ImportFromFile((char *)"../resources/spc.unicode");
   SpcShip3.SetXY(3, 2);
   SubScreen.is_subscreen = 1;
   Screen.AddSubScreen(&SubScreen);
@@ -410,26 +410,18 @@ int main(int argc, char **argv) {
 }
 ```
 ## BUILD
-You can build the library along with a simple test program by running
+You can build the library by running
 ```bash
 make
 ```
 The shared library can then be found in the `lib/` folder.
-The test executable ('test') will be created in the current path.
-You can run it via
-```bash
-LD_PRELOAD=./lib/libtsprites.so ./test
-```
-To build the library only:
-```bash
-make lib
-```
+
 For building your own applications using libtsprites 
  - include the`<PATH TO include>/tsprites.hpp` in your code
  - optionally add `-I<PATH TO include>` to your compiler-flags
  - add `-ltsprites` and `-L<PATH TO .so file>` in the linking step
 
-The most easy way to do all this is to copy the library to `/usr/lib/`.
+The most easy way to do all this is to copy the library to `/usr/lib/`,
 ```bash
 sudo cp lib/libtsprites.so /usr/lib
 ```
