@@ -3,29 +3,30 @@
 #                                                  <m64.overdrive@gmail.com> #
 # -------------------------------------------------------------------------- #
 
-BINARY=rendertest
+BINARY=test
 # CC=zig c++
 # CXX=zig c++
 
 CXX=g++
 
-CFLAGS+=-O3 -Wall --debug  -lm
+CFLAGS+=-O3 -Wall --debug -lm -lSDL2
 CXXFLAGS+=$(CFLAGS)
 
-$(BINARY): rendertest.o ../../tsprites.o \
-../../tsanimations.o \
-../../tscolors.o \
-../../tscreen.o \
-../../tseffects.o \
-../../tseffects.o \
-../../tsrender.o \
-../../tsrendersurface.o \
-../../tsutils.o
-
-	$(CXX) -o $@ $^ 
+$(BINARY): test.cpp \
+	../../tsprites.o \
+	../../tsanimations.o \
+	../../tscolors.o \
+	../../tscreen.o \
+	../../tseffects.o \
+	../../tseffects.o \
+	../../tsrender.o \
+	../../tsrendersurface.o \
+	../../tsutils.o 
+	$(CXX) -o $@ $^ -lm
+#	$(RM) *.o ../../*.o ../../lib/*.o 
 
 clean:
-	$(RM) *.o $(BINARY) ../../*.o ../../lib/*.o ../../lib/*.so
+	$(RM) *.o $(BINARY) ../../*.o ../../lib/*.o 
 
 .phony: clean
 

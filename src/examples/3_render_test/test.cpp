@@ -1,10 +1,10 @@
 // test.cpp - libtsprites, 2023, M64
 
-#include "include/tscolors.hpp"
-#include "include/tscreen.hpp"
-#include "include/tsprites.hpp"
-#include "include/tsrender.hpp"
-#include "include/tsutils.hpp"
+#include "../../include/tscolors.hpp"
+#include "../../include/tscreen.hpp"
+#include "../../include/tsprites.hpp"
+#include "../../include/tsrender.hpp"
+#include "../../include/tsutils.hpp"
 #include <math.h>     // for sin()
 #include <sys/time.h> // for gettimeofday
 #include <unistd.h>   // for usleep()
@@ -50,10 +50,10 @@ int main(int argc, char **argv) {
   TSprite SprTSprites;
   TSprite SpcShip1;
   TSprite SpcShip2;
-  SprDemo.ImportFromFile((char *)"resources/demo7t_188.unicode");
-  SprTSprites.ImportFromFile((char *)"resources/demo1.unicode");
-  SpcShip1.ImportFromFile((char *)"resources/spc.unicode");
-  SpcShip2.ImportFromFile((char *)"resources/spc.unicode");
+  SprDemo.ImportFromFile((char *)"../resources/demo7t_188.unicode");
+  SprTSprites.ImportFromFile((char *)"../resources/demo1.unicode");
+  SpcShip1.ImportFromFile((char *)"../resources/spc.unicode");
+  SpcShip2.ImportFromFile((char *)"../resources/spc.unicode");
 
   Screen.AddSprite(&SpcShip1);
   Screen.AddSprite(&SprDemo);

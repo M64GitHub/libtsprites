@@ -20,7 +20,7 @@ int main(int argc, char **argv)
     rgb_color spinners_color = { 0x9C, 0x41, 0xdE }; // R, G, B
 
     TSprite TS; // create TSprite and load the graphics data
-    TS.ImportFromFile((char*)"../../resources/demo7t_188.unicode");
+    TS.ImportFromFile((char*)"../resources/demo7t_188.unicode");
 
     SSprite S1( (char *)"_.:[M64]:._" );       // create a string-sprite
     SSprite S2( spinners, 8, spinners_color ); // create a string sprite,

@@ -3,12 +3,13 @@
 #                                                  <m64.overdrive@gmail.com> #
 # -------------------------------------------------------------------------- #
 
-BINARY=test
 LIBRARY=tsprites
 
-SONAME=lib$(LIBRARY).so
-SOFILE=lib/$(SONAME)
-LIBOBJFILE=lib/$(LIBRARY).o
+SRCDIR=src
+LIBDIR=lib
+SONAME=$(LIBRARY).so
+SOFILE=$(LIBDIR)/$(SONAME)
+LIBOBJFILE=$(LIBRARY).o
 LIBINSTALLDIR=/usr/lib
 
 # CC=zig c++
@@ -19,28 +20,28 @@ CXX=g++
 CFLAGS+=-O3 -Wall 
 CXXFLAGS+=$(CFLAGS)
 
-all: $(BINARY)
-
 lib: $(SOFILE)
 
-$(BINARY): test.o $(SOFILE)
-	$(CXX) -o $@ $^ -Llib -l$(LIBRARY) --debug -lm
+# $(BINARY): test.o $(SOFILE)
+# 	$(CXX) -o $@ $^ -Llib -l$(LIBRARY) --debug -lm
 
-$(SOFILE): $(LIBRARY).cpp
-	$(CXX) -fPIC -c $(LIBRARY).cpp -o $(LIBOBJFILE)
-	$(CXX) -fPIC -c tscolors.cpp -o lib/tscolors.o 
-	$(CXX) -fPIC -c tscreen.cpp -o lib/tscreen.o 
-	$(CXX) -fPIC -c tsutils.cpp -o lib/tsutils.o 
-	$(CXX) -fPIC -c tsrender.cpp -o lib/tsrender.o 
-	$(CXX) -fPIC -c tseffects.cpp -o lib/tseffects.o 
-	$(CXX) -fPIC -c tsanimations.cpp -o lib/tsanimations.o 
-	$(CXX) -fPIC -c tsrendersurface.cpp -o lib/tsrendersurface.o 
-	$(CXX) -shared -Wl,-soname,$(SONAME) -o $(SOFILE) $(LIBOBJFILE) \
-		lib/tscolors.o lib/tscreen.o lib/tsutils.o lib/tsrender.o \
-		lib/tseffects.o lib/tsanimations.o lib/tsrendersurface.o
+$(SOFILE): $(SRCDIR)/$(LIBRARY).cpp
+	$(CXX) -fPIC -c $(SRCDIR)/$(LIBRARY).cpp -o $(SRCDIR)/$(LIBOBJFILE)
+	$(CXX) -fPIC -c $(SRCDIR)/tscolors.cpp -o $(SRCDIR)/tscolors.o 
+	$(CXX) -fPIC -c $(SRCDIR)/tscreen.cpp -o $(SRCDIR)/tscreen.o 
+	$(CXX) -fPIC -c $(SRCDIR)/tsutils.cpp -o $(SRCDIR)/tsutils.o 
+	$(CXX) -fPIC -c $(SRCDIR)/tsrender.cpp -o $(SRCDIR)/tsrender.o 
+	$(CXX) -fPIC -c $(SRCDIR)/tseffects.cpp -o $(SRCDIR)/tseffects.o 
+	$(CXX) -fPIC -c $(SRCDIR)/tsanimations.cpp -o $(SRCDIR)/tsanimations.o 
+	$(CXX) -fPIC -c $(SRCDIR)/tsrendersurface.cpp -o $(SRCDIR)/tsrendersurface.o 
+	$(CXX) -shared -Wl,-soname,$(SONAME) -o $(SOFILE) \
+		$(SRCDIR)/$(LIBOBJFILE) \
+		$(SRCDIR)/tscolors.o $(SRCDIR)/tscreen.o $(SRCDIR)/tsutils.o \
+		$(SRCDIR)/tsrender.o $(SRCDIR)/tseffects.o $(SRCDIR)/tsanimations.o \
+		$(SRCDIR)/tsrendersurface.o
 
 clean:
-	$(RM) *.o lib/*.o lib/*.so $(BINARY)
+	$(RM) $(LIBDIR)/*.o $(LIBDIR)/*.so $(SRCDIR)/*.o
 
 install:
 	cp $(SOFILE) $(LIBINSTALLDIR)/ 
