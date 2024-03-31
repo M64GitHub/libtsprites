@@ -5,6 +5,7 @@
 
 #include "tsanimations.hpp"
 #include "tsrendersurface.hpp"
+#include "lodepng.h"
 
 // #define DEBUG
 
@@ -51,7 +52,7 @@ public:
   int ImportFromFile(char *fn);
 
   /// catimg format
-  int ImportFromImgStr(char *s); 
+  int ImportFromImgStr(char *s);
 
   // -- Split Functions
 
@@ -75,7 +76,7 @@ public:
   // You need to specify the size of the "swidths" array in numslices. Variable
   // widths. Starts at x=xoffsets[0]. Returns index into sprite's fs of first
   // new frame. Use to split word-logo into single letters for example.
-  int VSplit(TSPriteFrame *F, int *xoffsets, int *widths, int numslices); 
+  int VSplit(TSPriteFrame *F, int *xoffsets, int *widths, int numslices);
 
   /// Split and return array of newly created TSprite ptrs. Vertical cut line.
   // Variable widths.

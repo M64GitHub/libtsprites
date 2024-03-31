@@ -33,6 +33,7 @@ $(SOFILE): $(SRCDIR)/$(LIBRARY).cpp
 	$(CXX) -fPIC -c $(SRCDIR)/tsrender.cpp -o $(SRCDIR)/tsrender.o 
 	$(CXX) -fPIC -c $(SRCDIR)/tseffects.cpp -o $(SRCDIR)/tseffects.o 
 	$(CXX) -fPIC -c $(SRCDIR)/tsanimations.cpp -o $(SRCDIR)/tsanimations.o 
+	$(CXX) -fPIC -c $(SRCDIR)/lodepng.cpp -o $(SRCDIR)/lodepng.o 
 	$(CXX) -fPIC -c $(SRCDIR)/tsrendersurface.cpp -o $(SRCDIR)/tsrendersurface.o 
 	$(CXX) -shared -Wl,-soname,$(SONAME) -o $(SOFILE) \
 		$(SRCDIR)/$(LIBOBJFILE) \
