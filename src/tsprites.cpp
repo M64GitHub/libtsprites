@@ -424,6 +424,7 @@ int TSprite::VSplit(TSPriteFrame *F, int *xoffsets, int *widths,
 // Use to split word-logo into single letters for example.
 TSprite **TSprite::VSplit2Sprites(TSPriteFrame *F, int *xoffsets, int *widths,
                                   int numslices) {
+  // TODO: implement
   return 0;
 }
 
@@ -431,6 +432,7 @@ TSprite **TSprite::VSplit2Sprites(TSPriteFrame *F, int *xoffsets, int *widths,
 SpriteAnimation TSprite::*Split2Ani(TSPriteFrame *F, int swidth, int sheight) {
   if (!F)
     return 0;
+  // TODO: implement
 
   return 0;
 }
@@ -438,6 +440,7 @@ SpriteAnimation TSprite::*Split2Ani(TSPriteFrame *F, int swidth, int sheight) {
 SpriteAnimation TSprite::*VSplit2Ani(TSPriteFrame *F, int swidth) {
   if (!F)
     return 0;
+  // TODO: implement
 
   return 0;
 }
@@ -446,6 +449,7 @@ SpriteAnimation TSprite::*VSplit2Ani(TSPriteFrame *F, int *swidths,
                                      int numslices) {
   if (!F)
     return 0;
+  // TODO: implement
 
   return 0;
 }
@@ -515,25 +519,35 @@ render_surface *TSprite::Render() {
 void TSprite::tick() {}
 
 // control sprite internal animations
+// TODO:
 void AddAnimation(SpriteAnimation *a) {};
 
+// TODO:
 void StartAnimation(int n, int loop) {};
 
+// TODO:
 void PauseAnimation(int n) {};
 
+// TODO:
 void StopAnimation(int n) {};
 
+// TODO:
 void AnimationTick(int n) {};
 
 // control single frame animations
+// TODO:
 void AddFrameAnimation(SpriteAnimation *a, TSPriteFrame *f) {};
 
+// TODO:
 void StartFrameAnimation(TSPriteFrame *f, int loop) {};
 
+// TODO:
 void PauseFrameAnimation(TSPriteFrame *f) {};
 
+// TODO:
 void StopFrameAnimation(int n) {};
 
+// TODO:
 void FrameAnimationTick(TSPriteFrame *f) {};
 
 void TSprite::PrintDebugMap(TSPriteFrame *F) {
@@ -1044,10 +1058,9 @@ unsigned char *TSprite::Maps_2_UTF8(TSPriteFrame *F) {
     sprintf(buf1k, "\x1b[%dB", 1); // cursor go down(1)
     while (buf1k[i])
       out_s[tmpstr_idx++] = buf1k[i++];
-     out_s[tmpstr_idx] = 0x00; // terminator
+    out_s[tmpstr_idx] = 0x00; // terminator
   }
   out_s[tmpstr_idx] = 0x00; // terminator
-
 
   unsigned char *ret_str;
   ret_str = (unsigned char *)strdup((char *)out_s);

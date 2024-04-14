@@ -5,7 +5,6 @@
 
 #include "tsanimations.hpp"
 #include "tsrendersurface.hpp"
-#include "lodepng.h"
 
 #define DEBUG
 
@@ -15,7 +14,7 @@
 #define DBG(...)
 #endif
 
-// -- TSprite --
+// NOTE: TSprite
 
 typedef struct s_TSpriteFrame {
   int nr = 0;
@@ -56,7 +55,6 @@ public:
   /// PNG
   int ImportFromPNGFile(char *fn);
 
-
   // -- Split Functions
 
   /// Split in a fixed
@@ -85,16 +83,20 @@ public:
   // Variable widths.
   // Starts at x=xoffsets[0].
   // Use to split word-logo into single letters for example.
+  // TODO:
   TSprite **VSplit2Sprites(TSPriteFrame *F, int *xoffsets, int *widths,
                            int numslices);
 
   /// split and return as new animation
+  // TODO:
   SpriteAnimation *Split2Ani(TSPriteFrame *F, int swidth, int sheight);
 
   /// split and return as new animation
+  // TODO:
   SpriteAnimation *VSplit2Ani(TSPriteFrame *F, int swidth);
 
   /// split and return as new animation
+  // TODO:
   SpriteAnimation *VSplit2Ani(TSPriteFrame *F, int *swidths, int numslices);
 
   // String Output
@@ -113,17 +115,27 @@ public:
   virtual void tick(); // receive global tick(). to handle internal anis, etc
 
   // control sprite internal animations
+  // TODO:
   void AddAnimation(SpriteAnimation *a);
+  // TODO:
   void StartAnimation(int n, int loop);
+  // TODO:
   void PauseAnimation(int n);
+  // TODO:
   void StopAnimation(int n);
+  // TODO:
   void AnimationTick(int n);
 
   // control single frame animations
+  // TODO:
   void AddFrameAnimation(SpriteAnimation *a, TSPriteFrame *f);
+  // TODO:
   void StartFrameAnimation(TSPriteFrame *f, int loop);
+  // TODO:
   void PauseFrameAnimation(TSPriteFrame *f);
+  // TODO:
   void StopFrameAnimation(int n);
+  // TODO:
   void FrameAnimationTick(TSPriteFrame *f);
 
   // -- utility functions
@@ -169,6 +181,7 @@ private:
   int imgstr_2maps(char *str, TSPriteFrame *F); // part of import
 
   char *s = 0; // for fast Print() / printf()
+
   // for convenience, created on import:
   // pre-rendered string-representation, having the sprite
   // moved 1 block down. For fast Print(x, y) ( using only printf() ),
@@ -179,11 +192,13 @@ private:
   rgb_color *background = 0; // for rendering
 };
 
+// NOTE: LSprite
 // class LSprite; // Line-Sprite
 
+// NOTE: ASprite
 // class ASprite; // ASCII Sprite
 
-// -- SSprite --
+// NOTE: LSprite
 
 typedef struct s_SSPrite_Frame {
   char *s = 0; // frame content;
