@@ -21,7 +21,8 @@ $(BINARY): test.cpp \
 	../../tseffects.o \
 	../../tsrender.o \
 	../../tsrendersurface.o \
-	../../tsutils.o 
+	../../tsutils.o  \
+	../../lodepng.o
 	$(CXX) -o $@ $^ -lm
 #	$(RM) *.o ../../*.o ../../lib/*.o 
 

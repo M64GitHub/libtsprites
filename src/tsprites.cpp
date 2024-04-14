@@ -2,6 +2,7 @@
 
 #include "include/tsprites.hpp"
 #include "include/format_catimg.hpp"
+#include "include/lodepng.h"
 #include "include/tsutils.hpp"
 #include <stdio.h>
 #include <stdlib.h>
@@ -161,7 +162,7 @@ int TSprite::ImportFromImgStr(char *str) {
     rgb_color c = {0x00, 0x00, 0x00};
     out_surface = new render_surface;
     restore_surface = new render_surface;
-    DBG("Initializing surface with w: %d, h:%d\n", w, h);
+
     init_surface(out_surface, w, h, c);
     init_surface(restore_surface, w, h, c);
     copy_surface_contents(F->out_surface, out_surface);
@@ -234,6 +235,42 @@ int TSprite::ImportFromFile(char *fn) {
   return 0;
 }
 
+int TSprite::ImportFromPNGFile(char *fn) {
+  unsigned int error;
+  unsigned char *image = 0;
+  unsigned png_width, png_height;
+
+  printf("[TS][ImportFromPNGFile]\n");
+  error = lodepng_decode32_file(&image, &png_width, &png_height, fn);
+
+  if (error) {
+    printf("[TS][ImportFromFile] ERROR: unable to convert file: %s.\n",
+           lodepng_error_text(error));
+    return error;
+  }
+
+  TSPriteFrame *F = add_frames(1, png_width, png_height);
+  for (int Y = 0; (unsigned)Y < png_height; Y++) {
+    for (int X = 0; (unsigned)X < png_width; X++) {
+      F->colormap[png_width * Y + X].r = image[(png_width * Y + X) * 4 + 0];
+      F->colormap[png_width * Y + X].g = image[(png_width * Y + X) * 4 + 1];
+      F->colormap[png_width * Y + X].b = image[(png_width * Y + X) * 4 + 2];
+
+      F->shadowmap[png_width * Y + X] = image[(png_width * Y + X) * 4 + 3];
+    }
+  }
+
+  Maps_2_UTF8(F);
+
+  s = F->s;
+  w = png_width;
+  h = png_height;
+
+  free(image);
+
+  return 0;
+}
+
 // -- Split Functions --------
 
 // Split F, and append created frames to fs. Vertical cut line.
@@ -241,7 +278,7 @@ int TSprite::ImportFromFile(char *fn) {
 // Starts at x=0 / y=0.
 // Returns index into fs of first new frame, or -1 on error.
 // Use to cut spritesheet animations for example.
-int TSprite::Split(TSPriteFrame *F, int swidth, int sheight) {
+int TSprite::SplitFixedWH(TSPriteFrame *F, int swidth, int sheight) {
   if (!F)
     return 0;
 
@@ -252,7 +289,7 @@ int TSprite::Split(TSPriteFrame *F, int swidth, int sheight) {
 // Starts at x=0.
 // Returns index into fs of first new frame, or -1 on error.
 // fs.frame_count - returned index = number of added frames.
-int TSprite::VSplit(TSPriteFrame *F, int swidth) {
+int TSprite::VSplitFixedW(TSPriteFrame *F, int swidth) {
   if (!F || (swidth < 1))
     return -1;
 
@@ -280,7 +317,7 @@ int TSprite::VSplit(TSPriteFrame *F, int swidth) {
             F->shadowmap[F->w * fy + fx + xoffset];
         new_x++;
       } // fx (width)
-    }   // fy (height)
+    } // fy (height)
 
     // copy to frame output surface
     for (int i = 0; i < (new_frame->w * new_frame->h); i++) {
@@ -324,7 +361,7 @@ int TSprite::VSplit(TSPriteFrame *F, int *widths, int numslices) {
             F->shadowmap[F->w * fy + fx + xoffset];
         new_x++;
       } // fx (width)
-    }   // fy (height)
+    } // fy (height)
 
     // copy to frame output surface
     for (int i = 0; i < (new_frame->w * new_frame->h); i++) {
@@ -368,7 +405,7 @@ int TSprite::VSplit(TSPriteFrame *F, int *xoffsets, int *widths,
             F->shadowmap[F->w * fy + fx + xoffsets[n]];
         new_x++;
       } // fx (width)
-    }   // fy (height)
+    } // fy (height)
     // copy to frame output surface
     for (int i = 0; i < (new_frame->w * new_frame->h); i++) {
       new_frame->out_surface->colormap[i] = new_frame->colormap[i];
@@ -414,8 +451,9 @@ SpriteAnimation TSprite::*VSplit2Ani(TSPriteFrame *F, int *swidths,
 }
 
 void TSprite::Print() {
-  if (!s)
+  if (!s) {
     return;
+  }
   printf("%s", s);
   fflush(stdout);
 }
@@ -477,26 +515,26 @@ render_surface *TSprite::Render() {
 void TSprite::tick() {}
 
 // control sprite internal animations
-void AddAnimation(SpriteAnimation *a){};
+void AddAnimation(SpriteAnimation *a) {};
 
-void StartAnimation(int n, int loop){};
+void StartAnimation(int n, int loop) {};
 
-void PauseAnimation(int n){};
+void PauseAnimation(int n) {};
 
-void StopAnimation(int n){};
+void StopAnimation(int n) {};
 
-void AnimationTick(int n){};
+void AnimationTick(int n) {};
 
 // control single frame animations
-void AddFrameAnimation(SpriteAnimation *a, TSPriteFrame *f){};
+void AddFrameAnimation(SpriteAnimation *a, TSPriteFrame *f) {};
 
-void StartFrameAnimation(TSPriteFrame *f, int loop){};
+void StartFrameAnimation(TSPriteFrame *f, int loop) {};
 
-void PauseFrameAnimation(TSPriteFrame *f){};
+void PauseFrameAnimation(TSPriteFrame *f) {};
 
-void StopFrameAnimation(int n){};
+void StopFrameAnimation(int n) {};
 
-void FrameAnimationTick(TSPriteFrame *f){};
+void FrameAnimationTick(TSPriteFrame *f) {};
 
 void TSprite::PrintDebugMap(TSPriteFrame *F) {
   rgb_color c = {0x80, 0x88, 0x88};
@@ -792,8 +830,9 @@ TSPriteFrame *TSprite::add_frames(int n, int width, int height) {
   TSPriteFrame **new_frames = new TSPriteFrame *[fs.frame_count + n];
 
   // copy old frames, if any
-  for (int i = 0; i < fs.frame_count; i++)
+  for (int i = 0; i < fs.frame_count; i++) {
     new_frames[i] = fs.frames[i];
+  }
 
   // append new frames to frameset
   for (int i = 0; i < n; i++) {
@@ -945,16 +984,12 @@ int TSprite::UTF8_2_maps(char *str, TSPriteFrame *F) {
       pos++;
     if (str[pos])
       pos++; // for case 'B'
-  }          // X
+  } // X
 
   return 0;
 }
 
 unsigned char *TSprite::Maps_2_UTF8(TSPriteFrame *F) {
-  if (!F)
-    return 0;
-  if (!F->colormap)
-    return 0;
   char buf1k[1024];
   int tmpstr_idx = 0;
   int i = 0;
@@ -964,7 +999,12 @@ unsigned char *TSprite::Maps_2_UTF8(TSPriteFrame *F) {
 
   unsigned char *out_s;
 
-  out_s = new unsigned char[F->w * F->h * 20 + F->h + 1024];
+  if (!F)
+    return 0;
+  if (!F->colormap)
+    return 0;
+
+  out_s = new unsigned char[F->w * F->h * 50];
 
   out_s[0] = 0x00; // terminator
 
@@ -1004,8 +1044,10 @@ unsigned char *TSprite::Maps_2_UTF8(TSPriteFrame *F) {
     sprintf(buf1k, "\x1b[%dB", 1); // cursor go down(1)
     while (buf1k[i])
       out_s[tmpstr_idx++] = buf1k[i++];
-    out_s[tmpstr_idx] = 0x00; // terminator
+     out_s[tmpstr_idx] = 0x00; // terminator
   }
+  out_s[tmpstr_idx] = 0x00; // terminator
+
 
   unsigned char *ret_str;
   ret_str = (unsigned char *)strdup((char *)out_s);

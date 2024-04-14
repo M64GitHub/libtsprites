@@ -7,7 +7,7 @@
 #include "tsrendersurface.hpp"
 #include "lodepng.h"
 
-// #define DEBUG
+#define DEBUG
 
 #ifdef DEBUG
 #define DBG(...) fprintf(stderr, __VA_ARGS__)
@@ -49,21 +49,24 @@ public:
 
   ~TSprite();
 
-  int ImportFromFile(char *fn);
-
   /// catimg format
+  int ImportFromFile(char *fn);
   int ImportFromImgStr(char *s);
+
+  /// PNG
+  int ImportFromPNGFile(char *fn);
+
 
   // -- Split Functions
 
   /// Split in a fixed
   // vertically  and horizontally raster of cut lines, append created frames to
   // to sprite's fs. Returns index of 1st created new frame.
-  int Split(TSPriteFrame *F, int swidth, int sheight);
+  int SplitFixedWH(TSPriteFrame *F, int swidth, int sheight);
 
   /// Split and append to sprite's fs. Vertical cut lines, fixed  width. Starts
   // at x=0. Returns index into sprite's fs of first created new frame.
-  int VSplit(TSPriteFrame *F, int swidth);
+  int VSplitFixedW(TSPriteFrame *F, int swidth);
 
   /// Split and append
   // created frames to sprite's fs. Vertical cut line. You need to specify the

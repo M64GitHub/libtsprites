@@ -20,7 +20,8 @@ $(BINARY): test.o ../../tsprites.o \
 	../../tseffects.o \
 	../../tsrender.o \
 	../../tsrendersurface.o \
-	../../tsutils.o
+	../../tsutils.o \
+	../../lodepng.o
 	$(CXX) -o $@ $^ 
 
 clean:
