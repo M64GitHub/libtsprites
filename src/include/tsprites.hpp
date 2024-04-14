@@ -120,6 +120,7 @@ public:
   // apply internal animations, etc and render into out_surface
   // return the surface to calling screen
   render_surface *Render();
+  render_surface *RenderFadeIn(int steps, int step);
   void SetXY(int xx, int yy);
 
   virtual void tick(); // receive global tick(). to handle internal anis, etc
@@ -207,11 +208,13 @@ private:
 
 // NOTE: LSprite
 // class LSprite; // Line-Sprite
+// TODO:
 
 // NOTE: ASprite
 // class ASprite; // ASCII Sprite
+// TODO:
 
-// NOTE: LSprite
+// NOTE: SSprite
 
 typedef struct s_SSPrite_Frame {
   char *s = 0; // frame content;
@@ -245,6 +248,7 @@ public:
   void PrintFrame(int n); // printf a frame
 
   virtual void Render(); //
+  render_surface *RenderFadeIn(int steps, int step);
 
   int x = 0;
   int y = 0; // in blocks / "half characters"
