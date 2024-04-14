@@ -17,6 +17,8 @@
 // NOTE: TSprite
 
 typedef struct s_TSpriteFrame {
+  int rel_x = 0; // relative x position to spr->x
+  int rel_y = 0; // relative y position to spr->y
   int nr = 0;
   int w = 0;
   int h = 0;
@@ -48,6 +50,8 @@ public:
 
   ~TSprite();
 
+  // NOTE: Load/Import Functions
+
   /// catimg format
   int ImportFromFile(char *fn);
   int ImportFromImgStr(char *s);
@@ -55,7 +59,11 @@ public:
   /// PNG
   int ImportFromPNGFile(char *fn);
 
-  // -- Split Functions
+  /// (same or other's) Sprite frame
+  // TODO:
+  int ImportFromFrame(TSPriteFrame *F);
+
+  // NOTE: Split Functions
 
   /// Split in a fixed
   // vertically  and horizontally raster of cut lines, append created frames to
@@ -99,10 +107,12 @@ public:
   // TODO:
   SpriteAnimation *VSplit2Ani(TSPriteFrame *F, int *swidths, int numslices);
 
-  // String Output
+  // NOTE: String API
   void Print();             // printf string representation s of first frame
   void Print(int X, int Y); // move cursor, printf s or s_1down
   void PrintFrame(int n);   // printf a specific frame
+
+  // NOTE: Control Functions
 
   virtual void Prepare(); // setup internal animations structures, overlays,
                           // etc, 1 time at start / after creation
@@ -113,6 +123,8 @@ public:
   void SetXY(int xx, int yy);
 
   virtual void tick(); // receive global tick(). to handle internal anis, etc
+
+  // NOTE: Animation Functions
 
   // control sprite internal animations
   // TODO:
@@ -138,7 +150,8 @@ public:
   // TODO:
   void FrameAnimationTick(TSPriteFrame *f);
 
-  // -- utility functions
+  // NOTE: Conversion / Utility Functions
+
   // Convert between string and map representation
   int UTF8_2_maps(char *str, TSPriteFrame *F); //
   unsigned char *Maps_2_UTF8(TSPriteFrame *F); //
