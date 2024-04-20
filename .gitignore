@@ -1,9 +1,5 @@
 *.o
 *.so
-test
-rendertest
 *.mp3
 *.wav
 .ccls-cache
-tsdemo
-
