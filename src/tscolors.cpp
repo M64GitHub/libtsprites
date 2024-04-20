@@ -2,7 +2,6 @@
 
 #include "include/tscolors.hpp"
 #include "include/tsutils.hpp"
-#include <stdio.h>
 
 void rgb2hsl(rgb_color *rgb, hsl_color *hsl) {
   float r = (rgb->r / 255.0f);

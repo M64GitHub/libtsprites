@@ -1,5 +1,7 @@
-#include "include/tsrendersurface.hpp"
 
+// tsanimations.cpp - libtsprites, 2023-24 M64
+
+#include "include/tsrendersurface.hpp"
 
 void init_surface(render_surface *s, int w, int h, rgb_color c) {
   if (!s)

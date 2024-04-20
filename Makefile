@@ -1,5 +1,5 @@
 # -------------------------------------------------------------------------- #
-#  libtsprites - terminal sprites library (for catimg images)      2023, M64 # 
+#  libtsprites - terminal sprites library                          2023, M64 # 
 #                                                  <m64.overdrive@gmail.com> #
 # -------------------------------------------------------------------------- #
 

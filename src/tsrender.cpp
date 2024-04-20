@@ -1,7 +1,6 @@
 // tsrender.cpp - libtsprites 2023-24, M64
 
 #include "include/tsrender.hpp"
-#include <stdio.h>
 
 // RenderEngine1:
 // renders all input surfaces onto the output surface (and returns it)
