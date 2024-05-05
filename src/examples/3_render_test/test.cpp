@@ -39,7 +39,7 @@ int main(int argc, char **argv) {
   };
   rgb_color spinners_color = {0x9C, 0x41, 0xdE}; // R, G, B
   //
-  rgb_palette *fade_palette = CreatePaletteFadeInOut(spinners_color, 64);
+  rgb_palette *fade_palette = CreatePaletteFadeInOut(spinners_color, 256);
 
   TSRenderEngineTopDown engine;
 
@@ -118,7 +118,7 @@ int main(int argc, char **argv) {
     SprDemo.SetXY(x2, y2);
     SprTSprites.SetXY(x4, y4);
 
-    Spinner.SetColor(fade_palette->colors[SpcShip1.counter1 % 64]);
+    Spinner.SetColor(fade_palette->colors[SpcShip1.counter1 % 256]);
 
     SubScreen.Render();
     Screen.Render();

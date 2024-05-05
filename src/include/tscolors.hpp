@@ -28,5 +28,7 @@ rgb_palette *CreatePaletteFadeIn(rgb_color c, int steps);
 rgb_palette *CreatePaletteFadeOut(rgb_color c, int steps);
 rgb_palette *CreatePaletteFadeInOut(rgb_color c, int steps);
 
+// TODO: Fade from color1 to color2
+
 #endif
 
