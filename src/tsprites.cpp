@@ -3,6 +3,7 @@
 #include "include/tsprites.hpp"
 #include "include/format_catimg.hpp"
 #include "include/lodepng.h"
+#include "include/tscolors.hpp"
 #include "include/tsutils.hpp"
 #include <stdio.h>
 #include <stdlib.h>
@@ -1151,8 +1152,10 @@ SSprite::~SSprite() {}
 void SSprite::Print() {
   if (!frame_count)
     return;
-  printf("\x1b[38;2;%d;%d;%dm", frames[frame_idx]->color.r,
-         frames[frame_idx]->color.g, frames[frame_idx]->color.b);
+  printf("\x1b[38;2;%d;%d;%dm", 
+         frames[frame_idx]->color.r,
+         frames[frame_idx]->color.g, 
+         frames[frame_idx]->color.b);
   printf("%s", frames[frame_idx]->s);
 }
 
@@ -1179,6 +1182,12 @@ void SSprite::PrintUncolored() {
   if (!frame_count)
     return;
   printf("%s", frames[frame_idx]->s);
+}
+
+void SSprite::SetColor(rgb_color c) {
+         frames[frame_idx]->color.r = c.r;
+         frames[frame_idx]->color.g = c.g; 
+         frames[frame_idx]->color.b = c.b;
 }
 
 void SSprite::PrintDimmed() {}

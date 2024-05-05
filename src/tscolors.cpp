@@ -12,11 +12,11 @@ void rgb2hsl(rgb_color *rgb, hsl_color *hsl) {
   float Max = max(max(r, g), b);
   float delta = Max - Min;
 
-  hsl->l = (Max + Min) / 2; 
+  hsl->l = (Max + Min) / 2;
 
   if (delta == 0) {
-    hsl->h = 0;    
-    hsl->s = 0.0f; 
+    hsl->h = 0;
+    hsl->s = 0.0f;
   } else {
     hsl->s =
         (hsl->l <= 0.5) ? (delta / (Max + Min)) : (delta / (2 - Max - Min));
@@ -39,7 +39,6 @@ void rgb2hsl(rgb_color *rgb, hsl_color *hsl) {
     hsl->h = (int)(hue * 360);
   }
 }
-
 // Example
 //
 // rgb_color = { 82, 0, 87 };
@@ -86,7 +85,6 @@ void hsl2rgb(hsl_color *hsl, rgb_color *rgb) {
     rgb->b = (unsigned char)(255 * hue2rgb(v1, v2, hue - (1.0f / 3)));
   }
 }
-
 // Example
 //
 // hsl_color = { 138, 0.50f, 0.76f };
@@ -94,3 +92,70 @@ void hsl2rgb(hsl_color *hsl, rgb_color *rgb) {
 // R: 163
 // G: 224
 // B: 181
+
+rgb_palette *CreatePaletteFadeIn(rgb_color c, int steps) {
+  rgb_palette *p = new rgb_palette;
+  p->colors = new rgb_color[steps];
+
+  double r_inc = (double)c.r / (double)steps;
+  double g_inc = (double)c.g / (double)steps;
+  double b_inc = (double)c.b / (double)steps;
+
+  rgb_color tmpc = {0, 0, 0};
+
+  for (int i = 0; i < steps; i++) {
+    tmpc.r = (r_inc * (double)i);
+    tmpc.g = (g_inc * (double)i);
+    tmpc.b = (b_inc * (double)i);
+    p->colors[i] = tmpc;
+  }
+
+  return p;
+}
+
+rgb_palette *CreatePaletteFadeout(rgb_color c, int steps) {
+  rgb_palette *p = new rgb_palette;
+  p->colors = new rgb_color[steps];
+
+  double r_inc = (double)c.r / (double)steps;
+  double g_inc = (double)c.g / (double)steps;
+  double b_inc = (double)c.b / (double)steps;
+
+  rgb_color tmpc = c;
+
+  for (int i = 0; i < steps; i++) {
+    tmpc.r = c.r - (r_inc * (double)(steps - i));
+    tmpc.g = c.g - (g_inc * (double)(steps - i));
+    tmpc.b = c.b - (b_inc * (double)(steps - i));
+    p->colors[i] = tmpc;
+  }
+
+  return p;
+}
+
+rgb_palette *CreatePaletteFadeInOut(rgb_color c, int steps) {
+  rgb_palette *p = new rgb_palette;
+  p->colors = new rgb_color[steps];
+
+  double r_inc = (double)c.r / (double)(steps / 2.0);
+  double g_inc = (double)c.g / (double)(steps / 2.0);
+  double b_inc = (double)c.b / (double)(steps / 2.0);
+
+  rgb_color tmpc = {0, 0, 0};
+
+  for (int i = 0; i < (steps / 2); i++) {
+    tmpc.r = (r_inc * (double)(i));
+    tmpc.g = (g_inc * (double)(i));
+    tmpc.b = (b_inc * (double)(i));
+    p->colors[i] = tmpc;
+  }
+
+  for (int i = (steps / 2); i < steps; i++) {
+    tmpc.r = c.r - (r_inc * (double)(i / 2.0));
+    tmpc.g = c.g - (g_inc * (double)(i / 2.0));
+    tmpc.b = c.b - (b_inc * (double)(i / 2.0));
+    p->colors[i] = tmpc;
+  }
+
+  return p;
+}

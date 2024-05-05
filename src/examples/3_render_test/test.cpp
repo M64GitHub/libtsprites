@@ -38,6 +38,8 @@ int main(int argc, char **argv) {
       (char *)" | ▇ ▒ SSprite ", (char *)" / █ ░ SSprite ",
   };
   rgb_color spinners_color = {0x9C, 0x41, 0xdE}; // R, G, B
+  //
+  rgb_palette *fade_palette = CreatePaletteFadeInOut(spinners_color, 64);
 
   TSRenderEngineTopDown engine;
 
@@ -115,6 +117,8 @@ int main(int argc, char **argv) {
     SpcShip2.SetXY(x3, y3);
     SprDemo.SetXY(x2, y2);
     SprTSprites.SetXY(x4, y4);
+
+    Spinner.SetColor(fade_palette->colors[SpcShip1.counter1 % 64]);
 
     SubScreen.Render();
     Screen.Render();

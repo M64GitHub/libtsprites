@@ -4,6 +4,7 @@
 #define TSL_TSPRITES_H
 
 #include "tsanimations.hpp"
+#include "tscolors.hpp"
 #include "tsrendersurface.hpp"
 
 #define DEBUG
@@ -246,9 +247,10 @@ public:
   void PrintDimmed(); // printf s
 
   void PrintFrame(int n); // printf a frame
+  //
+  void SetColor(rgb_color c);
 
   virtual void Render(); //
-  render_surface *RenderFadeIn(int steps, int step);
 
   int x = 0;
   int y = 0; // in blocks / "half characters"
