@@ -41,6 +41,7 @@ render_surface *TSRenderEngineTopDown::Render(render_surface **surfaces_in,
     for (int Y = 0; Y < surfaces_in[i]->h; Y++) {
       for (int X = 0; X < surfaces_in[i]->w; X++) {
 
+
         idx_in = surfaces_in[i]->w * Y + X;
         idx_out =
             surface_out->w * (Y + surfaces_in[i]->y) + X + surfaces_in[i]->x;

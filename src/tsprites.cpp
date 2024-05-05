@@ -1165,7 +1165,7 @@ void SSprite::Print(int X, int Y) {
 
   if (background)
     printf("\x1b[48;2;%d;%d;%dm\x1b[38;2;%d;%d;%dm", background->r,
-           background->b, background->b, frames[frame_idx]->color.r,
+           background->g, background->b, frames[frame_idx]->color.r,
            frames[frame_idx]->color.g, frames[frame_idx]->color.b);
   else
     printf("\x1b[38;2;%d;%d;%dm", frames[frame_idx]->color.r,
