@@ -6,7 +6,8 @@ smooth rendering engine. RGB and HSL color support. Ideal for terminal games, or
 more interesting user interfaces.  
 
 
-https://github.com/M64GitHub/libtsprites/assets/84202356/af7e6610-4399-49b4-ab3e-7ef804118000
+https://github.com/M64GitHub/libtsprites/assets/84202356/08d72062-7f26-43f6-bdd1-cfa0b713f3e7
+
 
 
 The intention is to create a library for visual expression on `state of the art`,
