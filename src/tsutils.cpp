@@ -4,6 +4,8 @@
 #include <stdarg.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
+#include <sys/time.h> // for gettimeofday
 #ifdef WINDOWS
 #include <fcntl.h>
 #include <io.h>
@@ -14,6 +16,75 @@
 #include <sys/ioctl.h>
 #include <unistd.h>
 #endif
+
+// -- time
+// TODO: handle this via stats struct and sstruct init function!
+int FPS = 0;
+unsigned long fps_in_us = 0;
+
+unsigned long get_timestamp(struct timeval *tv) {
+  gettimeofday(tv, NULL);
+  unsigned long r = 1000000 * tv->tv_sec + tv->tv_usec;
+  return r;
+}
+
+unsigned long fps_to_us(int fps) {
+  unsigned long r = 0.0f;
+  unsigned long us1sec = 1 * 1000 * 1000;
+  r = us1sec / fps;
+  return r;
+}
+
+unsigned long us_to_fps(unsigned long us) {
+  unsigned long r = 0;
+  unsigned long us1sec = 1 * 1000 * 1000;
+  r = us1sec / us;
+  return r;
+}
+
+char *print_stats(unsigned long ts1, unsigned long ts2) {
+  if (!FPS)
+    return 0;
+  // -- stats
+  static unsigned long duration = 0;
+  static unsigned long maxtime = 0;
+  static unsigned long mintime = 10000000;
+  static unsigned long maxfps = 0;
+  static unsigned long minfps = 1000000;
+  static char linestr[1024];
+  static char outstr[8192];
+  outstr[0] = 0x00;
+  sprintf(linestr, "\x1b[0m");
+  duration = (ts2 - ts1);
+  if (duration > maxtime)
+    maxtime = duration;
+  if (duration < mintime)
+    mintime = duration;
+  if (us_to_fps(duration) > maxfps)
+    maxfps = us_to_fps(duration);
+  if (us_to_fps(duration) < minfps)
+    minfps = us_to_fps(duration);
+  sprintf(linestr, "FPS %d, ", FPS);
+  strcat(outstr, linestr);
+  // sprintf(linestr, "FPS duration in us: %lu, ", fps_in_us);
+  // strcat(outstr, linestr);
+  sprintf(linestr, "Cur duration in us: %lu, ", duration);
+  strcat(outstr, linestr);
+  sprintf(linestr, "Cur FPS: %lu, ", us_to_fps(duration));
+  strcat(outstr, linestr);
+  // sprintf(linestr, "Max duration in us: %lu ", maxtime);
+  // strcat(outstr, linestr);
+  // sprintf(linestr, "Min duration in us: %lu, ", mintime);
+  // strcat(outstr, linestr);
+  // sprintf(linestr, "Max FPS: %lu, ", maxfps);
+  // strcat(outstr, linestr);
+  // sprintf(linestr, "Min FPS: %lu, ", minfps);
+  // strcat(outstr, linestr);
+  sprintf(linestr, "framesleeping: %lu", fps_in_us - (ts2 - ts1));
+  strcat(outstr, linestr);
+
+  return outstr;
+}
 
 // -- cursor
 void cursor_up(int n) { printf("\x1b[%dA", n); }
@@ -263,4 +334,3 @@ void idx_ruler(int n) {
 
 float min(float a, float b) { return a <= b ? a : b; }
 float max(float a, float b) { return a >= b ? a : b; }
-

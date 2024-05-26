@@ -9,6 +9,15 @@
 
 #include "tscolors.hpp"
 
+// -- time
+
+extern int FPS; // TODO: handle this via stats struct and sstruct init function!
+extern unsigned long fps_in_us;
+unsigned long get_timestamp(struct timeval *tv);
+unsigned long fps_to_us(int fps);
+unsigned long us_to_fps(unsigned long us);
+char *print_stats(unsigned long ts1, unsigned long ts2);
+
 // -- cursor
 void cursor_up(int n);
 void cursor_down(int n);

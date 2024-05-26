@@ -2,6 +2,7 @@
 
 #include "../../include/tscolors.hpp"
 #include "../../include/tscreen.hpp"
+#include "../../include/tseffects.hpp"
 #include "../../include/tsprites.hpp"
 #include "../../include/tsrender.hpp"
 #include "../../include/tsutils.hpp"
@@ -9,26 +10,11 @@
 #include <sys/time.h> // for gettimeofday
 #include <unistd.h>   // for usleep()
 
-int FPS = 60;                // set stable FPS
-unsigned long fps_in_us = 0; // will be calculated
-
-unsigned long get_timestamp(struct timeval *tv) {
-  gettimeofday(tv, NULL);
-  unsigned long r = 1000000 * tv->tv_sec + tv->tv_usec;
-  return r;
-}
-
-unsigned long fps_to_us(int fps) {
-  unsigned long r = 0.0f;
-  unsigned long us1sec = 1 * 1000 * 1000;
-  r = us1sec / fps;
-  return r;
-}
-
 int main(int argc, char **argv) {
   struct timeval tv;
   unsigned long ts1 = 0;
   unsigned long ts2 = 0;
+  FPS = 60;
   fps_in_us = fps_to_us(FPS);
 
   char *spinners[] = {
@@ -97,6 +83,8 @@ int main(int argc, char **argv) {
   int y3 = 0;
   int x4 = 0;
   int y4 = 0;
+
+  int direction = 0;
   while (1) {
     ts1 = get_timestamp(&tv); // start measuring frame time
     SpcShip1.counter1++;
@@ -118,6 +106,19 @@ int main(int argc, char **argv) {
     SprDemo.SetXY(x2, y2);
     SprTSprites.SetXY(x4, y4);
 
+    // fade SprTsprites
+    if(!((SpcShip1.counter1 * 2) % 300)) direction = 1 - direction;
+    if (!direction)
+      dim_render_surface_in_out(SprTSprites.restore_surface,
+                                (SpcShip1.counter1 * 2) % 300 + 25, 200,
+                                SprTSprites.out_surface);
+    else
+      dim_render_surface_in_out(SprTSprites.restore_surface,
+                                300 - (SpcShip1.counter1 * 2 % 300) + 25, 200,
+                                SprTSprites.out_surface);
+
+
+    // fade Spinner
     Spinner.SetColor(fade_palette->colors[SpcShip1.counter1 % 256]);
 
     SubScreen.Render();

@@ -1193,4 +1193,6 @@ void SSprite::SetColor(rgb_color c) {
 void SSprite::PrintDimmed() {}
 void SSprite::free_frames() {}
 
-void SSprite::Render() {}
+void SSprite::Render() {
+
+}

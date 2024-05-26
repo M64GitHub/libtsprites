@@ -19,7 +19,6 @@ render_surface *TSRenderEngineTopDown::Render(render_surface **surfaces_in,
   if (!n)
     return 0;
 
-
   // render_surface **surfaces_sortuuuuued = new render_surface *[n];
   int *tmp = new int[n];
   for (int i = 0; i < n; i++)
@@ -41,13 +40,12 @@ render_surface *TSRenderEngineTopDown::Render(render_surface **surfaces_in,
     for (int Y = 0; Y < surfaces_in[i]->h; Y++) {
       for (int X = 0; X < surfaces_in[i]->w; X++) {
 
-
         idx_in = surfaces_in[i]->w * Y + X;
         idx_out =
             surface_out->w * (Y + surfaces_in[i]->y) + X + surfaces_in[i]->x;
 
         if (surfaces_in[i]->shadowmap[idx_in] &&
-            surface_out->shadowmap[idx_out] != 1) {  // 0 = transp, 2 = bg
+            surface_out->shadowmap[idx_out] != 1) { // 0 = transp, 2 = bg
           if (!((surfaces_in[i]->x + X) >= surface_out->w) &&   // clip x right
               !((surfaces_in[i]->x + X) < 0)) {                 // clip x left
             if (!((surfaces_in[i]->y + Y) >= surface_out->h) && // clip x right
@@ -55,10 +53,10 @@ render_surface *TSRenderEngineTopDown::Render(render_surface **surfaces_in,
               surface_out->colormap[idx_out] = surfaces_in[i]->colormap[idx_in];
               surface_out->shadowmap[idx_out] = 1;
             } // clipping Y
-          }   // clipping X
-        }     // if shadowmap
-      }       // loop X
-    }         // loop Y
+          } // clipping X
+        } // if shadowmap
+      } // loop X
+    } // loop Y
   }
   // -- cleanup
 

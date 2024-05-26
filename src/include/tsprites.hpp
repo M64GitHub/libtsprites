@@ -121,7 +121,6 @@ public:
   // apply internal animations, etc and render into out_surface
   // return the surface to calling screen
   render_surface *Render();
-  render_surface *RenderFadeIn(int steps, int step);
   void SetXY(int xx, int yy);
 
   virtual void tick(); // receive global tick(). to handle internal anis, etc
