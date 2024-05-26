@@ -9,6 +9,7 @@ more interesting user interfaces.
 https://github.com/M64GitHub/libtsprites/assets/84202356/08d72062-7f26-43f6-bdd1-cfa0b713f3e7
 
 
+Last updates: added .png file import, new dimming / highlighting effect (see video)!
 
 The intention is to create a library for visual expression on `state of the art`,
 `fast` `terminals`.
