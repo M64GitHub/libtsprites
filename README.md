@@ -9,6 +9,7 @@ more interesting user interfaces.
 https://github.com/user-attachments/assets/d0d0ce5a-eeed-46db-b700-f6c27a9a1802
 
 ( Video latest update: showcasing new dimming / highlighting effect, added SID sounds )
+Sound credits to Chris Huelsbeck (Turrican), and Jeroen Tel (Cybernoid II)
 
 The intention is to create a library for visual expression on `state of the art`,
 `fast` `terminals`.
