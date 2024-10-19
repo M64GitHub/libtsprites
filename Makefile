@@ -32,14 +32,21 @@ $(SOFILE): $(SRCDIR)/$(LIBRARY).cpp
 	$(CXX) -fPIC -c $(SRCDIR)/tsutils.cpp -o $(SRCDIR)/tsutils.o 
 	$(CXX) -fPIC -c $(SRCDIR)/tsrender.cpp -o $(SRCDIR)/tsrender.o 
 	$(CXX) -fPIC -c $(SRCDIR)/tseffects.cpp -o $(SRCDIR)/tseffects.o 
+	$(CXX) -fPIC -c $(SRCDIR)/tscroller.cpp -o $(SRCDIR)/tscroller.o 
 	$(CXX) -fPIC -c $(SRCDIR)/tsanimations.cpp -o $(SRCDIR)/tsanimations.o 
 	$(CXX) -fPIC -c $(SRCDIR)/lodepng.cpp -o $(SRCDIR)/lodepng.o 
-	$(CXX) -fPIC -c $(SRCDIR)/tsrendersurface.cpp -o $(SRCDIR)/tsrendersurface.o 
+	$(CXX) -fPIC -c $(SRCDIR)/tsrendersurface.cpp \
+		-o $(SRCDIR)/tsrendersurface.o 
 	$(CXX) -shared -Wl,-soname,$(SONAME) -o $(SOFILE) \
 		$(SRCDIR)/$(LIBOBJFILE) \
-		$(SRCDIR)/tscolors.o $(SRCDIR)/tscreen.o $(SRCDIR)/tsutils.o \
-		$(SRCDIR)/tsrender.o $(SRCDIR)/tseffects.o $(SRCDIR)/tsanimations.o \
-		$(SRCDIR)/tsrendersurface.o
+		$(SRCDIR)/tscolors.o \
+		$(SRCDIR)/tscreen.o \
+		$(SRCDIR)/tsutils.o \
+		$(SRCDIR)/tsrender.o \
+		$(SRCDIR)/tseffects.o \
+		$(SRCDIR)/tsanimations.o \
+		$(SRCDIR)/tsrendersurface.o \
+		$(SRCDIR)/tscroller.o
 
 clean:
 	$(RM) $(LIBDIR)/*.o $(LIBDIR)/*.so $(SRCDIR)/*.o
