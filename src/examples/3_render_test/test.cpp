@@ -42,6 +42,7 @@ int main(int argc, char **argv) {
   TSprite SprTSprites;
   TSprite SpcShip1;
   TSprite SpcShip2;
+
   SprDemo.ImportFromFile((char *)"../resources/demo7t_188.unicode");
   SprTSprites.ImportFromFile((char *)"../resources/demo1.unicode");
   SpcShip1.ImportFromFile((char *)"../resources/spc.unicode");

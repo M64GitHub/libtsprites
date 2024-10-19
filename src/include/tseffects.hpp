@@ -7,7 +7,6 @@
 
 void dim_render_surface(render_surface *r, int step, int maxsteps);
 void dim_render_surface_in_out(render_surface *r_in, int step, int maxsteps,
-                        render_surface *r_out);
+                               render_surface *r_out);
 
 #endif
-

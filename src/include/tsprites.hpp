@@ -96,18 +96,6 @@ public:
   TSprite **VSplit2Sprites(TSPriteFrame *F, int *xoffsets, int *widths,
                            int numslices);
 
-  /// split and return as new animation
-  // TODO:
-  SpriteAnimation *Split2Ani(TSPriteFrame *F, int swidth, int sheight);
-
-  /// split and return as new animation
-  // TODO:
-  SpriteAnimation *VSplit2Ani(TSPriteFrame *F, int swidth);
-
-  /// split and return as new animation
-  // TODO:
-  SpriteAnimation *VSplit2Ani(TSPriteFrame *F, int *swidths, int numslices);
-
   // NOTE: String API
   void Print();             // printf string representation s of first frame
   void Print(int X, int Y); // move cursor, printf s or s_1down
@@ -127,7 +115,7 @@ public:
 
   // NOTE: Animation Functions
 
-  // control sprite internal animations
+  // control sprite internal - "direct" animations: 
   // TODO:
   void AddAnimation(SpriteAnimation *a);
   // TODO:
@@ -138,18 +126,6 @@ public:
   void StopAnimation(int n);
   // TODO:
   void AnimationTick(int n);
-
-  // control single frame animations
-  // TODO:
-  void AddFrameAnimation(SpriteAnimation *a, TSPriteFrame *f);
-  // TODO:
-  void StartFrameAnimation(TSPriteFrame *f, int loop);
-  // TODO:
-  void PauseFrameAnimation(TSPriteFrame *f);
-  // TODO:
-  void StopFrameAnimation(int n);
-  // TODO:
-  void FrameAnimationTick(TSPriteFrame *f);
 
   // NOTE: Conversion / Utility Functions
 

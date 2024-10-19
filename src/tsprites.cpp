@@ -267,6 +267,22 @@ int TSprite::ImportFromPNGFile(char *fn) {
   w = png_width;
   h = png_height;
 
+  for (int i = 0; i < (F->w * F->h); i++) {
+    F->out_surface->colormap[i] = F->colormap[i];
+    F->out_surface->shadowmap[i] = F->shadowmap[i];
+  }
+
+  s_1down = strdup(F->s_1down);
+
+  rgb_color c = {0x00, 0x00, 0x00};
+  out_surface = new render_surface;
+  restore_surface = new render_surface;
+
+  init_surface(out_surface, w, h, c);
+  init_surface(restore_surface, w, h, c);
+  copy_surface_contents(F->out_surface, out_surface);
+  copy_surface_contents(out_surface, restore_surface);
+
   free(image);
 
   return 0;

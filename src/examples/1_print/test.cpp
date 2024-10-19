@@ -16,7 +16,7 @@ int main(int argc, char **argv)
     S.ImportFromPNGFile(file_name);
 
     // NOTE: enable line below to print the visual map representation
-    // S.PrintDebugMap(S.fs.frames[0]);
+    S.PrintDebugMap(S.fs.frames[0]);
 
     // we need this, in case we stand at the bottom of the terminal,
     // in order to have space to print the sprite
