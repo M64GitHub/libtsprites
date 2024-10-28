@@ -9,13 +9,14 @@
 
 
 // Animation is sprite-type independent (stores only indices!)
-typedef struct s_SpriteAnimation {
+typedef struct TSpriteAnimation_s {
   unsigned int tick = 0;
+  unsigned int tick_divider = 1;
 
   int loop = 0;
   int loop_idx = 0;
   int loop_start = 0;
   int loop_end = 0;
-} SpriteAnimation;
+} TSpriteAnimation_t;
 
 #endif

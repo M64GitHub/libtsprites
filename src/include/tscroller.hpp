@@ -23,7 +23,7 @@ public:
 
   void Tick();
 
-  render_surface *Render();
+  RenderSurface_t *Render();
 
 private:
   int x;
@@ -35,7 +35,7 @@ private:
   char *scrolltext;
   TSprite *charset;
 
-  render_surface *out_surface = 0;
+  RenderSurface_t *out_surface = 0;
 };
 
 

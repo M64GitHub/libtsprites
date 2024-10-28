@@ -109,11 +109,11 @@ void cursor_home() {
 
 // -- color
 
-void set_color(rgb_color c) { printf("\x1b[38;2;%d;%d;%dm", c.r, c.g, c.b); }
+void set_color(RGBColor_t c) { printf("\x1b[38;2;%d;%d;%dm", c.r, c.g, c.b); }
 
-void set_bgcolor(rgb_color c) { printf("\x1b[48;2;%d;%d;%dm", c.r, c.g, c.b); }
+void set_bgcolor(RGBColor_t c) { printf("\x1b[48;2;%d;%d;%dm", c.r, c.g, c.b); }
 
-void colorprintf(rgb_color c, const char *f, ...) {
+void colorprintf(RGBColor_t c, const char *f, ...) {
   printf("\x1b[38;2;%d;%d;%dm", c.r, c.g, c.b);
   va_list l;
   va_start(l, f);
@@ -211,8 +211,8 @@ char *strdup(char *src) {
 
 void printhex(char *s) {
   int i = 0;
-  rgb_color c = {0x80, 0x80, 0x80};
-  rgb_color ce = {0xff, 0x80, 0x80};
+  RGBColor_t c = {0x80, 0x80, 0x80};
+  RGBColor_t ce = {0xff, 0x80, 0x80};
 
   if (!s) {
     colorprintf(ce, "(null!)");
@@ -228,9 +228,9 @@ void printhex(char *s) {
 
 void printhex(char *name, char *s) {
   int i = 0;
-  rgb_color c = {0x80, 0x80, 0x80};
-  rgb_color ce = {0xff, 0x80, 0x80};
-  rgb_color cn = {0xb0, 0xb0, 0xb0};
+  RGBColor_t c = {0x80, 0x80, 0x80};
+  RGBColor_t ce = {0xff, 0x80, 0x80};
+  RGBColor_t cn = {0xb0, 0xb0, 0xb0};
 
   colorprintf(cn, "%s ", name);
 

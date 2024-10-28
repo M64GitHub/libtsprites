@@ -28,8 +28,8 @@ int main(int argc, char **argv) {
       (char *)" | ▇ ▒ SSprite ", (char *)" / █ ░ SSprite ",
   };
 
-  rgb_color spinners_color = {0x9C, 0x41, 0xdE}; // R, G, B
-  rgb_palette *fade_palette = CreatePaletteFadeInOut(spinners_color, 256);
+  RGBColor_t spinners_color = {0x9C, 0x41, 0xdE}; // R, G, B
+  RGBPalette_t *fade_palette = CreatePaletteFadeInOut(spinners_color, 256);
 
   TSRenderEngineTopDown engine;
 
@@ -73,7 +73,7 @@ int main(int argc, char **argv) {
 
   SSprite S1((char *)"SubScreen");
   SubScreen.AddSprite(&S1);
-  rgb_color S1Color = {0xdf, 0xdf, 0xdf}; // R, G, B
+  RGBColor_t S1Color = {0xdf, 0xdf, 0xdf}; // R, G, B
   S1.x = 11;
   S1.y = 19 * 2;
   S1.frames[0]->color = S1Color;

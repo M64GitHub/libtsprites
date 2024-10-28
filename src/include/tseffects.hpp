@@ -5,8 +5,8 @@
 
 #include "tsrendersurface.hpp"
 
-void dim_render_surface(render_surface *r, int step, int maxsteps);
-void dim_render_surface_in_out(render_surface *r_in, int step, int maxsteps,
-                               render_surface *r_out);
+void dim_render_surface(RenderSurface_t *r, int step, int maxsteps);
+void dim_render_surface_in_out(RenderSurface_t *r_in, int step, int maxsteps,
+                               RenderSurface_t *r_out);
 
 #endif

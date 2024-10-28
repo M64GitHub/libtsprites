@@ -3,42 +3,43 @@
 
 #include "include/tsrendersurface.hpp"
 
-void init_surface(render_surface *s, int w, int h, rgb_color c) {
+void init_surface(RenderSurface_t *s, int w, int h, RGBColor_t c) {
   if (!s)
     return;
   s->w = w;
   s->h = h;
-  s->colormap = new rgb_color[s->w * s->h];
+  s->colormap = new RGBColor_t[s->w * s->h];
   s->shadowmap = new unsigned char[s->w * s->h];
-  s->charmap = new unsigned char[s->w * s->h];
-  clear_surface_bgcolor(s, c);
+  s->charmap = new unsigned char[s->w * (s->h / 2 + 1)];
+  render_surface_clear_colored(s, c);
 }
 
-void clear_surface_bgcolor(render_surface *s, rgb_color c) {
+void render_surface_clear_colored(RenderSurface_t *s, RGBColor_t c) {
   if (!s || !s->colormap || !s->shadowmap)
     return;
   for (int i = 0; i < s->w * s->h; i++) {
     s->colormap[i] = c;
     s->shadowmap[i] = 2;
-    s->charmap[i] = 0;
+    s->charmap[i / 2] = 0;
   }
 }
 
-void clear_surface_transparent(render_surface *s) {
+void clear_surface_transparent(RenderSurface_t *s) {
   if (!s || !s->colormap || !s->shadowmap)
     return;
-  rgb_color c = { 0x00, 0x00, 0x00};
+  RGBColor_t c = { 0x00, 0x00, 0x00};
   for (int i = 0; i < s->w * s->h; i++) {
     s->colormap[i] = c;
     s->shadowmap[i] = 0;
-    s->charmap[i] = 0;
+    s->charmap[i / 2] = 0;
   }
 }
 
-int copy_surface_contents(render_surface *in, render_surface *out) {
+int render_surface_copy(RenderSurface_t *in, RenderSurface_t *out) {
   if(!in) return 1;
   if(!out) return 2;
   if(!in->colormap || !in->shadowmap || !in->charmap) return 3;
+  if(!out->colormap || !out->shadowmap || !out->charmap) return 4;
   if(!in->w || !in->h) return 4;
 
   for (int i = 0; i < (in->w * in->h); i++) {

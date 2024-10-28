@@ -17,7 +17,7 @@ int main(int argc, char **argv)
                         (char*) " / █ ░ SSprite ",
     };
 
-    rgb_color spinners_color = { 0x9C, 0x41, 0xdE }; // R, G, B
+    RGBColor_t spinners_color = { 0x9C, 0x41, 0xdE }; // R, G, B
 
     TSprite TS; // create TSprite and load the graphics data
     TS.ImportFromFile((char*)"../resources/demo7t_188.unicode");

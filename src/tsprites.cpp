@@ -136,7 +136,7 @@ int TSprite::ImportFromImgStr(char *str) {
   // -- now we have w, h -> we know image size and can create and
   // fill maps / a new frame:
 
-  TSPriteFrame *F = add_frames(1, width, height);
+  TSpriteFrame_t *F = add_frames(1, width, height);
   F->s = strdup(outstr);
 
   // -- fill maps from input string
@@ -160,12 +160,12 @@ int TSprite::ImportFromImgStr(char *str) {
 
     // Initialize out_surface here, so it is not 0, and
     // Screen.AddSprite can be called
-    rgb_color c = {0x00, 0x00, 0x00};
-    out_surface = new render_surface;
-    restore_surface = new render_surface;
+    RGBColor_t c = {0x00, 0x00, 0x00};
+    out_surface = new RenderSurface_t;
+    restore_surface = new RenderSurface_t;
 
-    init_surface(out_surface, w, h, c);
-    init_surface(restore_surface, w, h, c);
+    render_surface_init(out_surface, w, h, c);
+    render_surface_init(restore_surface, w, h, c);
     copy_surface_contents(F->out_surface, out_surface);
     copy_surface_contents(out_surface, restore_surface);
   }
@@ -250,7 +250,7 @@ int TSprite::ImportFromPNGFile(char *fn) {
     return error;
   }
 
-  TSPriteFrame *F = add_frames(1, png_width, png_height);
+  TSpriteFrame_t *F = add_frames(1, png_width, png_height);
   for (int Y = 0; (unsigned)Y < png_height; Y++) {
     for (int X = 0; (unsigned)X < png_width; X++) {
       F->colormap[png_width * Y + X].r = image[(png_width * Y + X) * 4 + 0];
@@ -274,12 +274,12 @@ int TSprite::ImportFromPNGFile(char *fn) {
 
   s_1down = strdup(F->s_1down);
 
-  rgb_color c = {0x00, 0x00, 0x00};
-  out_surface = new render_surface;
-  restore_surface = new render_surface;
+  RGBColor_t c = {0x00, 0x00, 0x00};
+  out_surface = new RenderSurface_t;
+  restore_surface = new RenderSurface_t;
 
-  init_surface(out_surface, w, h, c);
-  init_surface(restore_surface, w, h, c);
+  render_surface_init(out_surface, w, h, c);
+  render_surface_init(restore_surface, w, h, c);
   copy_surface_contents(F->out_surface, out_surface);
   copy_surface_contents(out_surface, restore_surface);
 
@@ -295,7 +295,7 @@ int TSprite::ImportFromPNGFile(char *fn) {
 // Starts at x=0 / y=0.
 // Returns index into fs of first new frame, or -1 on error.
 // Use to cut spritesheet animations for example.
-int TSprite::SplitFixedWH(TSPriteFrame *F, int swidth, int sheight) {
+int TSprite::SplitFixedWH(TSpriteFrame_t *F, int swidth, int sheight) {
   if (!F)
     return 0;
 
@@ -306,7 +306,7 @@ int TSprite::SplitFixedWH(TSPriteFrame *F, int swidth, int sheight) {
 // Starts at x=0.
 // Returns index into fs of first new frame, or -1 on error.
 // fs.frame_count - returned index = number of added frames.
-int TSprite::VSplitFixedW(TSPriteFrame *F, int swidth) {
+int TSprite::VSplitFixedW(TSpriteFrame_t *F, int swidth) {
   if (!F || (swidth < 1))
     return -1;
 
@@ -314,7 +314,7 @@ int TSprite::VSplitFixedW(TSPriteFrame *F, int swidth) {
 
   int old_num_frames = fs.frame_count;
 
-  TSPriteFrame *new_frame = 0;
+  TSpriteFrame_t *new_frame = 0;
 
   int xoffset = 0;
   for (int n = 0; n < numslices; n++) {
@@ -352,13 +352,13 @@ int TSprite::VSplitFixedW(TSPriteFrame *F, int swidth) {
 // Split F, and append created frames to fs. Vertical cut line. Variable widths.
 // Starts at x=0.
 // Returns index into fs of first new frame, or -1 on error.
-int TSprite::VSplit(TSPriteFrame *F, int *widths, int numslices) {
+int TSprite::VSplit(TSpriteFrame_t *F, int *widths, int numslices) {
   if (!F || (numslices < 1) || !widths)
     return -1;
 
   int old_num_frames = fs.frame_count;
 
-  TSPriteFrame *new_frame = 0;
+  TSpriteFrame_t *new_frame = 0;
 
   int xoffset = 0;
   for (int n = 0; n < numslices; n++) {
@@ -396,14 +396,14 @@ int TSprite::VSplit(TSPriteFrame *F, int *widths, int numslices) {
 // Split F and append created frames to fs. Vertical cut line. Variable widths.
 // Starts at x=xoffsets[0]. Returns index into fs of first new frame, or -1 on
 // Error. Use to split word-logo into single letters for example.
-int TSprite::VSplit(TSPriteFrame *F, int *xoffsets, int *widths,
+int TSprite::VSplit(TSpriteFrame_t *F, int *xoffsets, int *widths,
                     int numslices) {
   if (!F || (numslices < 1) || !xoffsets || !widths)
     return -1;
 
   int old_num_frames = fs.frame_count;
 
-  TSPriteFrame *new_frame = 0;
+  TSpriteFrame_t *new_frame = 0;
 
   for (int n = 0; n < numslices; n++) {
     int new_width = widths[n];
@@ -439,14 +439,14 @@ int TSprite::VSplit(TSPriteFrame *F, int *xoffsets, int *widths,
 // Variable widths.
 // Starts at x=xoffsets[0].
 // Use to split word-logo into single letters for example.
-TSprite **TSprite::VSplit2Sprites(TSPriteFrame *F, int *xoffsets, int *widths,
+TSprite **TSprite::VSplit2Sprites(TSpriteFrame_t *F, int *xoffsets, int *widths,
                                   int numslices) {
   // TODO: implement
   return 0;
 }
 
 // split and return as new animation
-SpriteAnimation TSprite::*Split2Ani(TSPriteFrame *F, int swidth, int sheight) {
+TSpriteAnimation_t TSprite::*Split2Ani(TSpriteFrame_t *F, int swidth, int sheight) {
   if (!F)
     return 0;
   // TODO: implement
@@ -454,7 +454,7 @@ SpriteAnimation TSprite::*Split2Ani(TSPriteFrame *F, int swidth, int sheight) {
   return 0;
 }
 
-SpriteAnimation TSprite::*VSplit2Ani(TSPriteFrame *F, int swidth) {
+TSpriteAnimation_t TSprite::*VSplit2Ani(TSpriteFrame_t *F, int swidth) {
   if (!F)
     return 0;
   // TODO: implement
@@ -462,7 +462,7 @@ SpriteAnimation TSprite::*VSplit2Ani(TSPriteFrame *F, int swidth) {
   return 0;
 }
 
-SpriteAnimation TSprite::*VSplit2Ani(TSPriteFrame *F, int *swidths,
+TSpriteAnimation_t TSprite::*VSplit2Ani(TSpriteFrame_t *F, int *swidths,
                                      int numslices) {
   if (!F)
     return 0;
@@ -517,10 +517,10 @@ void TSprite::SetXY(int xx, int yy) {
 // Set current frame's out_surface as sprite's out_surface
 // and sprite coordinates to the surface.
 // (original spr out_surface in restore_surface)
-render_surface *TSprite::Render() {
+RenderSurface_t *TSprite::Render() {
   if (!fs.frames)
     return 0;
-  TSPriteFrame *F = fs.frames[fs.frame_idx];
+  TSpriteFrame_t *F = fs.frames[fs.frame_idx];
   if (!F)
     return 0;
   if (!F->out_surface)
@@ -537,7 +537,7 @@ void TSprite::tick() {}
 
 // control sprite internal animations
 // TODO:
-void AddAnimation(SpriteAnimation *a) {};
+void AddAnimation(TSpriteAnimation_t *a) {};
 
 // TODO:
 void StartAnimation(int n, int loop) {};
@@ -553,22 +553,22 @@ void AnimationTick(int n) {};
 
 // control single frame animations
 // TODO:
-void AddFrameAnimation(SpriteAnimation *a, TSPriteFrame *f) {};
+void AddFrameAnimation(TSpriteAnimation_t *a, TSpriteFrame_t *f) {};
 
 // TODO:
-void StartFrameAnimation(TSPriteFrame *f, int loop) {};
+void StartFrameAnimation(TSpriteFrame_t *f, int loop) {};
 
 // TODO:
-void PauseFrameAnimation(TSPriteFrame *f) {};
+void PauseFrameAnimation(TSpriteFrame_t *f) {};
 
 // TODO:
 void StopFrameAnimation(int n) {};
 
 // TODO:
-void FrameAnimationTick(TSPriteFrame *f) {};
+void FrameAnimationTick(TSpriteFrame_t *f) {};
 
-void TSprite::PrintDebugMap(TSPriteFrame *F) {
-  rgb_color c = {0x80, 0x88, 0x88};
+void TSprite::PrintDebugMap(TSpriteFrame_t *F) {
+  RGBColor_t c = {0x80, 0x88, 0x88};
 
   colorprintf(c,
               "Frame #%d: COLOR:'o', TRANSPARENCY:'-' (with colors) "
@@ -613,7 +613,7 @@ void TSprite::PrintDebugMap(TSPriteFrame *F) {
 // TSprite::imgstr_2maps
 //
 // helper for ImportFromImgStr: catimg line ends!
-int TSprite::imgstr_2maps(char *str, TSPriteFrame *F) {
+int TSprite::imgstr_2maps(char *str, TSpriteFrame_t *F) {
   unsigned int pos;
   int map_x, map_y;
   int res, r1, g1, b1, r2, g2, b2;
@@ -624,8 +624,8 @@ int TSprite::imgstr_2maps(char *str, TSPriteFrame *F) {
   g2 = 0;
   b2 = 0;
   int count = 0;
-  rgb_color upper_color;
-  rgb_color lower_color;
+  RGBColor_t upper_color;
+  RGBColor_t lower_color;
 
   pos = CATIMG_HDR_LEN;
 
@@ -727,16 +727,16 @@ int TSprite::imgstr_2maps(char *str, TSPriteFrame *F) {
   return 0;
 }
 
-// create_1down_str(TSPriteFrame *F)
+// create_1down_str(TSpriteFrame_t *F)
 // helper for ImportFromImgStr
 // Uses the frame's color / shadow maps to create a position independent
 // printable string, having the sprite moved down 1/2 a character.
-char *TSprite::create_1down_str(TSPriteFrame *F) {
+char *TSprite::create_1down_str(TSpriteFrame_t *F) {
   char *tmpstr = (char *)calloc(1, strsize(F->s) * 2); // more than enough
   int tmpstr_idx = 0;
   char buf1k[4096];
-  rgb_color upper;
-  rgb_color lower;
+  RGBColor_t upper;
+  RGBColor_t lower;
   int i = 0;
 
   char *outstr = 0;
@@ -853,12 +853,12 @@ char *TSprite::create_1down_str(TSPriteFrame *F) {
 // add_frames
 // DOES allocate or initialize colormap / shadowmap!
 // returns the 1st of appended / new frames
-TSPriteFrame *TSprite::add_frames(int n, int width, int height) {
+TSpriteFrame_t *TSprite::add_frames(int n, int width, int height) {
   if (n < 1)
     return 0;
 
   // build new frames
-  TSPriteFrame **new_frames = new TSPriteFrame *[fs.frame_count + n];
+  TSpriteFrame_t **new_frames = new TSpriteFrame_t *[fs.frame_count + n];
 
   // copy old frames, if any
   for (int i = 0; i < fs.frame_count; i++) {
@@ -867,18 +867,18 @@ TSPriteFrame *TSprite::add_frames(int n, int width, int height) {
 
   // append new frames to frameset
   for (int i = 0; i < n; i++) {
-    TSPriteFrame *F = new TSPriteFrame;
+    TSpriteFrame_t *F = new TSpriteFrame_t;
     new_frames[fs.frame_count + i] = F;
     F->nr = fs.frame_count + i;
-    F->colormap = new rgb_color[width * height];
+    F->colormap = new RGBColor_t[width * height];
     F->shadowmap = new unsigned char[width * height];
     F->w = width;
     F->h = height;
     F->s = 0;
     F->s_1down = 0;
 
-    F->out_surface = new render_surface;
-    init_surface(F->out_surface, F->w, F->h, {0, 0, 0});
+    F->out_surface = new RenderSurface_t;
+    render_surface_init(F->out_surface, F->w, F->h, {0, 0, 0});
 
     F->out_surface->x = x;
     F->out_surface->y = y;
@@ -893,7 +893,7 @@ TSPriteFrame *TSprite::add_frames(int n, int width, int height) {
   return fs.frames[fs.frame_count - n];
 }
 
-int TSprite::UTF8_2_maps(char *str, TSPriteFrame *F) {
+int TSprite::UTF8_2_maps(char *str, TSpriteFrame_t *F) {
   // quick adaption from imgstr_2maps, first error checking OK
   // anyways, the function should never be needed.
   if (!str || !F)
@@ -913,8 +913,8 @@ int TSprite::UTF8_2_maps(char *str, TSPriteFrame *F) {
   g2 = 0;
   b2 = 0;
   int count = 0;
-  rgb_color upper_color;
-  rgb_color lower_color;
+  RGBColor_t upper_color;
+  RGBColor_t lower_color;
 
   pos = CATIMG_HDR_LEN;
 
@@ -1020,13 +1020,13 @@ int TSprite::UTF8_2_maps(char *str, TSPriteFrame *F) {
   return 0;
 }
 
-unsigned char *TSprite::Maps_2_UTF8(TSPriteFrame *F) {
+unsigned char *TSprite::Maps_2_UTF8(TSpriteFrame_t *F) {
   char buf1k[1024];
   int tmpstr_idx = 0;
   int i = 0;
 
-  rgb_color upper;
-  rgb_color lower;
+  RGBColor_t upper;
+  RGBColor_t lower;
 
   unsigned char *out_s;
 
@@ -1099,8 +1099,8 @@ void TSprite::free_frames() {}
 SSprite::SSprite() {}
 
 SSprite::SSprite(char *str) {
-  SSPriteFrame *F = new SSPriteFrame;
-  frames = new SSPriteFrame *[1];
+  SSpriteFrame_t *F = new SSpriteFrame_t;
+  frames = new SSpriteFrame_t *[1];
   frames[0] = F;
 
   frames[0]->s = strdup(str);
@@ -1114,12 +1114,12 @@ SSprite::SSprite(char *str) {
 }
 
 SSprite::SSprite(char **strs, int len) {
-  frames = new SSPriteFrame *[len];
+  frames = new SSpriteFrame_t *[len];
   int i = 0;
 
   for (int j = 0; j < len; j++) {
     int l = strsize(strs[j]);
-    SSPriteFrame *F = new SSPriteFrame;
+    SSpriteFrame_t *F = new SSpriteFrame_t;
     frames[j] = F;
 
     char *tmpstr = (char *)calloc(l + 1, 1);
@@ -1137,13 +1137,13 @@ SSprite::SSprite(char **strs, int len) {
   frame_count = len;
 }
 
-SSprite::SSprite(char **strs, int len, rgb_color c) {
-  frames = new SSPriteFrame *[len];
+SSprite::SSprite(char **strs, int len, RGBColor_t c) {
+  frames = new SSpriteFrame_t *[len];
   int i = 0;
 
   for (int j = 0; j < len; j++) {
     int l = strsize(strs[j]);
-    SSPriteFrame *F = new SSPriteFrame;
+    SSpriteFrame_t *F = new SSpriteFrame_t;
     frames[j] = F;
 
     char *tmpstr = (char *)calloc(l + 1, 1);
@@ -1161,7 +1161,7 @@ SSprite::SSprite(char **strs, int len, rgb_color c) {
   frame_count = len;
 }
 
-SSprite::SSprite(char **s, int len, rgb_palette p) {}
+SSprite::SSprite(char **s, int len, RGBPalette_t p) {}
 
 SSprite::~SSprite() {}
 
@@ -1200,7 +1200,7 @@ void SSprite::PrintUncolored() {
   printf("%s", frames[frame_idx]->s);
 }
 
-void SSprite::SetColor(rgb_color c) {
+void SSprite::SetColor(RGBColor_t c) {
          frames[frame_idx]->color.r = c.r;
          frames[frame_idx]->color.g = c.g; 
          frames[frame_idx]->color.b = c.b;

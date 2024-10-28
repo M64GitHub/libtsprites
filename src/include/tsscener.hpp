@@ -3,15 +3,11 @@
 #ifndef TSL_SCENER_H
 #define TSL_SCENER_H
 
-#include "tsprites.hpp"
-
-
-
-typedef struct s_scener_sprite_register_entry {
+typedef struct ScenerSpriteRegistry_s {
   char name[128];
   void *sprite;
 
-} TSScRegEntry;
+} ScenerSpriteRegistryEntry_t;
 
 class TSScener
 {
@@ -23,7 +19,7 @@ public:
   void RegisterSprite(void *sprite, char *name);
 
 private:
-  TSScRegEntry *sprite_register;
+  ScenerSpriteRegistryEntry_t *sprite_register;
 };
 
 

@@ -27,16 +27,16 @@ void TScroller::SetCharset(TSprite *cs, int slicewidth)
   charset->VSplitFixedW(charset->fs.frames[0], slicewidth);
 }
 
-render_surface *TScroller::Render()
+RenderSurface_t *TScroller::Render()
 {
   return out_surface;
 }
 
 void TScroller::SetWH(int W, int H)
 {
-  rgb_color c = { 0,0,0 };
+  RGBColor_t c = { 0,0,0 };
   w = W;
   h = H;
-  out_surface = new render_surface;
-  init_surface(out_surface, w, h, c);
+  out_surface = new RenderSurface_t;
+  render_surface_init(out_surface, w, h, c);
 }

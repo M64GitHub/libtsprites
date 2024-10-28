@@ -15,7 +15,7 @@ class TScreen {
 public:
   TScreen();
   TScreen(int width, int height);
-  TScreen(int width, int height, rgb_color bgcolor);
+  TScreen(int width, int height, RGBColor_t bgcolor);
 
   ~TScreen();
 
@@ -39,9 +39,9 @@ public:
   void Update();
   void Render();
 
-  rgb_color bg_color = {0x20, 0x20, 0x20};
+  RGBColor_t bg_color = {0x20, 0x20, 0x20};
 
-  render_surface *out_surface = 0; // last render of screen, direct access for speed
+  RenderSurface_t *out_surface = 0; // last render of screen, direct access for speed
   char *out_s = 0;
   int is_subscreen = 0;
 
@@ -53,7 +53,7 @@ public:
   int num_screens = 0;
     
 private:
-  void add_out_surface(render_surface *rs);
+  void add_out_surface(RenderSurface_t *rs);
 
   int w = 0;
   int h = 0;
@@ -66,7 +66,7 @@ private:
   char *bg_str = 0;
 
 
-  render_surface **surfaces_out = 0;
+  RenderSurface_t **surfaces_out = 0;
   int num_surfaces_out = 0;
   TSSCREEN_MODE screen_mode = SCREEN_TRANSPARENT;
 

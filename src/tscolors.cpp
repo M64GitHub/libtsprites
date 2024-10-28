@@ -3,7 +3,7 @@
 #include "include/tscolors.hpp"
 #include "include/tsutils.hpp"
 
-void rgb2hsl(rgb_color *rgb, hsl_color *hsl) {
+void rgb2hsl(RGBColor_t *rgb, HSLColor_t *hsl) {
   float r = (rgb->r / 255.0f);
   float g = (rgb->g / 255.0f);
   float b = (rgb->b / 255.0f);
@@ -41,7 +41,7 @@ void rgb2hsl(rgb_color *rgb, hsl_color *hsl) {
 }
 // Example
 //
-// rgb_color = { 82, 0, 87 };
+// RGBColor_t = { 82, 0, 87 };
 //
 // H: 296
 // S: 1
@@ -68,7 +68,7 @@ float hue2rgb(float v1, float v2, float vH) {
   return v1;
 }
 
-void hsl2rgb(hsl_color *hsl, rgb_color *rgb) {
+void hsl2rgb(HSLColor_t *hsl, RGBColor_t *rgb) {
   if (hsl->s == 0) {
     rgb->r = rgb->g = rgb->b = (unsigned char)(hsl->l * 255);
   } else {
@@ -87,21 +87,21 @@ void hsl2rgb(hsl_color *hsl, rgb_color *rgb) {
 }
 // Example
 //
-// hsl_color = { 138, 0.50f, 0.76f };
+// HSLColor_t = { 138, 0.50f, 0.76f };
 //
 // R: 163
 // G: 224
 // B: 181
 
-rgb_palette *CreatePaletteFadeIn(rgb_color c, int steps) {
-  rgb_palette *p = new rgb_palette;
-  p->colors = new rgb_color[steps];
+RGBPalette_t *CreatePaletteFadeIn(RGBColor_t c, int steps) {
+  RGBPalette_t *p = new RGBPalette_t;
+  p->colors = new RGBColor_t[steps];
 
   double r_inc = (double)c.r / (double)steps;
   double g_inc = (double)c.g / (double)steps;
   double b_inc = (double)c.b / (double)steps;
 
-  rgb_color tmpc = {0, 0, 0};
+  RGBColor_t tmpc = {0, 0, 0};
 
   for (int i = 0; i < steps; i++) {
     tmpc.r = (r_inc * (double)i);
@@ -113,15 +113,15 @@ rgb_palette *CreatePaletteFadeIn(rgb_color c, int steps) {
   return p;
 }
 
-rgb_palette *CreatePaletteFadeout(rgb_color c, int steps) {
-  rgb_palette *p = new rgb_palette;
-  p->colors = new rgb_color[steps];
+RGBPalette_t *CreatePaletteFadeout(RGBColor_t c, int steps) {
+  RGBPalette_t *p = new RGBPalette_t;
+  p->colors = new RGBColor_t[steps];
 
   double r_inc = (double)c.r / (double)steps;
   double g_inc = (double)c.g / (double)steps;
   double b_inc = (double)c.b / (double)steps;
 
-  rgb_color tmpc = c;
+  RGBColor_t tmpc = c;
 
   for (int i = 0; i < steps; i++) {
     tmpc.r = c.r - (r_inc * (double)(steps - i));
@@ -133,15 +133,15 @@ rgb_palette *CreatePaletteFadeout(rgb_color c, int steps) {
   return p;
 }
 
-rgb_palette *CreatePaletteFadeInOut(rgb_color c, int steps) {
-  rgb_palette *p = new rgb_palette;
-  p->colors = new rgb_color[steps];
+RGBPalette_t *CreatePaletteFadeInOut(RGBColor_t c, int steps) {
+  RGBPalette_t *p = new RGBPalette_t;
+  p->colors = new RGBColor_t[steps];
 
   double r_inc = (double)c.r / (double)(steps / 2.0);
   double g_inc = (double)c.g / (double)(steps / 2.0);
   double b_inc = (double)c.b / (double)(steps / 2.0);
 
-  rgb_color tmpc = {0, 0, 0};
+  RGBColor_t tmpc = {0, 0, 0};
 
   for (int i = 0; i < (steps / 2); i++) {
     tmpc.r = (r_inc * (double)(i));

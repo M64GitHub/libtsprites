@@ -5,7 +5,7 @@
 
 #include "tscolors.hpp"
 
-typedef struct s_render_surface {
+typedef struct RenderSurface_s {
   int w; // measured in blocks, 1 ASCI char has width 1
   int h; // measured in blocks, 1 ASCII char has height 2, 1 block height
 
@@ -14,7 +14,7 @@ typedef struct s_render_surface {
 
   int z; // layer - for sorting by rendering engine
 
-  rgb_color *colormap;
+  RGBColor_t *colormap;
   unsigned char *shadowmap;
   int is_updated = 0; // "need render" f sprites:
                       // anis set this, effects, etc.
@@ -22,13 +22,13 @@ typedef struct s_render_surface {
                       // if 0, sprite doesn't re-render itself
                       // just waisting time
   unsigned char *charmap;
-} render_surface;
+} RenderSurface_t;
 
-void init_surface(render_surface *s, int w, int h, rgb_color r);
+void render_surface_init(RenderSurface_t *s, int w, int h, RGBColor_t r);
 
-void clear_surface_bgcolor(render_surface *s, rgb_color c);
-void clear_surface_transparent(render_surface *s);
+void render_surface_clear_colored(RenderSurface_t *s, RGBColor_t c);
+void render_surface_clear_transparent(RenderSurface_t *s);
 
-int copy_surface_contents(render_surface *in, render_surface *out);
+int copy_surface_contents(RenderSurface_t *in, RenderSurface_t *out);
 
 #endif

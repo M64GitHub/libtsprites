@@ -17,26 +17,26 @@
 
 // NOTE: TSprite
 
-typedef struct s_TSpriteFrame {
+typedef struct TSpriteFrame_s {
   int rel_x = 0; // relative x position to spr->x
   int rel_y = 0; // relative y position to spr->y
   int nr = 0;
   int w = 0;
   int h = 0;
-  rgb_color *colormap = 0;      // should stay, to restore b4 effects
+  RGBColor_t *colormap = 0;      // should stay, to restore b4 effects
   unsigned char *shadowmap = 0; // (apply effects, etc to out_surface)
   char *s = 0;   // frame 0: copy of s (free will not affect spr->s)
   char *s_1down; // frame 0: copy of s_1down
 
-  render_surface *out_surface = 0; // active frame's out_surface will be
+  RenderSurface_t *out_surface = 0; // active frame's out_surface will be
   // sprite's out_surface on TSprite::Render()
-} TSPriteFrame;
+} TSpriteFrame_t;
 
-typedef struct s_TFrameSet {
+typedef struct TFrameSet_s {
   int frame_count = 0;       // 1 after Import
-  TSPriteFrame **frames = 0; // array of pointers to frames
+  TSpriteFrame_t **frames = 0; // array of pointers to frames
   int frame_idx = 0;         // current frame
-} TFrameSet;
+} TSpriteFrameSet_t;
 
 /// True-Color (24bit RGB) unicode block character based pixel sprite.
 //
@@ -62,38 +62,38 @@ public:
 
   /// (same or other's) Sprite frame
   // TODO:
-  int ImportFromFrame(TSPriteFrame *F);
+  int ImportFromFrame(TSpriteFrame_t *F);
 
   // NOTE: Split Functions
 
   /// Split in a fixed
   // vertically  and horizontally raster of cut lines, append created frames to
   // to sprite's fs. Returns index of 1st created new frame.
-  int SplitFixedWH(TSPriteFrame *F, int swidth, int sheight);
+  int SplitFixedWH(TSpriteFrame_t *F, int swidth, int sheight);
 
   /// Split and append to sprite's fs. Vertical cut lines, fixed  width. Starts
   // at x=0. Returns index into sprite's fs of first created new frame.
-  int VSplitFixedW(TSPriteFrame *F, int swidth);
+  int VSplitFixedW(TSpriteFrame_t *F, int swidth);
 
   /// Split and append
   // created frames to sprite's fs. Vertical cut line. You need to specify the
   // size of the "swidths" array in numslices. Variable widths. Starts at
   // x=xoffsets[0]. Returns index into sprite's fs of first new frame.
   // Use to split word-logo into single letters for example.
-  int VSplit(TSPriteFrame *F, int *swidths, int numslices);
+  int VSplit(TSpriteFrame_t *F, int *swidths, int numslices);
 
   /// Split and append created frames to sprite's fs. Vertical cut line.
   // You need to specify the size of the "swidths" array in numslices. Variable
   // widths. Starts at x=xoffsets[0]. Returns index into sprite's fs of first
   // new frame. Use to split word-logo into single letters for example.
-  int VSplit(TSPriteFrame *F, int *xoffsets, int *widths, int numslices);
+  int VSplit(TSpriteFrame_t *F, int *xoffsets, int *widths, int numslices);
 
   /// Split and return array of newly created TSprite ptrs. Vertical cut line.
   // Variable widths.
   // Starts at x=xoffsets[0].
   // Use to split word-logo into single letters for example.
   // TODO:
-  TSprite **VSplit2Sprites(TSPriteFrame *F, int *xoffsets, int *widths,
+  TSprite **VSplit2Sprites(TSpriteFrame_t *F, int *xoffsets, int *widths,
                            int numslices);
 
   // NOTE: String API
@@ -108,7 +108,7 @@ public:
 
   // apply internal animations, etc and render into out_surface
   // return the surface to calling screen
-  render_surface *Render();
+  RenderSurface_t *Render();
   void SetXY(int xx, int yy);
 
   virtual void tick(); // receive global tick(). to handle internal anis, etc
@@ -117,7 +117,7 @@ public:
 
   // control sprite internal - "direct" animations: 
   // TODO:
-  void AddAnimation(SpriteAnimation *a);
+  void AddAnimation(TSpriteAnimation_t *a);
   // TODO:
   void StartAnimation(int n, int loop);
   // TODO:
@@ -130,10 +130,10 @@ public:
   // NOTE: Conversion / Utility Functions
 
   // Convert between string and map representation
-  int UTF8_2_maps(char *str, TSPriteFrame *F); //
-  unsigned char *Maps_2_UTF8(TSPriteFrame *F); //
+  int UTF8_2_maps(char *str, TSpriteFrame_t *F); //
+  unsigned char *Maps_2_UTF8(TSpriteFrame_t *F); //
 
-  void PrintDebugMap(TSPriteFrame *F); // colored map representation
+  void PrintDebugMap(TSpriteFrame_t *F); // colored map representation
 
   // main attributes w/o getters for fastest access
   int w = 0;
@@ -141,10 +141,10 @@ public:
   int x = 0;
   int y = 0; // in blocks / "half characters"
   int z = 0;
-  TFrameSet fs; // frames for slicing, animations, ...
+  TSpriteFrameSet_t fs; // frames for slicing, animations, ...
 
   // animations
-  SpriteAnimation **animations = 0; // array of pointers
+  TSpriteAnimation_t **animations = 0; // array of pointers
 
   // convenience counters and thresholds
   int counter1 = 0;
@@ -156,19 +156,19 @@ public:
 
   int state = 0; // generic type to support own concepts
 
-  render_surface *out_surface = 0; // last render, direct access for speed.
-  // This points to either the sprite's own render_surface, or is being
+  RenderSurface_t *out_surface = 0; // last render, direct access for speed.
+  // This points to either the sprite's own RenderSurface_t, or is being
   // replaced by ptr to a frame's out_surface.
-  render_surface *restore_surface = 0; // original out_surface copy
+  RenderSurface_t *restore_surface = 0; // original out_surface copy
                                        // before effect, or any manipulation.
 private:
   // allocates maps, returns first new frame
-  TSPriteFrame *add_frames(int n, int width, int height);
+  TSpriteFrame_t *add_frames(int n, int width, int height);
   void free_frames();
 
   // import helpers
-  char *create_1down_str(TSPriteFrame *F);      // part of import
-  int imgstr_2maps(char *str, TSPriteFrame *F); // part of import
+  char *create_1down_str(TSpriteFrame_t *F);      // part of import
+  int imgstr_2maps(char *str, TSpriteFrame_t *F); // part of import
 
   char *s = 0; // for fast Print() / printf()
 
@@ -179,7 +179,7 @@ private:
   // -> Makes smooth Y-movements possible with fast printf();
   char *s_1down = 0;
 
-  rgb_color *background = 0; // for rendering
+  RGBColor_t *background = 0; // for rendering
 };
 
 // NOTE: LSprite
@@ -192,15 +192,15 @@ private:
 
 // NOTE: SSprite
 
-typedef struct s_SSPrite_Frame {
+typedef struct SSPriteFrame_s {
   char *s = 0; // frame content;
-  rgb_color color;
+  RGBColor_t color;
 
   int *animation; // array of frame indizes
   int ani_len = 0;
   int *rel_x = 0; // relative x moves
   int *rel_y = 0; // relative y moves
-} SSPriteFrame;
+} SSpriteFrame_t;
 
 // SSprite
 // Simple- or String-Sprite. Sprite for spinners, and such.
@@ -211,8 +211,8 @@ public:
   SSprite();
   SSprite(char *str);                          // 1 frame, framecolor=white
   SSprite(char **str, int len);                // array of strs
-  SSprite(char **str, int len, rgb_color c);   // array of strs, basecolor
-  SSprite(char **str, int len, rgb_palette p); // array of strs,
+  SSprite(char **str, int len, RGBColor_t c);   // array of strs, basecolor
+  SSprite(char **str, int len, RGBPalette_t p); // array of strs,
                                                // individual colors
   ~SSprite();
 
@@ -223,7 +223,7 @@ public:
 
   void PrintFrame(int n); // printf a frame
   //
-  void SetColor(rgb_color c);
+  void SetColor(RGBColor_t c);
 
   virtual void Render(); //
 
@@ -233,7 +233,7 @@ public:
   char *s = 0; // for fast Print() / printf()
 
   int frame_count = 0;
-  SSPriteFrame **frames = 0;
+  SSpriteFrame_t **frames = 0;
   int frame_idx = 0; // current frame
 
   int counter1 = 0; // convenience counters and thresholds
@@ -243,7 +243,7 @@ public:
   int threshhold2 = 0;
   int threshhold3 = 0;
 
-  rgb_color *background = 0; // for rendering
+  RGBColor_t *background = 0; // for rendering
   int state = 0;             // generic type to support own concepts
 private:
   void free_frames();

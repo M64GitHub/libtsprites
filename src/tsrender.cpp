@@ -13,13 +13,13 @@
 //      surface_out == 0 (or -1?)
 //      - write the nr of the (input) surface to shadow_map of this pixel on
 //        surface_out
-render_surface *TSRenderEngineTopDown::Render(render_surface **surfaces_in,
+RenderSurface_t *TSRenderEngineTopDown::Render(RenderSurface_t **surfaces_in,
                                               int n,
-                                              render_surface *surface_out) {
+                                              RenderSurface_t *surface_out) {
   if (!n)
     return 0;
 
-  // render_surface **surfaces_sortuuuuued = new render_surface *[n];
+  // RenderSurface_t **surfaces_sortuuuuued = new RenderSurface_t *[n];
   int *tmp = new int[n];
   for (int i = 0; i < n; i++)
     tmp[i] = 0;

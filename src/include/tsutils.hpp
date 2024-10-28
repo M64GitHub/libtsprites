@@ -30,9 +30,9 @@ void cursor_off();
 void cursor_reset();
 
 // -- color
-void set_color(rgb_color c);
-void set_bgcolor(rgb_color c);
-void colorprintf(rgb_color c, const char *f, ...);
+void set_color(RGBColor_t c);
+void set_bgcolor(RGBColor_t c);
+void colorprintf(RGBColor_t c, const char *f, ...);
 
 //-- term
 void term_init();

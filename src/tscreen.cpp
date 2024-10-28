@@ -15,9 +15,9 @@ TScreen::TScreen(int width, int height) {
   h = height * 2;
 
   term_init();
-  out_surface = new render_surface;
+  out_surface = new RenderSurface_t;
 
-  init_surface(out_surface, w, h, bg_color);
+  render_surface_init(out_surface, w, h, bg_color);
   CClear(); // cursor pos is below screen
 }
 
@@ -65,7 +65,7 @@ void TScreen::CClear() {
     return;
   }
 
-  // clear render_surface, directly, for speed
+  // clear RenderSurface_t, directly, for speed
   for (int i = 0; i < w * h; i++) {
     out_surface->colormap[i] = bg_color;
     out_surface->shadowmap[i] = 0;
@@ -130,11 +130,11 @@ void TScreen::AddSubScreen(TScreen *scr) {
 
 // called on each sprite-> add,
 // surfaces out holds input array for rendering engine
-void TScreen::add_out_surface(render_surface *rs) {
+void TScreen::add_out_surface(RenderSurface_t *rs) {
   if (!rs)
     return;
 
-  render_surface **new_arr = new render_surface *[num_surfaces_out + 1];
+  RenderSurface_t **new_arr = new RenderSurface_t *[num_surfaces_out + 1];
   // copy current
   for (int i = 0; i < (num_surfaces_out); i++) {
     new_arr[i] = surfaces_out[i];
@@ -151,9 +151,9 @@ void TScreen::Render() {
     return;
 
   if (screen_mode == SCREEN_TRANSPARENT) {
-    clear_surface_transparent(out_surface);
+    render_surface_clear_transparent(out_surface);
   } else {
-    clear_surface_bgcolor(out_surface, bg_color);
+    render_surface_clear_colored(out_surface, bg_color);
   }
 
   // render out_surface
@@ -174,8 +174,8 @@ void TScreen::Render() {
   int tmpstr_idx = 0;
   int i = 0;
 
-  rgb_color upper;
-  rgb_color lower;
+  RGBColor_t upper;
+  RGBColor_t lower;
 
   if (!out_s)
     out_s = new char[w * h * 20 + h + 1024];

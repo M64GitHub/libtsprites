@@ -7,8 +7,8 @@
 
 class TSRenderEngineTopDown {
 public:
-  render_surface *Render(render_surface *surfaces_in[], int n,
-                         render_surface *surface_out);
+  RenderSurface_t *Render(RenderSurface_t *surfaces_in[], int n,
+                         RenderSurface_t *surface_out);
 
 private:
 };

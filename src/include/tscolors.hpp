@@ -3,30 +3,30 @@
 #ifndef TSL_COLORS_H
 #define TSL_COLORS_H
 
-typedef struct s_rgbcolor {
+typedef struct RGBColor_s {
     int r;
     int g;
     int b;
-} rgb_color;
+} RGBColor_t;
 
-typedef struct s_struct_hslcolor {
+typedef struct HSLColor_s {
 	int h;
 	float s;
 	float l;
-} hsl_color;
+} HSLColor_t;
 
-typedef struct s_rgbcolor_palette {
+typedef struct RGBColorPalette_s {
     int num_colors=0;
-    rgb_color *colors;
-} rgb_palette;
+    RGBColor_t *colors;
+} RGBPalette_t;
 
-void  rgb2hsl(rgb_color *rgb, hsl_color *hsl);
+void  rgb2hsl(RGBColor_t *rgb, HSLColor_t *hsl);
 float hue2rgb(float v1, float v2, float vH);
-void  hsl2rgb(hsl_color *hsl, rgb_color *rgb);
+void  hsl2rgb(HSLColor_t *hsl, RGBColor_t *rgb);
 
-rgb_palette *CreatePaletteFadeIn(rgb_color c, int steps);
-rgb_palette *CreatePaletteFadeOut(rgb_color c, int steps);
-rgb_palette *CreatePaletteFadeInOut(rgb_color c, int steps);
+RGBPalette_t *CreatePaletteFadeIn(RGBColor_t c, int steps);
+RGBPalette_t *CreatePaletteFadeOut(RGBColor_t c, int steps);
+RGBPalette_t *CreatePaletteFadeInOut(RGBColor_t c, int steps);
 
 // TODO: Fade from color1 to color2
 
