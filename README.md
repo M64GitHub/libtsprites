@@ -86,10 +86,10 @@ for implementing anything visually as fast and as simple as possible.
 pixel is represented by a block.
  - `regular characters`:  Shapes made of ASCII/UTF-8 `characters` can now be added
 into the pixel information of a `TSprite`. Of course you can include block
-characters within them, too. `characters` override the pixel (block) information within
-a TSPrite. Since the Y-dimension of a charackter is 2 blocks, the meaning of the colormap
-for characters is: the top block represents the foreground color, and the bottom block
-represents the background color.
+characters within them, too. `characters` override (not overwrite) the pixel 
+(block) information within a TSPrite. Since the Y-dimension of a charackter is 2 
+blocks, the meaning of the colormap for characters is: the top block represents 
+the foreground color, and the bottom block represents the background color.
  - `regular strings`: to work with text-strings / line-text, another sprite
 class called `SSprite` (`string sprite`) exists. This can be used to place/fade
 text onto the screen, create spinners (1 character animations), and such.
