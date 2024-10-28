@@ -21,6 +21,7 @@ typedef struct s_render_surface {
                       // set_frameidx, etc
                       // if 0, sprite doesn't re-render itself
                       // just waisting time
+  unsigned char *charmap;
 } render_surface;
 
 void init_surface(render_surface *s, int w, int h, rgb_color r);

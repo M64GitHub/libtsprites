@@ -16,7 +16,9 @@ public:
 
   void SetText(char *s);
   void SetCharset(TSprite *cs, int slicewidth);
-  void SetCharset(TSprite *cs, int *widths);
+  void SetCharset(TSprite *cs, int *widths, int num_slices);
+  void SetCharset(char *png_filename, int slicewidth);
+  void SetCharset(char *png_filename, int *slicewidths, int num_slices);
   void SetWH(int w, int h);
 
   void Tick();
