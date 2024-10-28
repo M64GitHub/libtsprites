@@ -42,7 +42,7 @@ the api offers a simplified, but reduced api - giving you access to a string
 representation of most of libtsprites objects. This bypasses the rendering
 engine at all. You can simply `printf()` the strings.
 
-"Everything is a sprite". Everything you can place on the screen and see is
+"Everything is a sprite". Everything you can place on a screen and see is
 any type of a sprite. Even text, or shapes of ASCII characters. Every type 
 of sprite has `frames`, `animations`, `effects`, and is moveable and more.
 
@@ -84,9 +84,12 @@ for implementing anything visually as fast and as simple as possible.
  are individual blocks. Shapes of blocks are called `regular sprites` or
  `TSprites`. You can think of them as pure "pixel" based sprites, where a
 pixel is represented by a block.
- - `regular characters`:  Shapes made of ASCII/UTF-8 characters can be built
-and are called `ascii-sprites` or `ASprite`. Of course you can include block
-characters within them, too. But you can't zoom these sprites, or rotate, etc.
+ - `regular characters`:  Shapes made of ASCII/UTF-8 `characters` can now be added
+into the pixel information of a `TSprite`. Of course you can include block
+characters within them, too. `characters` override the pixel (block) information within
+a TSPrite. Since the Y-dimension of a charackter is 2 blocks, the meaning of the colormap
+for characters is: the top block represents the foreground color, and the bottom block
+represents the background color.
  - `regular strings`: to work with text-strings / line-text, another sprite
 class called `SSprite` (`string sprite`) exists. This can be used to place/fade
 text onto the screen, create spinners (1 character animations), and such.
@@ -112,7 +115,7 @@ Each sprite type has it's own capabilities, pro's and con's.
 
 ### Main Classes / Structs for:
 
- - Sprites - TSprite (pixel), LSprite (lines), ASprite (ASCII), SSprite (string)
+ - Sprites - TSprite (pixel/character), SSprite (string), LSprite (lines)
  - RGB-, HSV-colors and -palletes
  - Screen
  - Effects
