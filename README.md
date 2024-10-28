@@ -90,6 +90,8 @@ characters within them, too. `characters` override (not overwrite) the pixel
 (block) information within a TSPrite. Since the Y-dimension of a charackter is 2 
 blocks, the meaning of the colormap for characters is: the top block represents 
 the foreground color, and the bottom block represents the background color.
+There is a drawback, when using characters within a tsprite: once you add characters
+to a TSprite, it can only be placed on even Y coordinates.
  - `regular strings`: to work with text-strings / line-text, another sprite
 class called `SSprite` (`string sprite`) exists. This can be used to place/fade
 text onto the screen, create spinners (1 character animations), and such.
