@@ -47,6 +47,7 @@ void term_clear();
 int term_columns();
 int term_rows();
 void term_nonblock(int state);
+int term_kbhit();
 
 // -- string
 int strsize(char *s);
