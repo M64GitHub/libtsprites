@@ -13,8 +13,9 @@
 #define fileno _fileno
 #define read _read
 #else
-#include <termios.h>
+#include <fcntl.h>
 #include <sys/ioctl.h>
+#include <termios.h>
 #include <unistd.h>
 #endif
 
@@ -169,39 +170,57 @@ int term_rows() {
 #endif
 }
 
-int term_kbhit()
-{
-    struct timeval tv;
-    fd_set fds;
-    tv.tv_sec = 0;
-    tv.tv_usec = 0;
-    FD_ZERO(&fds);
-    FD_SET(STDIN_FILENO, &fds); //STDIN_FILENO is 0
-    select(STDIN_FILENO+1, &fds, NULL, NULL, &tv);
-    return FD_ISSET(STDIN_FILENO, &fds);
+int term_kbhit() {
+  struct timeval tv;
+  fd_set fds;
+  tv.tv_sec = 0;
+  tv.tv_usec = 0;
+  FD_ZERO(&fds);
+  FD_SET(STDIN_FILENO, &fds); // STDIN_FILENO is 0
+  select(STDIN_FILENO + 1, &fds, NULL, NULL, &tv);
+  return FD_ISSET(STDIN_FILENO, &fds);
 }
 
-void term_nonblock(int state)
-{
-    struct termios ttystate;
+void term_nonblock_noecho(int state) {
+  struct termios ttystate;
+  int oflags, nflags;
 
-    //get the terminal state
-    tcgetattr(STDIN_FILENO, &ttystate);
+  // get the terminal state
+  tcgetattr(STDIN_FILENO, &ttystate);
 
-    if (state==NB_ENABLE)
-    {
-        //turn off canonical mode
-        ttystate.c_lflag &= ~ICANON;
-        //minimum of number input read.
-        ttystate.c_cc[VMIN] = 1;
-    }
-    else if (state==NB_DISABLE)
-    {
-        //turn on canonical mode
-        ttystate.c_lflag |= ICANON;
-    }
-    //set the terminal attributes.
+  if (state == NB_ENABLE) {
+    // turn off canonical mode (not waiting for enter)
+    ttystate.c_lflag &= ~ICANON;
+    // turn off echo
+    ttystate.c_lflag &= ~ECHO;
+    // minimum of number input read.
+    ttystate.c_cc[VMIN] = 1;
     tcsetattr(STDIN_FILENO, TCSANOW, &ttystate);
+
+    oflags = fcntl(STDIN_FILENO, F_GETFL);
+    nflags = oflags;
+    nflags |= O_NONBLOCK;
+    fcntl(STDIN_FILENO, F_SETFL, nflags);
+  } else if (state == NB_DISABLE) {
+    // turn on canonical mode
+    ttystate.c_lflag |= ICANON;
+    ttystate.c_lflag |= ECHO;
+    tcsetattr(STDIN_FILENO, TCSANOW, &ttystate);
+  }
+}
+
+unsigned int term_readkey() {
+  char KBUF[8];
+  KBUF[0] = 0x0;
+  KBUF[1] = 0x0;
+  KBUF[2] = 0x0;
+  KBUF[3] = 0x0;
+  KBUF[4] = 0x0;
+  fgets(KBUF, 4, stdin);
+
+  unsigned int rv = 0;
+  rv = KBUF[0] + 256 * KBUF[1] + 256 * 256 * KBUF[2];
+  return rv;
 }
 
 // -- string

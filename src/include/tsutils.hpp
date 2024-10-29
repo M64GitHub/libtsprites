@@ -46,7 +46,8 @@ void term_close();
 void term_clear();
 int term_columns();
 int term_rows();
-void term_nonblock(int state);
+void term_nonblock_noecho(int state);
+unsigned int term_readkey();
 int term_kbhit();
 
 // -- string
