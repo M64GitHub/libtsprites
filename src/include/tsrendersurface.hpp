@@ -29,6 +29,6 @@ void render_surface_init(RenderSurface_t *s, int w, int h, RGBColor_t r);
 void render_surface_clear_colored(RenderSurface_t *s, RGBColor_t c);
 void render_surface_clear_transparent(RenderSurface_t *s);
 
-int copy_surface_contents(RenderSurface_t *in, RenderSurface_t *out);
+int render_surface_copy(RenderSurface_t *in, RenderSurface_t *out);
 
 #endif

@@ -3,7 +3,7 @@
 
 #include "include/tsrendersurface.hpp"
 
-void init_surface(RenderSurface_t *s, int w, int h, RGBColor_t c) {
+void render_surface_init(RenderSurface_t *s, int w, int h, RGBColor_t c) {
   if (!s)
     return;
   s->w = w;
@@ -24,7 +24,7 @@ void render_surface_clear_colored(RenderSurface_t *s, RGBColor_t c) {
   }
 }
 
-void clear_surface_transparent(RenderSurface_t *s) {
+void render_surface_clear_transparent(RenderSurface_t *s) {
   if (!s || !s->colormap || !s->shadowmap)
     return;
   RGBColor_t c = { 0x00, 0x00, 0x00};

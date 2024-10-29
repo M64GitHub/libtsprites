@@ -5,6 +5,7 @@
 #include "include/lodepng.h"
 #include "include/tscolors.hpp"
 #include "include/tsutils.hpp"
+#include "include/tsrendersurface.hpp"
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -166,8 +167,8 @@ int TSprite::ImportFromImgStr(char *str) {
 
     render_surface_init(out_surface, w, h, c);
     render_surface_init(restore_surface, w, h, c);
-    copy_surface_contents(F->out_surface, out_surface);
-    copy_surface_contents(out_surface, restore_surface);
+    render_surface_copy(F->out_surface, out_surface);
+    render_surface_copy(out_surface, restore_surface);
   }
 
   free(outstr); // was allocated with surplus, uncertainity of exact len
@@ -280,8 +281,8 @@ int TSprite::ImportFromPNGFile(char *fn) {
 
   render_surface_init(out_surface, w, h, c);
   render_surface_init(restore_surface, w, h, c);
-  copy_surface_contents(F->out_surface, out_surface);
-  copy_surface_contents(out_surface, restore_surface);
+  render_surface_copy(F->out_surface, out_surface);
+  render_surface_copy(out_surface, restore_surface);
 
   free(image);
 

@@ -35,11 +35,18 @@ void set_bgcolor(RGBColor_t c);
 void colorprintf(RGBColor_t c, const char *f, ...);
 
 //-- term
+
+enum {
+  NB_ENABLE,
+  NB_DISABLE
+};
+
 void term_init();
 void term_close();
 void term_clear();
 int term_columns();
 int term_rows();
+void term_nonblock(int state);
 
 // -- string
 int strsize(char *s);

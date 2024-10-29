@@ -13,6 +13,7 @@
 #define fileno _fileno
 #define read _read
 #else
+#include <termios.h>
 #include <sys/ioctl.h>
 #include <unistd.h>
 #endif
@@ -166,6 +167,30 @@ int term_rows() {
   ioctl(1, TIOCGWINSZ, &win);
   return win.ws_row;
 #endif
+}
+
+
+void term_nonblock(int state)
+{
+    struct termios ttystate;
+
+    //get the terminal state
+    tcgetattr(STDIN_FILENO, &ttystate);
+
+    if (state==NB_ENABLE)
+    {
+        //turn off canonical mode
+        ttystate.c_lflag &= ~ICANON;
+        //minimum of number input read.
+        ttystate.c_cc[VMIN] = 1;
+    }
+    else if (state==NB_DISABLE)
+    {
+        //turn on canonical mode
+        ttystate.c_lflag |= ICANON;
+    }
+    //set the terminal attributes.
+    tcsetattr(STDIN_FILENO, TCSANOW, &ttystate);
 }
 
 // -- string
