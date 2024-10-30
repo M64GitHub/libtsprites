@@ -32,14 +32,8 @@ void fps_end_frame(FPSCtx_t *ctx) {
   usleep(ctx->FPS_us - (duration) < ctx->FPS_us ? ctx->FPS_us - (duration) : 1);
 }
 
-unsigned long get_timestamp(struct timeval *tv) {
-  gettimeofday(tv, NULL);
-  unsigned long r = 1000000 * tv->tv_sec + tv->tv_usec;
-  return r;
-}
-
 unsigned long fps_to_us(int fps) {
-  unsigned long r = 0.0f;
+  unsigned long r = 0;
   unsigned long us1sec = 1 * 1000 * 1000;
   r = us1sec / fps;
   return r;
@@ -49,6 +43,12 @@ unsigned long us_to_fps(unsigned long us) {
   unsigned long r = 0;
   unsigned long us1sec = 1 * 1000 * 1000;
   r = us1sec / us;
+  return r;
+}
+
+unsigned long get_timestamp(struct timeval *tv) {
+  gettimeofday(tv, NULL);
+  unsigned long r = 1000000 * tv->tv_sec + tv->tv_usec;
   return r;
 }
 

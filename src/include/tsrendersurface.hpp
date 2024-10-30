@@ -16,11 +16,6 @@ typedef struct RenderSurface_s {
 
   RGBColor_t *colormap;
   unsigned char *shadowmap;
-  int is_updated = 0; // "need render" f sprites:
-                      // anis set this, effects, etc.
-                      // set_frameidx, etc
-                      // if 0, sprite doesn't re-render itself
-                      // just waisting time
   unsigned char *charmap;
 } RenderSurface_t;
 

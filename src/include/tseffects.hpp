@@ -3,10 +3,18 @@
 #ifndef TSL_EFFECTS_H
 #define TSL_EFFECTS_H
 
+#include "tscolors.hpp"
 #include "tsrendersurface.hpp"
 
-void dim_render_surface(RenderSurface_t *r, int step, int maxsteps);
-void dim_render_surface_in_out(RenderSurface_t *r_in, int step, int maxsteps,
-                               RenderSurface_t *r_out);
+void tsfx_dim_direct(RenderSurface_t *r, int step, int maxsteps);
+void tsfx_dim(RenderSurface_t *r_in, int step, int maxsteps,
+              RenderSurface_t *r_out);
+
+void tsfx_color_fill(RenderSurface_t *r_in, RGBColor_t *color_in,
+                     RGBColor_t *color_out, RenderSurface_t *r_out);
+
+void tsfx_char_fill(RenderSurface_t *r_in, RGBColor_t *color_in,
+                    RGBColor_t *color_out, unsigned char c,
+                    RenderSurface_t *r_out);
 
 #endif

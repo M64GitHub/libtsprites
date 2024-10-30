@@ -10,7 +10,7 @@ void render_surface_init(RenderSurface_t *s, int w, int h, RGBColor_t c) {
   s->h = h;
   s->colormap = new RGBColor_t[s->w * s->h];
   s->shadowmap = new unsigned char[s->w * s->h];
-  s->charmap = new unsigned char[s->w * (s->h / 2 + 1)];
+  s->charmap = new unsigned char[s->w * s->h];
   render_surface_clear_colored(s, c);
 }
 
@@ -20,7 +20,7 @@ void render_surface_clear_colored(RenderSurface_t *s, RGBColor_t c) {
   for (int i = 0; i < s->w * s->h; i++) {
     s->colormap[i] = c;
     s->shadowmap[i] = 2;
-    s->charmap[i / 2] = 0;
+    s->charmap[i] = 0;
   }
 }
 
@@ -31,7 +31,7 @@ void render_surface_clear_transparent(RenderSurface_t *s) {
   for (int i = 0; i < s->w * s->h; i++) {
     s->colormap[i] = c;
     s->shadowmap[i] = 0;
-    s->charmap[i / 2] = 0;
+    s->charmap[i] = 0;
   }
 }
 
@@ -45,7 +45,7 @@ int render_surface_copy(RenderSurface_t *in, RenderSurface_t *out) {
   for (int i = 0; i < (in->w * in->h); i++) {
     out->colormap[i] = in->colormap[i];
     out->shadowmap[i] = in->shadowmap[i];
-    out->charmap[i / 2] = in->charmap[i / 2];
+    out->charmap[i] = in->charmap[i];
   }
 
   out->w = in->w;

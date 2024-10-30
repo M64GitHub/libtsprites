@@ -4,8 +4,8 @@
 #include "include/format_catimg.hpp"
 #include "include/lodepng.h"
 #include "include/tscolors.hpp"
-#include "include/tsutils.hpp"
 #include "include/tsrendersurface.hpp"
+#include "include/tsutils.hpp"
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -246,7 +246,7 @@ int TSprite::ImportFromPNGFile(char *fn) {
   error = lodepng_decode32_file(&image, &png_width, &png_height, fn);
 
   if (error) {
-    printf("[TS][ImportFromFile] ERROR: unable to convert file: %s.\n",
+    printf("[TS][ImportFromFile] ERROR: unable to convert from file: '%s'.\n",
            lodepng_error_text(error));
     return error;
   }
@@ -447,7 +447,8 @@ TSprite **TSprite::VSplit2Sprites(TSpriteFrame_t *F, int *xoffsets, int *widths,
 }
 
 // split and return as new animation
-TSpriteAnimation_t TSprite::*Split2Ani(TSpriteFrame_t *F, int swidth, int sheight) {
+TSpriteAnimation_t TSprite::*Split2Ani(TSpriteFrame_t *F, int swidth,
+                                       int sheight) {
   if (!F)
     return 0;
   // TODO: implement
@@ -464,7 +465,7 @@ TSpriteAnimation_t TSprite::*VSplit2Ani(TSpriteFrame_t *F, int swidth) {
 }
 
 TSpriteAnimation_t TSprite::*VSplit2Ani(TSpriteFrame_t *F, int *swidths,
-                                     int numslices) {
+                                        int numslices) {
   if (!F)
     return 0;
   // TODO: implement
@@ -1166,13 +1167,13 @@ SSprite::SSprite(char **s, int len, RGBPalette_t p) {}
 
 SSprite::~SSprite() {}
 
+void SSprite::SetText(char *t) { frames[frame_idx]->s = t; }
+
 void SSprite::Print() {
   if (!frame_count)
     return;
-  printf("\x1b[38;2;%d;%d;%dm", 
-         frames[frame_idx]->color.r,
-         frames[frame_idx]->color.g, 
-         frames[frame_idx]->color.b);
+  printf("\x1b[38;2;%d;%d;%dm", frames[frame_idx]->color.r,
+         frames[frame_idx]->color.g, frames[frame_idx]->color.b);
   printf("%s", frames[frame_idx]->s);
 }
 
@@ -1202,14 +1203,12 @@ void SSprite::PrintUncolored() {
 }
 
 void SSprite::SetColor(RGBColor_t c) {
-         frames[frame_idx]->color.r = c.r;
-         frames[frame_idx]->color.g = c.g; 
-         frames[frame_idx]->color.b = c.b;
+  frames[frame_idx]->color.r = c.r;
+  frames[frame_idx]->color.g = c.g;
+  frames[frame_idx]->color.b = c.b;
 }
 
 void SSprite::PrintDimmed() {}
 void SSprite::free_frames() {}
 
-void SSprite::Render() {
-
-}
+void SSprite::Render() {}

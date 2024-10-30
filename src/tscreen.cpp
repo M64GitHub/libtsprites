@@ -170,7 +170,7 @@ void TScreen::Render() {
 
   // -- create output string
   //
-  char buf1k[2048];
+  char buf1k[1024];
   int tmpstr_idx = 0;
   int i = 0;
 
@@ -178,7 +178,7 @@ void TScreen::Render() {
   RGBColor_t lower;
 
   if (!out_s)
-    out_s = new char[w * h * 20 + h + 2048];
+    out_s = new char[w * h * 20 + h + 1024];
 
   out_s[0] = 0x00; // terminator
 

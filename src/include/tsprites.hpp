@@ -7,7 +7,7 @@
 #include "tscolors.hpp"
 #include "tsrendersurface.hpp"
 
-#define DEBUG
+// #define DEBUG
 
 #ifdef DEBUG
 #define DBG(...) fprintf(stderr, __VA_ARGS__)
@@ -216,6 +216,7 @@ public:
                                                // individual colors
   ~SSprite();
 
+  void SetText(char *t);
   void Print();
   void Print(int X, int Y);
   void PrintUncolored();

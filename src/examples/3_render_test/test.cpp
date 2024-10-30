@@ -102,7 +102,7 @@ int main(int argc, char **argv) {
   // -- SprTSprites  -------------------------------------- MOVE / FADE IN --
   for (int i = 0; i < 100; i++) {
     ts1 = get_timestamp(&tv);
-    dim_render_surface_in_out(SprTSprites.restore_surface, i, 99,
+    tsfx_dim(SprTSprites.restore_surface, i, 99,
                               SprTSprites.out_surface);
     SprTSprites.SetXY(10, 37 - 100 + i);
     Screen.Render();
@@ -112,7 +112,7 @@ int main(int argc, char **argv) {
   }
   for (int i = 0; i < 60; i++) {
     ts1 = get_timestamp(&tv); // start measuring frame time
-    dim_render_surface_in_out(SprTSprites.restore_surface, 100 - i, 99,
+    tsfx_dim(SprTSprites.restore_surface, 100 - i, 99,
                               SprTSprites.out_surface);
     Screen.Render();
     ts2 = get_timestamp(&tv);
@@ -120,7 +120,7 @@ int main(int argc, char **argv) {
   }
   for (int i = 0; i < 60; i++) {
     ts1 = get_timestamp(&tv);
-    dim_render_surface_in_out(SprTSprites.restore_surface, 60 + i, 99,
+    tsfx_dim(SprTSprites.restore_surface, 60 + i, 99,
                               SprTSprites.out_surface);
     Screen.Render();
     ts2 = get_timestamp(&tv);
@@ -130,7 +130,7 @@ int main(int argc, char **argv) {
   // -- SprDemo ------------------------------------------- MOVE / FADE IN --
   for (int i = -100; i < 16; i++) {
     ts1 = get_timestamp(&tv);
-    dim_render_surface_in_out(SprDemo.restore_surface, 116 + i, 116,
+    tsfx_dim(SprDemo.restore_surface, 116 + i, 116,
                               SprDemo.out_surface);
     SprDemo.SetXY(i, 29);
     Screen.Render();
@@ -142,7 +142,7 @@ int main(int argc, char **argv) {
   for (int j = 0; j < 2; j++) {
     for (int i = 0; i < 60; i += 6) {
       ts1 = get_timestamp(&tv);
-      dim_render_surface_in_out(SprDemo.restore_surface, 100 + i, 100,
+      tsfx_dim(SprDemo.restore_surface, 100 + i, 100,
                                 SprDemo.out_surface);
       Screen.Render();
       ts2 = get_timestamp(&tv);
@@ -150,7 +150,7 @@ int main(int argc, char **argv) {
     }
     for (int i = 0; i < 60; i += 6) {
       ts1 = get_timestamp(&tv);
-      dim_render_surface_in_out(SprDemo.restore_surface, 160 - i, 100,
+      tsfx_dim(SprDemo.restore_surface, 160 - i, 100,
                                 SprDemo.out_surface);
       Screen.Render();
       ts2 = get_timestamp(&tv);
@@ -161,7 +161,7 @@ int main(int argc, char **argv) {
   for (int j = 0; j < 2; j++) {
     for (int i = 0; i < 60; i++) {
       ts1 = get_timestamp(&tv);
-      dim_render_surface_in_out(SprDemo.restore_surface, 100 - i, 99,
+      tsfx_dim(SprDemo.restore_surface, 100 - i, 99,
                                 SprDemo.out_surface);
       Screen.Render();
       ts2 = get_timestamp(&tv);
@@ -169,7 +169,7 @@ int main(int argc, char **argv) {
     }
     for (int i = 0; i < 60; i++) {
       ts1 = get_timestamp(&tv);
-      dim_render_surface_in_out(SprDemo.restore_surface, 60 + i, 99,
+      tsfx_dim(SprDemo.restore_surface, 60 + i, 99,
                                 SprDemo.out_surface);
       Screen.Render();
       ts2 = get_timestamp(&tv);
@@ -180,7 +180,7 @@ int main(int argc, char **argv) {
   for (int j = 0; j < 2; j++) {
     for (int i = 0; i < 60; i += 6) {
       ts1 = get_timestamp(&tv);
-      dim_render_surface_in_out(SprDemo.restore_surface, 100 + i, 100,
+      tsfx_dim(SprDemo.restore_surface, 100 + i, 100,
                                 SprDemo.out_surface);
       Screen.Render();
       ts2 = get_timestamp(&tv);
@@ -188,7 +188,7 @@ int main(int argc, char **argv) {
     }
     for (int i = 0; i < 60; i += 6) {
       ts1 = get_timestamp(&tv);
-      dim_render_surface_in_out(SprDemo.restore_surface, 160 - i, 100,
+      tsfx_dim(SprDemo.restore_surface, 160 - i, 100,
                                 SprDemo.out_surface);
       Screen.Render();
       ts2 = get_timestamp(&tv);

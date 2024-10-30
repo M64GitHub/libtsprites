@@ -96,6 +96,7 @@ void hsl2rgb(HSLColor_t *hsl, RGBColor_t *rgb) {
 RGBPalette_t *CreatePaletteFadeIn(RGBColor_t c, int steps) {
   RGBPalette_t *p = new RGBPalette_t;
   p->colors = new RGBColor_t[steps];
+  p->num_colors = steps;
 
   double r_inc = (double)c.r / (double)steps;
   double g_inc = (double)c.g / (double)steps;
@@ -116,6 +117,7 @@ RGBPalette_t *CreatePaletteFadeIn(RGBColor_t c, int steps) {
 RGBPalette_t *CreatePaletteFadeout(RGBColor_t c, int steps) {
   RGBPalette_t *p = new RGBPalette_t;
   p->colors = new RGBColor_t[steps];
+  p->num_colors = steps;
 
   double r_inc = (double)c.r / (double)steps;
   double g_inc = (double)c.g / (double)steps;
@@ -136,6 +138,7 @@ RGBPalette_t *CreatePaletteFadeout(RGBColor_t c, int steps) {
 RGBPalette_t *CreatePaletteFadeInOut(RGBColor_t c, int steps) {
   RGBPalette_t *p = new RGBPalette_t;
   p->colors = new RGBColor_t[steps];
+  p->num_colors = steps;
 
   double r_inc = (double)c.r / (double)(steps / 2.0);
   double g_inc = (double)c.g / (double)(steps / 2.0);
@@ -155,6 +158,50 @@ RGBPalette_t *CreatePaletteFadeInOut(RGBColor_t c, int steps) {
     tmpc.g = c.g - (g_inc * (double)(i / 2.0));
     tmpc.b = c.b - (b_inc * (double)(i / 2.0));
     p->colors[i] = tmpc;
+  }
+
+  return p;
+}
+
+RGBPalette_t *CreatePaletteFadeColors(RGBColor_t *c1, RGBColor_t *c2,
+                                      int steps) {
+  RGBPalette_t *p = new RGBPalette_t;
+  p->colors = new RGBColor_t[steps];
+  p->num_colors = steps;
+
+  double r_inc = (double)(c2->r - c1->r) / (double)steps;
+  double g_inc = (double)(c2->g - c1->g) / (double)steps;
+  double b_inc = (double)(c2->b - c1->b) / (double)steps;
+
+  RGBColor_t tmpc;
+
+  for (int i = 0; i < steps; i++) {
+    tmpc.r = c1->r + (r_inc * (double)(steps - i));
+    tmpc.g = c1->g + (g_inc * (double)(steps - i));
+    tmpc.b = c1->b + (b_inc * (double)(steps - i));
+    p->colors[i] = tmpc;
+  }
+
+  return p;
+}
+
+bool rgb_equal(RGBColor_t *c1, RGBColor_t *c2) {
+  return (c1->r == c2->r) && (c1->g == c2->g) && (c1->b == c2->b);
+}
+
+
+RGBPalette_t *PaletteAppend(RGBPalette_t *p1, RGBPalette_t *p2)
+{
+
+  RGBPalette_t *p = new RGBPalette_t;
+  p->num_colors = p1->num_colors + p2->num_colors;
+  p->colors = new RGBColor_t[p->num_colors];
+
+  for(int i=0; i<p1->num_colors; i++) {
+    p->colors[i] = p1->colors[i];
+  }
+  for(int i=0; i<p2->num_colors; i++) {
+    p->colors[p1->num_colors + i] = p2->colors[i];
   }
 
   return p;

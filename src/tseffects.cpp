@@ -1,9 +1,10 @@
 // tseffects.cpp - libtsprites, 2023-24 M64
 
 #include "include/tseffects.hpp"
+#include "include/tscolors.hpp"
 #include "include/tsrendersurface.hpp"
 
-void dim_render_surface(RenderSurface_t *r, int step, int maxsteps) {
+void tsfx_dim_direct(RenderSurface_t *r, int step, int maxsteps) {
   double dr, dg, db;
   for (int Y = 0; Y < r->h; Y++) {
     for (int X = 0; X < r->w; X++) {
@@ -32,8 +33,8 @@ void dim_render_surface(RenderSurface_t *r, int step, int maxsteps) {
   }
 }
 
-void dim_render_surface_in_out(RenderSurface_t *r_in, int step, int maxsteps,
-                               RenderSurface_t *r_out) {
+void tsfx_dim(RenderSurface_t *r_in, int step, int maxsteps,
+              RenderSurface_t *r_out) {
   double dr, dg, db;
   for (int Y = 0; Y < r_in->h; Y++) {
     for (int X = 0; X < r_in->w; X++) {
@@ -62,4 +63,24 @@ void dim_render_surface_in_out(RenderSurface_t *r_in, int step, int maxsteps,
   }
 }
 
+void tsfx_color_fill(RenderSurface_t *r_in, RGBColor_t *color_in,
+               RGBColor_t *color_out, RenderSurface_t *r_out) {
+  for (int Y = 0; Y < r_in->h; Y++) {
+    for (int X = 0; X < r_in->w; X++) {
+      if (rgb_equal(color_in, &r_in->colormap[Y * r_in->w + X])) {
+        r_out->colormap[Y * r_out->w + X] = *color_out;
+      }
+    }
+  }
+}
 
+void tsfx_char_fill(RenderSurface_t *r_in, RGBColor_t *color_in,
+               RGBColor_t *color_out, unsigned char c, RenderSurface_t *r_out) {
+  for (int Y = 0; Y < r_in->h; Y++) {
+    for (int X = 0; X < r_in->w; X++) {
+      if (rgb_equal(color_in, color_out)) {
+        r_out->colormap[Y * r_out->w + X] = *color_out;
+      }
+    }
+  }
+}
