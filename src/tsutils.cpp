@@ -5,7 +5,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <sys/time.h> // for gettimeofday
 #ifdef WINDOWS
 #include <fcntl.h>
 #include <io.h>
@@ -20,9 +19,18 @@
 #endif
 
 // -- time
-// TODO: handle this via stats struct and sstruct init function!
-int FPS = 0;
-unsigned long fps_in_us = 0;
+void fps_init(int FPS, FPSCtx_t *ctx) {
+  ctx->FPS = FPS;
+  ctx->FPS_us = fps_to_us(FPS);
+}
+
+void fps_begin_frame(FPSCtx_t *ctx) { ctx->ts1 = get_timestamp(&ctx->tv); }
+
+void fps_end_frame(FPSCtx_t *ctx) {
+  ctx->ts2 = get_timestamp(&ctx->tv);
+  unsigned long duration = ctx->ts2 - ctx->ts1;
+  usleep(ctx->FPS_us - (duration) < ctx->FPS_us ? ctx->FPS_us - (duration) : 1);
+}
 
 unsigned long get_timestamp(struct timeval *tv) {
   gettimeofday(tv, NULL);
@@ -44,8 +52,8 @@ unsigned long us_to_fps(unsigned long us) {
   return r;
 }
 
-char *print_stats(unsigned long ts1, unsigned long ts2) {
-  if (!FPS)
+char *print_stats(FPSCtx_t *ctx) {
+  if (!ctx->FPS)
     return 0;
   // -- stats
   static unsigned long duration = 0;
@@ -57,7 +65,7 @@ char *print_stats(unsigned long ts1, unsigned long ts2) {
   static char outstr[8192];
   outstr[0] = 0x00;
   sprintf(linestr, "\x1b[0m");
-  duration = (ts2 - ts1);
+  duration = (ctx->ts2 - ctx->ts1);
   if (duration > maxtime)
     maxtime = duration;
   if (duration < mintime)
@@ -66,7 +74,7 @@ char *print_stats(unsigned long ts1, unsigned long ts2) {
     maxfps = us_to_fps(duration);
   if (us_to_fps(duration) < minfps)
     minfps = us_to_fps(duration);
-  sprintf(linestr, "FPS %d, ", FPS);
+  sprintf(linestr, "FPS %d, ", ctx->FPS);
   strcat(outstr, linestr);
   // sprintf(linestr, "FPS duration in us: %lu, ", fps_in_us);
   // strcat(outstr, linestr);
@@ -82,7 +90,7 @@ char *print_stats(unsigned long ts1, unsigned long ts2) {
   // strcat(outstr, linestr);
   // sprintf(linestr, "Min FPS: %lu, ", minfps);
   // strcat(outstr, linestr);
-  sprintf(linestr, "framesleeping: %lu", fps_in_us - (ts2 - ts1));
+  sprintf(linestr, "framesleeping: %lu", ctx->FPS_us - (ctx->ts2 - ctx->ts1));
   strcat(outstr, linestr);
 
   return outstr;
@@ -211,16 +219,10 @@ void term_nonblock_noecho(int state) {
 
 unsigned int term_readkey() {
   char KBUF[8];
-  KBUF[0] = 0x0;
-  KBUF[1] = 0x0;
-  KBUF[2] = 0x0;
-  KBUF[3] = 0x0;
-  KBUF[4] = 0x0;
+  *(int *)KBUF = 0x00;
   fgets(KBUF, 4, stdin);
 
-  unsigned int rv = 0;
-  rv = KBUF[0] + 256 * KBUF[1] + 256 * 256 * KBUF[2];
-  return rv;
+  return KBUF[0] + (KBUF[1] << 8) + (KBUF[2] << 16);
 }
 
 // -- string

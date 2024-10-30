@@ -3,16 +3,34 @@
 #ifndef TSL_UTILS_H
 #define TSL_UTILS_H
 
-#if defined(WIN32) || defined(_WIN32) || defined(__WIN32) && !defined(__CYGWIN__)
+#if defined(WIN32) || defined(_WIN32) ||                                       \
+    defined(__WIN32) && !defined(__CYGWIN__)
 #define WINDOWS
 #endif
 
 #include "tscolors.hpp"
+#include <sys/time.h> // for gettimeofday
+
+#define KBD_KEY_UP 0x00415b1b
+#define KBD_KEY_RIGHT 0x00435b1b
+#define KBD_KEY_DOWN 0x00425b1b
+#define KBD_KEY_LEFT 0x00445b1b
+
+#define KBD_KEY_ESC 0x1b
 
 // -- time
+typedef struct FPSCtx_s {
+  int FPS;
+  unsigned long FPS_us;
+  unsigned long ts1;
+  unsigned long ts2;
+  struct timeval tv;
+} FPSCtx_t;
 
-extern int FPS; // TODO: handle this via stats struct and sstruct init function!
-extern unsigned long fps_in_us;
+void fps_init(int FPS, FPSCtx_t *ctx);
+void fps_begin_frame(FPSCtx_t *ctx);
+void fps_end_frame(FPSCtx_t *ctx);
+
 unsigned long get_timestamp(struct timeval *tv);
 unsigned long fps_to_us(int fps);
 unsigned long us_to_fps(unsigned long us);
@@ -36,10 +54,7 @@ void colorprintf(RGBColor_t c, const char *f, ...);
 
 //-- term
 
-enum {
-  NB_ENABLE,
-  NB_DISABLE
-};
+enum { NB_ENABLE, NB_DISABLE };
 
 void term_init();
 void term_close();
