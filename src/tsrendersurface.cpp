@@ -45,7 +45,7 @@ int render_surface_copy(RenderSurface_t *in, RenderSurface_t *out) {
   for (int i = 0; i < (in->w * in->h); i++) {
     out->colormap[i] = in->colormap[i];
     out->shadowmap[i] = in->shadowmap[i];
-    out->charmap[i] = in->charmap[i];
+    out->charmap[i / 2] = in->charmap[i / 2];
   }
 
   out->w = in->w;

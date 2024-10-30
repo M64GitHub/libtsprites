@@ -54,14 +54,15 @@ void colorprintf(RGBColor_t c, const char *f, ...);
 
 //-- term
 
-enum { NB_ENABLE, NB_DISABLE };
+enum { NB_ENABLE, NB_DISABLE, E_ENABLE, E_DISABLE };
 
 void term_init();
 void term_close();
 void term_clear();
 int term_columns();
 int term_rows();
-void term_nonblock_noecho(int state);
+void term_nonblock(int state);
+void term_echo(int state);
 unsigned int term_readkey();
 int term_kbhit();
 

@@ -189,7 +189,7 @@ int term_kbhit() {
   return FD_ISSET(STDIN_FILENO, &fds);
 }
 
-void term_nonblock_noecho(int state) {
+void term_nonblock(int state) {
   struct termios ttystate;
   int oflags, nflags;
 
@@ -197,11 +197,7 @@ void term_nonblock_noecho(int state) {
   tcgetattr(STDIN_FILENO, &ttystate);
 
   if (state == NB_ENABLE) {
-    // turn off canonical mode (not waiting for enter)
     ttystate.c_lflag &= ~ICANON;
-    // turn off echo
-    ttystate.c_lflag &= ~ECHO;
-    // minimum of number input read.
     ttystate.c_cc[VMIN] = 1;
     tcsetattr(STDIN_FILENO, TCSANOW, &ttystate);
 
@@ -210,8 +206,26 @@ void term_nonblock_noecho(int state) {
     nflags |= O_NONBLOCK;
     fcntl(STDIN_FILENO, F_SETFL, nflags);
   } else if (state == NB_DISABLE) {
-    // turn on canonical mode
     ttystate.c_lflag |= ICANON;
+    tcsetattr(STDIN_FILENO, TCSANOW, &ttystate);
+
+    oflags = fcntl(STDIN_FILENO, F_GETFL);
+    nflags = oflags;
+    nflags &= ~O_NONBLOCK;
+    fcntl(STDIN_FILENO, F_SETFL, nflags);
+  }
+}
+
+void term_echo(int state) {
+  struct termios ttystate;
+
+  tcgetattr(STDIN_FILENO, &ttystate);
+
+  if (state == E_DISABLE) {
+    ttystate.c_lflag &= ~ECHO;
+    tcsetattr(STDIN_FILENO, TCSANOW, &ttystate);
+
+  } else if (state == E_ENABLE) {
     ttystate.c_lflag |= ECHO;
     tcsetattr(STDIN_FILENO, TCSANOW, &ttystate);
   }
