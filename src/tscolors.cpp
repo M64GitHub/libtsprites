@@ -1,6 +1,7 @@
 // tscolors.cpp - libtsprites, 2023-24 M64
 
 #include "include/tscolors.hpp"
+#include "include/tseffects.hpp"
 #include "include/tsutils.hpp"
 
 void rgb2hsl(RGBColor_t *rgb, HSLColor_t *hsl) {
@@ -92,6 +93,16 @@ void hsl2rgb(HSLColor_t *hsl, RGBColor_t *rgb) {
 // R: 163
 // G: 224
 // B: 181
+
+bool rgb_equal(RGBColor_t *c1, RGBColor_t *c2) {
+  return (c1->r == c2->r) && (c1->g == c2->g) && (c1->b == c2->b);
+}
+
+bool rgb_has_color(RGBColor_t *c) {
+  if (c->r || c->g || c->b)
+    return true;
+  return false;
+}
 
 RGBPalette_t *CreatePaletteFadeIn(RGBColor_t c, int steps) {
   RGBPalette_t *p = new RGBPalette_t;
@@ -185,22 +196,16 @@ RGBPalette_t *CreatePaletteFadeColors(RGBColor_t *c1, RGBColor_t *c2,
   return p;
 }
 
-bool rgb_equal(RGBColor_t *c1, RGBColor_t *c2) {
-  return (c1->r == c2->r) && (c1->g == c2->g) && (c1->b == c2->b);
-}
-
-
-RGBPalette_t *PaletteAppend(RGBPalette_t *p1, RGBPalette_t *p2)
-{
+RGBPalette_t *PaletteAppend(RGBPalette_t *p1, RGBPalette_t *p2) {
 
   RGBPalette_t *p = new RGBPalette_t;
   p->num_colors = p1->num_colors + p2->num_colors;
   p->colors = new RGBColor_t[p->num_colors];
 
-  for(int i=0; i<p1->num_colors; i++) {
+  for (int i = 0; i < p1->num_colors; i++) {
     p->colors[i] = p1->colors[i];
   }
-  for(int i=0; i<p2->num_colors; i++) {
+  for (int i = 0; i < p2->num_colors; i++) {
     p->colors[p1->num_colors + i] = p2->colors[i];
   }
 

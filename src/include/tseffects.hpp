@@ -17,4 +17,6 @@ void tsfx_char_fill(RenderSurface_t *r_in, RGBColor_t *color_in,
                     RGBColor_t *color_out, unsigned char c,
                     RenderSurface_t *r_out);
 
+void tsfx_outline_rotor_left_tick(RenderSurface_t *r, int start_x, int start_y);
+
 #endif

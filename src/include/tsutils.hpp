@@ -16,7 +16,8 @@
 #define KBD_KEY_DOWN 0x00425b1b
 #define KBD_KEY_LEFT 0x00445b1b
 
-#define KBD_KEY_ESC 0x1b
+#define KBD_KEY_ESC 0x00001b
+#define KBD_KEY_SPACE 0x000020
 
 // -- time
 typedef struct FPSCtx_s {

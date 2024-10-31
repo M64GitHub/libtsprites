@@ -25,6 +25,7 @@ float hue2rgb(float v1, float v2, float vH);
 void hsl2rgb(HSLColor_t *hsl, RGBColor_t *rgb);
 
 bool rgb_equal(RGBColor_t *c1, RGBColor_t *c2);
+bool rgb_has_color(RGBColor_t *c);
 
 RGBPalette_t *CreatePaletteFadeIn(RGBColor_t c, int steps);
 RGBPalette_t *CreatePaletteFadeOut(RGBColor_t c, int steps);
