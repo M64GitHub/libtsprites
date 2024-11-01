@@ -5,8 +5,6 @@
 #include "include/tsrendersurface.hpp"
 #include "include/tstypes.h"
 
-#include <stdio.h>
-
 void tsfx_dim_direct(RenderSurface_t *r, int step, int maxsteps) {
   double dr, dg, db;
   for (int Y = 0; Y < r->h; Y++) {
@@ -89,9 +87,9 @@ void tsfx_char_fill(RenderSurface_t *r_in, RGBColor_t *color_in,
   }
 }
 
-void tsfx_outline_rotor_left_tick(RenderSurface_t *r, int start_x,
-                                  int start_y) {
-  TS_DIRECTION direction = TS_DIRECTION_LEFT;
+void tsfx_outline_rotor_tick(RenderSurface_t *r, int start_x,
+                                  int start_y, TS_DIRECTION dir) {
+  TS_DIRECTION direction = dir;
 
   Pixel2D_t p_init;
   Pixel2D_t p_current;
