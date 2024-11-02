@@ -15,6 +15,16 @@ void render_surface_init(RenderSurface_t *s, int w, int h, RGBColor_t c) {
   render_surface_clear_colored(s, c);
 }
 
+void render_surface_free(RenderSurface_t *s)
+{
+  if(!s) return;
+  if(s->colormap) delete s->colormap;
+  if(s->shadowmap) delete s->shadowmap;
+  if(s->charmap) delete s->charmap;
+
+  delete s;
+}
+
 void render_surface_clear_colored(RenderSurface_t *s, RGBColor_t c) {
   if (!s || !s->colormap || !s->shadowmap)
     return;

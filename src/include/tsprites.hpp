@@ -23,7 +23,7 @@ typedef struct TSpriteFrame_s {
   int nr = 0;
   int w = 0;
   int h = 0;
-  RGBColor_t *colormap = 0;      // should stay, to restore b4 effects
+  RGBColor_t *colormap = 0;     // should stay, to restore b4 effects
   unsigned char *shadowmap = 0; // (apply effects, etc to out_surface)
   char *s = 0;   // frame 0: copy of s (free will not affect spr->s)
   char *s_1down; // frame 0: copy of s_1down
@@ -33,9 +33,9 @@ typedef struct TSpriteFrame_s {
 } TSpriteFrame_t;
 
 typedef struct TFrameSet_s {
-  int frame_count = 0;       // 1 after Import
+  int frame_count = 0;         // 1 after Import
   TSpriteFrame_t **frames = 0; // array of pointers to frames
-  int frame_idx = 0;         // current frame
+  int frame_idx = 0;           // current frame
 } TSpriteFrameSet_t;
 
 /// True-Color (24bit RGB) unicode block character based pixel sprite.
@@ -87,6 +87,8 @@ public:
   // widths. Starts at x=xoffsets[0]. Returns index into sprite's fs of first
   // new frame. Use to split word-logo into single letters for example.
   int VSplit(TSpriteFrame_t *F, int *xoffsets, int *widths, int numslices);
+  int VSplit(TSpriteFrame_t *F, int *xoffsets, int *widths, int yoffset,
+             int numslices);
 
   /// Split and return array of newly created TSprite ptrs. Vertical cut line.
   // Variable widths.
@@ -115,7 +117,7 @@ public:
 
   // NOTE: Animation Functions
 
-  // control sprite internal - "direct" animations: 
+  // control sprite internal - "direct" animations:
   // TODO:
   void AddAnimation(TSpriteAnimation_t *a);
   // TODO:
@@ -160,7 +162,7 @@ public:
   // This points to either the sprite's own RenderSurface_t, or is being
   // replaced by ptr to a frame's out_surface.
   RenderSurface_t *restore_surface = 0; // original out_surface copy
-                                       // before effect, or any manipulation.
+                                        // before effect, or any manipulation.
 private:
   // allocates maps, returns first new frame
   TSpriteFrame_t *add_frames(int n, int width, int height);
@@ -209,11 +211,11 @@ typedef struct SSPriteFrame_s {
 class SSprite {
 public:
   SSprite();
-  SSprite(char *str);                          // 1 frame, framecolor=white
-  SSprite(char **str, int len);                // array of strs
+  SSprite(char *str);                           // 1 frame, framecolor=white
+  SSprite(char **str, int len);                 // array of strs
   SSprite(char **str, int len, RGBColor_t c);   // array of strs, basecolor
   SSprite(char **str, int len, RGBPalette_t p); // array of strs,
-                                               // individual colors
+                                                // individual colors
   ~SSprite();
 
   void SetText(char *t);
@@ -245,7 +247,7 @@ public:
   int threshhold3 = 0;
 
   RGBColor_t *background = 0; // for rendering
-  int state = 0;             // generic type to support own concepts
+  int state = 0;              // generic type to support own concepts
 private:
   void free_frames();
   unsigned char color_override = 0; // if frame color is unsed,

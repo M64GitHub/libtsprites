@@ -89,7 +89,7 @@ void TScreen::AddSprite(TSprite *spr) {
   delete[] t_sprites;
   t_sprites = new_arr;
 
-  add_out_surface(spr->out_surface); // or do it on each render, so
+  AddOutSurface(spr->out_surface); // or do it on each render, so
   // sprite can change it's width/height between renders, too.
   // Then in Render(), the Screen would have to recreate the list of
   // out_surfaces everytime, we don't do that for now, for speed.
@@ -109,6 +109,7 @@ void TScreen::AddSprite(SSprite *spr) {
   s_sprites = new_arr;
 
   // Add surface out
+  // ... actually don't. SSprites are printed later, not using a surface.
 }
 
 void TScreen::AddSubScreen(TScreen *scr) {
@@ -125,12 +126,12 @@ void TScreen::AddSubScreen(TScreen *scr) {
   delete[] sub_screens;
   sub_screens = new_arr;
 
-  add_out_surface(scr->out_surface);
+  AddOutSurface(scr->out_surface);
 }
 
 // called on each sprite-> add,
 // surfaces out holds input array for rendering engine
-void TScreen::add_out_surface(RenderSurface_t *rs) {
+void TScreen::AddOutSurface(RenderSurface_t *rs) {
   if (!rs)
     return;
 

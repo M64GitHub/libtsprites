@@ -436,6 +436,50 @@ int TSprite::VSplit(TSpriteFrame_t *F, int *xoffsets, int *widths,
   return old_num_frames;
 }
 
+// Split F and append created frames to fs. Vertical cut line. Variable widths.
+// Starts at x=xoffsets[0], yoffset. Returns index into fs of first new frame,
+// or -1 on Error. Use to split word-logo into single letters for example.
+int TSprite::VSplit(TSpriteFrame_t *F, int *xoffsets, int *widths, int yoffset,
+                    int numslices) {
+  if (!F || (numslices < 1) || !xoffsets || !widths)
+    return -1;
+
+  int old_num_frames = fs.frame_count;
+
+  TSpriteFrame_t *new_frame = 0;
+
+  for (int n = 0; n < numslices; n++) {
+    int new_width = widths[n];
+    new_frame = add_frames(1, new_width, h);
+
+    // fill colormap and shadow map
+    int new_y = 0;
+    for (int fy = yoffset; fy < F->h; fy++) {
+      int new_x = 0;
+      for (int fx = 0; fx < new_width; fx++) {
+        if ((fx + xoffsets[n]) >= F->w)
+          break; // skip if out of bounds
+
+        new_frame->colormap[new_width * new_y + new_x] =
+            F->colormap[F->w * fy + fx + xoffsets[n]];
+        new_frame->shadowmap[new_width * new_y + new_x] =
+            F->shadowmap[F->w * fy + fx + xoffsets[n]];
+        new_x++;
+      } // fx (width)
+      new_y++;
+    } // fy (height)
+    // copy to frame output surface
+    for (int i = 0; i < (new_frame->w * new_frame->h); i++) {
+      new_frame->out_surface->colormap[i] = new_frame->colormap[i];
+      new_frame->out_surface->shadowmap[i] = new_frame->shadowmap[i];
+    }
+
+    Maps_2_UTF8(F);
+  } // n
+
+  return old_num_frames;
+}
+
 // Split and return array of newly created TSprite ptrs. Vertical cut line.
 // Variable widths.
 // Starts at x=xoffsets[0].

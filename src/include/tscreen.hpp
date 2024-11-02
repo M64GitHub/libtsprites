@@ -32,6 +32,7 @@ public:
   void AddSprite(TSprite *s);
   void AddSprite(SSprite *s);
   void AddSubScreen(TScreen *s);
+  void AddOutSurface(RenderSurface_t *rs);
 
   void SetScreenMode(TSSCREEN_MODE m);
   void SetRenderEngine(TSRenderEngineTopDown *engine);
@@ -53,7 +54,6 @@ public:
   int num_screens = 0;
     
 private:
-  void add_out_surface(RenderSurface_t *rs);
 
   int w = 0;
   int h = 0;

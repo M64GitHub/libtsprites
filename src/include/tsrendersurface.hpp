@@ -21,6 +21,7 @@ typedef struct RenderSurface_s {
 } RenderSurface_t;
 
 void render_surface_init(RenderSurface_t *s, int w, int h, RGBColor_t r);
+void render_surface_free(RenderSurface_t *s);
 
 void render_surface_clear_colored(RenderSurface_t *s, RGBColor_t c);
 void render_surface_clear_transparent(RenderSurface_t *s);
