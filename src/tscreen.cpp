@@ -223,7 +223,7 @@ void TScreen::Render() {
     out_s[tmpstr_idx] = 0x00; // terminator
   }
 
-  printf("%s", out_s);
+  printf("%s\n", out_s);
 
   for (int i = 0; i < num_ssprites; i++) {
     SSprite *ss = s_sprites[i];
@@ -238,6 +238,8 @@ void TScreen::Render() {
       ss->Print(x + scr->x + ss->x, y + scr->y + ss->y);
     }
   }
+  cursor_home();
+  printf("\n");
 }
 
 void TScreen::SetScreenMode(TSSCREEN_MODE m) { screen_mode = m; }
