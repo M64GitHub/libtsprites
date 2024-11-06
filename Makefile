@@ -29,6 +29,7 @@ $(SOFILE): $(SRCDIR)/$(LIBRARY).cpp
 	$(CXX) -fPIC -c $(SRCDIR)/$(LIBRARY).cpp -o $(SRCDIR)/$(LIBOBJFILE)
 	$(CXX) -fPIC -c $(SRCDIR)/tscolors.cpp -o $(SRCDIR)/tscolors.o 
 	$(CXX) -fPIC -c $(SRCDIR)/tscreen.cpp -o $(SRCDIR)/tscreen.o 
+	$(CXX) -fPIC -c $(SRCDIR)/tsscener.cpp -o $(SRCDIR)/tsscener.o 
 	$(CXX) -fPIC -c $(SRCDIR)/tsutils.cpp -o $(SRCDIR)/tsutils.o 
 	$(CXX) -fPIC -c $(SRCDIR)/tsrender.cpp -o $(SRCDIR)/tsrender.o 
 	$(CXX) -fPIC -c $(SRCDIR)/tseffects.cpp -o $(SRCDIR)/tseffects.o 
@@ -39,14 +40,15 @@ $(SOFILE): $(SRCDIR)/$(LIBRARY).cpp
 		-o $(SRCDIR)/tsrendersurface.o 
 	$(CXX) -shared -Wl,-soname,$(SONAME) -o $(SOFILE) \
 		$(SRCDIR)/$(LIBOBJFILE) \
+		$(SRCDIR)/tsanimations.o \
 		$(SRCDIR)/tscolors.o \
 		$(SRCDIR)/tscreen.o \
-		$(SRCDIR)/tsutils.o \
-		$(SRCDIR)/tsrender.o \
+		$(SRCDIR)/tscroller.o \
 		$(SRCDIR)/tseffects.o \
-		$(SRCDIR)/tsanimations.o \
+		$(SRCDIR)/tsrender.o \
 		$(SRCDIR)/tsrendersurface.o \
-		$(SRCDIR)/tscroller.o
+		$(SRCDIR)/tsscener.o \
+		$(SRCDIR)/tsutils.o
 
 clean:
 	$(RM) $(LIBDIR)/*.o $(LIBDIR)/*.so $(SRCDIR)/*.o
