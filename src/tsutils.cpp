@@ -22,6 +22,8 @@
 void fps_init(int FPS, FPSCtx_t *ctx) {
   ctx->FPS = FPS;
   ctx->FPS_us = fps_to_us(FPS);
+  ctx->min = 9999999999;
+  ctx->max = 0;
 }
 
 void fps_begin_frame(FPSCtx_t *ctx) { ctx->ts1 = get_timestamp(&ctx->tv); }
@@ -29,6 +31,8 @@ void fps_begin_frame(FPSCtx_t *ctx) { ctx->ts1 = get_timestamp(&ctx->tv); }
 void fps_end_frame(FPSCtx_t *ctx) {
   ctx->ts2 = get_timestamp(&ctx->tv);
   unsigned long duration = ctx->ts2 - ctx->ts1;
+  if(duration < ctx->min) ctx->min = duration;
+  if(duration > ctx->max) ctx->max = duration;
   usleep(ctx->FPS_us - (duration) < ctx->FPS_us ? ctx->FPS_us - (duration) : 1);
 }
 

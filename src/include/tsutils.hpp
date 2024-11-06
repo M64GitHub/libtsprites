@@ -26,6 +26,8 @@ typedef struct FPSCtx_s {
   unsigned long ts1;
   unsigned long ts2;
   struct timeval tv;
+  unsigned long min;
+  unsigned long max;
 } FPSCtx_t;
 
 void fps_init(int FPS, FPSCtx_t *ctx);

@@ -104,6 +104,12 @@ bool rgb_has_color(RGBColor_t *c) {
   return false;
 }
 
+void InitPalette(RGBPalette_t *p, int num_colors)
+{
+  p->colors = new RGBColor_t[num_colors];
+  p->num_colors = num_colors;
+}
+
 RGBPalette_t *CreatePaletteFadeIn(RGBColor_t c, int steps) {
   RGBPalette_t *p = new RGBPalette_t;
   p->colors = new RGBColor_t[steps];
