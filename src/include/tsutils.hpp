@@ -28,6 +28,7 @@ typedef struct FPSCtx_s {
   struct timeval tv;
   unsigned long min;
   unsigned long max;
+  int overruns;
 } FPSCtx_t;
 
 void fps_init(int FPS, FPSCtx_t *ctx);

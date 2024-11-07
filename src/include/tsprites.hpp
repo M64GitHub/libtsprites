@@ -118,16 +118,15 @@ public:
   // NOTE: Animation Functions
 
   // control sprite internal - "direct" animations:
-  // TODO:
+  //  
+  TSpriteAnimation_t *NewAnimation(int start_idx, int len, int loop);
+
   void AddAnimation(TSpriteAnimation_t *a);
-  // TODO:
-  void StartAnimation(int n, int loop);
-  // TODO:
-  void PauseAnimation(int n);
-  // TODO:
-  void StopAnimation(int n);
-  // TODO:
-  void AnimationTick(int n);
+  void StartAnimation(int n);
+  void PauseAnimation();
+  void ContinueAnimation();
+  void StopAnimation();
+  void AnimationTick();
 
   // NOTE: Conversion / Utility Functions
 
@@ -147,6 +146,8 @@ public:
 
   // animations
   TSpriteAnimation_t **animations = 0; // array of pointers
+  int num_animations = 0;
+  int current_animation = 0;
 
   // convenience counters and thresholds
   int counter1 = 0;
@@ -163,6 +164,7 @@ public:
   // replaced by ptr to a frame's out_surface.
   RenderSurface_t *restore_surface = 0; // original out_surface copy
                                         // before effect, or any manipulation.
+
 private:
   // allocates maps, returns first new frame
   TSpriteFrame_t *add_frames(int n, int width, int height);

@@ -3,6 +3,7 @@
 #include "include/tsprites.hpp"
 #include "include/format_catimg.hpp"
 #include "include/lodepng.h"
+#include "include/tsanimations.hpp"
 #include "include/tscolors.hpp"
 #include "include/tsrendersurface.hpp"
 #include "include/tsutils.hpp"
@@ -10,12 +11,27 @@
 #include <stdlib.h>
 
 // -- TSprite -----------------------------------------------------------------
-TSprite::TSprite() {}
+TSprite::TSprite() {
+  w = h = x = y = z = 0;
+  out_surface = 0;
+  restore_surface = 0;
+  s = 0;
+
+  animations = 0;
+  num_animations = 0;
+}
 
 // TSprite(char *imgstr)
 // initialize from imgstr (catimg format), ie when included via 'xxd -i'
 // make sure imgstr is 0x00 terminated!
 TSprite::TSprite(char *imgstr) {
+  w = h = x = y = z = 0;
+  out_surface = 0;
+  restore_surface = 0;
+  s = 0;
+
+  animations = 0;
+  num_animations = 0;
   if (ImportFromImgStr(imgstr))
     printf("[TS] ERROR: unable to convert imgstr.\n");
 }
@@ -582,22 +598,110 @@ RenderSurface_t *TSprite::Render() {
 void TSprite::tick() {}
 
 // control sprite internal animations
-// TODO:
-void AddAnimation(TSpriteAnimation_t *a) {};
+// create new animation
+TSpriteAnimation_t *TSprite::NewAnimation(int start_idx, int len, int loop) {
+  TSpriteAnimation_t *a = 0;
 
-// TODO:
-void StartAnimation(int n, int loop) {};
+  a = new TSpriteAnimation_t;
 
-// TODO:
-void PauseAnimation(int n) {};
+  a->render_surface_out_bak = out_surface;
 
-// TODO:
-void StopAnimation(int n) {};
+  a->tick = 0;
+  a->tick_divider = 1;
+  a->loop = loop;
+  a->loop_start = start_idx;
+  a->loop_duration = len;
+  a->loop_end = start_idx + len - 1;
+  a->loop_idx_return = start_idx;
+  a->loop_idx_current = start_idx;
 
-// TODO:
-void AnimationTick(int n) {};
+  a->status = TS_ANI_STATUS_STOPPED;
 
+  AddAnimation(a);
+
+  return a;
+};
+
+// add animation to list
+void TSprite::AddAnimation(TSpriteAnimation_t *a) {
+
+  TSpriteAnimation_t **new_animations =
+      new TSpriteAnimation_t *[num_animations + 1];
+
+  // copy old anis, if any
+  for (int i = 0; i < num_animations; i++) {
+    new_animations[i] = animations[i];
+  }
+
+  new_animations[num_animations] = a;
+
+  if (animations) {
+    delete animations;
+  }
+
+  animations = new_animations;
+  num_animations = num_animations + 1;
+}
+
+void TSprite::StartAnimation(int n) {
+  if ((n < 0) || (n >= num_animations))
+    return;
+  current_animation = n;
+  TSpriteAnimation_t *a = animations[n];
+  a->loop_idx_current = a->loop_start;
+  a->tick = 0;
+  a->status = TS_ANI_STATUS_PLAYING;
+};
+
+void TSprite::PauseAnimation() {
+  int n = current_animation;
+  if ((n < 0) || (n >= num_animations))
+    return;
+  TSpriteAnimation_t *a = animations[n];
+  a->status = TS_ANI_STATUS_PAUSED;
+};
+
+void TSprite::StopAnimation() {
+  int n = current_animation;
+  if ((n < 0) || (n >= num_animations))
+    return;
+  TSpriteAnimation_t *a = animations[n];
+  a->status = TS_ANI_STATUS_STOPPED;
+  a->loop_idx_current = 0;
+  a->tick = 0;
+  out_surface = a->render_surface_out_bak;
+};
+
+void TSprite::AnimationTick() {
+  int n = current_animation;
+  if ((n < 0) || (n >= num_animations))
+    return;
+  TSpriteAnimation_t *a = animations[n];
+
+  if (a->status != TS_ANI_STATUS_PLAYING)
+    return;
+
+  a->tick++;
+  if (a->tick % a->tick_divider)
+    return;
+
+  a->loop_idx_current++;
+  if (a->loop_idx_current > a->loop_end) {
+    // loop
+    a->loop_idx_current = a->loop_idx_return;
+  }
+
+  if (a->loop_idx_current < fs.frame_count) {
+    // set new out_surface to render
+    // out_surface = fs.frames[a->loop_idx_current]->out_surface;
+    render_surface_copy(fs.frames[a->loop_idx_current]->out_surface,
+                        out_surface);
+  }
+};
+
+// NOTE: single frame animations ----------------------------------
 // control single frame animations
+
 // TODO:
 void AddFrameAnimation(TSpriteAnimation_t *a, TSpriteFrame_t *f) {};
 
@@ -612,6 +716,7 @@ void StopFrameAnimation(int n) {};
 
 // TODO:
 void FrameAnimationTick(TSpriteFrame_t *f) {};
+// NOTE: /single frame animations -----
 
 void TSprite::PrintDebugMap(TSpriteFrame_t *F) {
   RGBColor_t c = {0x80, 0x88, 0x88};
@@ -931,7 +1036,7 @@ TSpriteFrame_t *TSprite::add_frames(int n, int width, int height) {
   }
   // delete old array if one
   if (fs.frames)
-    free(fs.frames);
+    delete fs.frames;
 
   fs.frames = new_frames;
   fs.frame_count = fs.frame_count + n;

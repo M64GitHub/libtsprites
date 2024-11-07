@@ -11,6 +11,7 @@ typedef struct Scene_s {
   tick_t begin;
   tick_t duration;
   tick_t end;
+  int id;
 } Scene_t;
 
 inline bool scene_check_in_scene(Scene_t *s, tick_t tick) {
