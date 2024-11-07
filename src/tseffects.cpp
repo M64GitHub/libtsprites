@@ -301,6 +301,7 @@ void tsfx_plasma_init(TSFXPlasmaCTX_t *pctx, int width, int height,
   pctx->clamp_range = clamp_range;
   pctx->replace_color = replace_color;
   pctx->rs = rs;
+  pctx->time_offset = 0;
 
   RGBColor_t c_chk;
   for (int y = 0; y < rs->h; y++) {

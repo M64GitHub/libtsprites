@@ -238,8 +238,6 @@ void TScreen::Render() {
       ss->Print(x + scr->x + ss->x, y + scr->y + ss->y);
     }
   }
-  cursor_home();
-  printf("\n");
 }
 
 void TScreen::SetScreenMode(TSSCREEN_MODE m) { screen_mode = m; }
