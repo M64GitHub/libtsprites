@@ -132,7 +132,6 @@ void tsfx_outline_rotor_tick(RenderSurface_t *r, int start_x, int start_y,
   Pixel2D_t p_init;
   Pixel2D_t p_current;
   Pixel2D_t p_next;
-  Pixel2D_t p_tmp;
 
   // save xyc of start, get current color
   p_init.x = start_x;
@@ -249,8 +248,6 @@ void tsfx_plasma_generate_plasma(TSFXPlasmaCTX_t *pctx, RenderSurface_t *ro) {
       sin(pctx->time_offset * 0.05) * 0.5 + 1.5; // Breathing effect
   int palette_shift = pctx->time_offset %
                       pctx->palette.num_colors; // Shift the palette over time
-
-  RGBColor_t c_chk;
 
   for (int y = 0; y < pctx->heigth; y++) {
     for (int x = 0; x < pctx->width; x++) {

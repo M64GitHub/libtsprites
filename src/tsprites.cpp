@@ -633,6 +633,7 @@ void TSprite::AddAnimation(TSpriteAnimation_t *a) {
     new_animations[i] = animations[i];
   }
 
+  a->ani_idx = num_animations;
   new_animations[num_animations] = a;
 
   if (animations) {
@@ -696,6 +697,8 @@ void TSprite::AnimationTick() {
     // out_surface = fs.frames[a->loop_idx_current]->out_surface;
     render_surface_copy(fs.frames[a->loop_idx_current]->out_surface,
                         out_surface);
+    out_surface->x = x;
+    out_surface->y = y;
   }
 };
 

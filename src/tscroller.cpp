@@ -70,7 +70,7 @@ void TScroller::SetText(char *s) {
 
   full_width = 0;
   for (int i = 0; i < slen; i++) {
-    f_idx = translation[s[i]];
+    f_idx = translation[(int)s[i]];
     if (f_idx == 0xFF)
       continue;
     full_width += charset->fs.frames[f_idx]->w;
@@ -94,7 +94,7 @@ void TScroller::SetText(char *s) {
   int fulls_x = 0;
   int fulls_y = 0;
   for (int i = 0; i < slen; i++) {
-    f_idx = translation[scrolltext[i]];
+    f_idx = translation[(int)scrolltext[i]];
     if (f_idx == 0xFF)
       continue;
     F = charset->fs.frames[f_idx];

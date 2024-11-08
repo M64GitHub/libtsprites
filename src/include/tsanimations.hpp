@@ -28,6 +28,7 @@ typedef struct TSpriteAnimation_s {
   RenderSurface_t *render_surface_out_bak =
       0; // for ani stop, restore original pointer to out_surface
   AniStatus_t status;
+  int ani_idx = -1;
 } TSpriteAnimation_t;
 
 #endif

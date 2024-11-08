@@ -204,28 +204,31 @@ int term_kbhit() {
   return FD_ISSET(STDIN_FILENO, &fds);
 }
 
-void term_nonblock(int state) {
-  struct termios ttystate;
-  int oflags, nflags;
+void term_kbd_init(KBCtx_s *k) {
+  int nflags;
 
   // get the terminal state
-  tcgetattr(STDIN_FILENO, &ttystate);
+  tcgetattr(STDIN_FILENO, &k->ttystate);
+
+  k->ttystate.c_lflag &= ~ICANON;
+  k->ttystate.c_cc[VMIN] = 1;
+  tcsetattr(STDIN_FILENO, TCSANOW, &k->ttystate);
+
+  k->flags = fcntl(STDIN_FILENO, F_GETFL);
+  nflags = k->flags;
+  nflags |= O_NONBLOCK;
+  fcntl(STDIN_FILENO, F_SETFL, nflags);
+};
+
+void term_nonblock(int state, KBCtx_t *k) {
+  int nflags;
 
   if (state == NB_ENABLE) {
-    ttystate.c_lflag &= ~ICANON;
-    ttystate.c_cc[VMIN] = 1;
-    tcsetattr(STDIN_FILENO, TCSANOW, &ttystate);
-
-    oflags = fcntl(STDIN_FILENO, F_GETFL);
-    nflags = oflags;
+    nflags = k->flags;
     nflags |= O_NONBLOCK;
     fcntl(STDIN_FILENO, F_SETFL, nflags);
   } else if (state == NB_DISABLE) {
-    ttystate.c_lflag |= ICANON;
-    tcsetattr(STDIN_FILENO, TCSANOW, &ttystate);
-
-    oflags = fcntl(STDIN_FILENO, F_GETFL);
-    nflags = oflags;
+    nflags = k->flags;
     nflags &= ~O_NONBLOCK;
     fcntl(STDIN_FILENO, F_SETFL, nflags);
   }

@@ -10,6 +10,7 @@
 
 #include "tscolors.hpp"
 #include <sys/time.h> // for gettimeofday
+#include <termios.h>
 
 #define KBD_KEY_UP 0x00415b1b
 #define KBD_KEY_RIGHT 0x00435b1b
@@ -30,6 +31,13 @@ typedef struct FPSCtx_s {
   unsigned long max;
   int overruns;
 } FPSCtx_t;
+
+typedef struct KBCtx_s {
+  struct timeval tv;
+  fd_set fds;
+  struct termios ttystate;
+  int flags;
+} KBCtx_t;
 
 void fps_init(int FPS, FPSCtx_t *ctx);
 void fps_begin_frame(FPSCtx_t *ctx);
@@ -65,8 +73,11 @@ void term_close();
 void term_clear();
 int term_columns();
 int term_rows();
-void term_nonblock(int state);
+void term_nonblock(int state, KBCtx_t *k);
 void term_echo(int state);
+
+void term_kbd_init(KBCtx_s *k);
+
 unsigned int term_readkey();
 int term_kbhit();
 
