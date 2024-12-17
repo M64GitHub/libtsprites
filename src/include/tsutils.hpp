@@ -95,4 +95,7 @@ void idx_ruler(int n);
 float min(float a, float b);
 float max(float a, float b);
 
+double ts_ease_in(int tick, int tick_maximum, double y_max);
+double ts_ease_in_out(int tick, int tick_maximum, double y_max);
+
 #endif

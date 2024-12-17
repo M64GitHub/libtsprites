@@ -223,7 +223,7 @@ void TScreen::Render() {
     out_s[tmpstr_idx] = 0x00; // terminator
   }
 
-  printf("%s\n", out_s);
+  printf("%s", out_s);
 
   for (int i = 0; i < num_ssprites; i++) {
     SSprite *ss = s_sprites[i];

@@ -39,6 +39,9 @@ void tsfx_outline_rotor_tick(RenderSurface_t *r, int start_x, int start_y,
 void tsfx_plasma_init_palette(TSFXPlasmaCTX_t *pctx);
 void tsfx_plasma_generate_plasma(TSFXPlasmaCTX_t *pctx, RenderSurface_t *ro);
 
+void tsfx_precompute_trig_tables();
+void tsfx_plasma_generate_plasma_fast(TSFXPlasmaCTX_t *pctx, RenderSurface_t *ro);
+
 void tsfx_plasma_init(TSFXPlasmaCTX_t *pctx, int width, int height,
                       int num_colors, float clamp_range,
                       RGBColor_t replace_color, RenderSurface_t *rs);

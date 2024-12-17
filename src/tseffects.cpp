@@ -5,6 +5,7 @@
 #include "include/tsrendersurface.hpp"
 #include "include/tstypes.h"
 #include <math.h>
+#include <omp.h>    // For OpenMP
 #include <stdlib.h> // Needed for srand()
 #include <time.h>   // Needed for time()
 #include <unistd.h>
@@ -314,3 +315,4 @@ void tsfx_plasma_init(TSFXPlasmaCTX_t *pctx, int width, int height,
   InitPalette(&pctx->palette, num_colors); // use 256 colors
   tsfx_plasma_init_palette(pctx);
 }
+

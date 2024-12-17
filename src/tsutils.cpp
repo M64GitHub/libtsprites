@@ -40,7 +40,6 @@ void fps_end_frame(FPSCtx_t *ctx) {
     ctx->max = duration;
   if (duration > ctx->FPS_us) {
     ctx->overruns++;
-    ctx->max = 0;
   }
   if ((ctx->FPS_us - duration) > 200)
     duration -= 200;
@@ -423,3 +422,24 @@ void idx_ruler(int n) {
 
 float min(float a, float b) { return a <= b ? a : b; }
 float max(float a, float b) { return a >= b ? a : b; }
+
+double ts_ease_in(int tick, int tick_maximum, double y_max) {
+  double t = (double)tick / (double)tick_maximum;
+  if (t > 1.0) {
+    t = 1.0;
+  }
+  return t * t * y_max;
+}
+
+double ts_ease_in_out(int tick, int tick_maximum, double y_max) {
+  double t = (double)tick / (double)tick_maximum;
+  if (t > 1.0) {
+    t = 1.0;
+  }
+  if (t < 0.5) {
+    return 2 * t * t * y_max;
+  } else {
+    return (1 - 2 * (1 - t) * (1 - t)) * y_max;
+  }
+}
+
