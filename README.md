@@ -26,7 +26,8 @@ on Windows 10) also does the job, but is a bit slow. `iTerm2` on the mac
 A note about nerd-fonts (https://www.nerdfonts.com/font-downloads)
 shall be given here as well.  
 
-Work in progress ...
+Work in progress ...  
+A lot of updates have been made since last edit of this readme. See [plasmaghost](https://github.com/M64GitHub/plasmaghost) for example usage of the current status.
 
 ## MAIN CONCEPT
 
